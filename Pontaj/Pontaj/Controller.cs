@@ -9,7 +9,7 @@ namespace Pontaj
 {//new feature
     class Controller
     {
-        UserList users;
+        public UserList users;
 
         public Controller()
         {

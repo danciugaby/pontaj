@@ -27,7 +27,7 @@ namespace DAL
                 manager.Open();
                 string sql = "select * from user";
                 SQLiteCommand command = new SQLiteCommand(sql, manager.DbConnection);
-                SQLiteDataReader reader = command.ExecuteReader();
+                SQLiteDataReader reader = command.ExecuteReader();                
                 Users.Clear();
                 while (reader.Read())
                 {

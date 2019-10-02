@@ -36,10 +36,10 @@
                                 <RowDefinition Height=".8*"/>
                                 <RowDefinition Height=".2*"/>                                
                             </Grid.RowDefinitions>
-                            <ListBox Name ="lstUsers" Grid.Row="0"/>
+                            <ListBox Name ="lstUsers" Grid.Row="0" SelectionChanged="LstUsers_SelectionChanged"/>
                             <Button Content="Incarca utilizatori" Name="btnLoadUser" Grid.Row="1" Click="BtnLoadUser_Click"/>
                         </Grid>
-                        <Grid Grid.Column="1">
+                        <Grid Grid.Column="1" Name="grdUserManager">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height=".7*"/>
                                 <RowDefinition Height=".1*"/>
@@ -47,11 +47,23 @@
                                 <RowDefinition Height=".1*"/>
                             </Grid.RowDefinitions>
                             <Grid Grid.Row="0">
-                               
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width=".3*"/>
+                                    <ColumnDefinition Width=".7*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>                                   
+                                    <RowDefinition Height=".1*"/>
+                                    <RowDefinition Height=".1*"/>
+                                    <RowDefinition Height=".5*"/>
+                                </Grid.RowDefinitions>
+                                <Label Content="Nume" Grid.Row="0" Grid.Column="0"/>
+                                <Label Content="Grad" Grid.Row="1" Grid.Column="0"/>
+                                <TextBox Name="txtNume" Grid.Row="0" Grid.Column="1"/>
+                                <TextBox Name="txtGrad" Grid.Row="1" Grid.Column="1"/>
                             </Grid>
-                            <Button Content="Adauga utilizator nou" Name="btnAddUser" Grid.Row="1" IsEnabled="False"/>
-                            <Button Content="Modifica utilizator" Name="btnUpdateUser" Grid.Row="2" IsEnabled="False"/>
-                            <Button Content="Sterge utilizator" Name="btnDeleteUser" Grid.Row="3" IsEnabled="False"/>
+                            <Button Content="Adauga utilizator nou" Name="btnAddUser" Grid.Row="1" />
+                            <Button Content="Modifica utilizator" Name="btnUpdateUser" Grid.Row="2" />
+                            <Button Content="Sterge utilizator" Name="btnDeleteUser" Grid.Row="3" />
                         </Grid>
                     </Grid>
                 </TabItem>
@@ -67,7 +79,7 @@
             </TabControl>
         </Grid>
         <Grid Grid.Row="2">
-            <ProgressBar Name="prgNameofObject" Minimum="-1" Value="50"/>
+            <ProgressBar Name="prgNameofObject" Minimum="-1" Value="0"/>
         </Grid>
        
     </Grid>
