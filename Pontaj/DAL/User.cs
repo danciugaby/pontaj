@@ -20,9 +20,19 @@ namespace DAL
         public string Name { get => name; set => name = value; }
         public string Rank { get => rank; set => rank = value; }
 
+        public override bool Equals(object obj)
+        {
+            var user = obj as User;
+            return user != null &&
+                   name.Equals(user.name) &&
+                   rank.Equals(user.rank);
+                  
+        }
+
         public override string ToString()
         {
             return "Nume: " + Name + " Grad: " + Rank;
         }
+
     }
 }

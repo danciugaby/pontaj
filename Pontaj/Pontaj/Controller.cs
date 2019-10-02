@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace Pontaj
 {//new feature
@@ -22,5 +23,24 @@ namespace Pontaj
             return users.Users;
         }
 
+        public bool checkNameField()
+        {
+            
+            return false;
+        }
+        
+        public void AddUserInDB(User user)
+        {
+            users.AddUserInDB(user);
+        }
+
+        public void UpdateUserInDB(User newUser, User oldUser)
+        {
+            users.UpdateUserInDB(newUser, oldUser);
+        }
+        public void DeleteUserFromDB(User user)
+        {
+            users.DeleteUserFromDB(user);
+        }
     }
 }
