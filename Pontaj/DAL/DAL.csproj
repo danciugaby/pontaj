@@ -53,10 +53,5 @@
     <Compile Include="User.cs" />
     <Compile Include="Users.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="identifier.sqlite">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
