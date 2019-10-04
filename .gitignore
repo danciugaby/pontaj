@@ -1,12 +1,12 @@
 *.cache
 Skip to content
  
-Search…
+Searchï¿½
 All gists
 Back to GitHub
 @danciugaby 
 @takekazuomi takekazuomi/csharp.gitignore
-Created 6 years ago • Report abuse
+Created 6 years ago ï¿½ Report abuse
 12
 4
  Code Revisions 2 Stars 12 Forks 4
@@ -152,7 +152,7 @@ _NCrunch*
 Leave a comment
 
 Attach files by dragging & dropping, selecting or pasting them.
-© 2019 GitHub, Inc.
+ï¿½ 2019 GitHub, Inc.
 Terms
 Privacy
 Security
@@ -165,3 +165,5 @@ Training
 Blog
 About
 
+*.ide-shm
+*.ide-wal
