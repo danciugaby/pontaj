@@ -26,7 +26,6 @@ namespace Pontaj
         {
             InitializeComponent();
             controller = new Controller();
-            grdUserManager.IsEnabled = false;
         }
 
         private void BtnLoadUser_Click(object sender, RoutedEventArgs e)
@@ -71,8 +70,8 @@ namespace Pontaj
                 {
                     MessageBox.Show("Utilizatorul exista deja!");
                 }
-                
-              
+
+
             }
         }
 
@@ -102,7 +101,7 @@ namespace Pontaj
                 populateFields(selectedUser);
                 setEnabledUptadeUserButton();
                 setEnabledDeleteUserButton();
-               
+
             }
 
         }
@@ -128,8 +127,8 @@ namespace Pontaj
         {
             btnDeleteUser.IsEnabled = false;
         }
-       
-       
+
+
         private bool canChangeUserInDB(User user)
         {
             bool canChange = true;
@@ -171,12 +170,12 @@ namespace Pontaj
             if (selectedUser != null)
             {
                 controller.DeleteUserFromDB(selectedUser);
-               
+
                 setDisabledUptadeUserButton();
                 setDisabledDeleteUserButton();
                 emptyFields();
                 LoadUsers();
-                
+
             }
         }
         public void LoadUsers()
@@ -187,23 +186,6 @@ namespace Pontaj
             {
                 lstUsers.Items.Add(user);
             }
-        }
-        void EnableControls(Boolean enable)
-        {
-            grdUserManager.IsEnabled = enable;
-
-        }
-        private void LstUsers_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (lstUsers.SelectedIndex < lstUsers.Items.Count)
-            {
-                EnableControls(true);
-                User u = controller.users.Users[lstUsers.SelectedIndex];
-                txtNume.Text = u.Name;
-                txtGrad.Text = u.Rank;
-            }
-            else
-                EnableControls(false);
         }
     }
 }

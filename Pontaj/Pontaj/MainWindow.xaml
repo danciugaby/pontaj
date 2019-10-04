@@ -29,12 +29,12 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width=".7*"/>
-                            <ColumnDefinition Width=".3*"/>                            
+                            <ColumnDefinition Width=".3*"/>
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height=".8*"/>
-                                <RowDefinition Height=".2*"/>                                
+                                <RowDefinition Height=".2*"/>
                             </Grid.RowDefinitions>
                             <ListBox Name ="lstUsers" Grid.Row="0" SelectionChanged="LstUsers_SelectionChanged"/>
                             <Button Content="Incarca utilizatori" Name="btnLoadUser" Grid.Row="1" Click="BtnLoadUser_Click"/>
@@ -80,19 +80,19 @@
                     </Grid>
                 </TabItem>
                 <TabItem Header="Tipuri Pontaj">
-                    
+
                 </TabItem>
                 <TabItem Header="Gestionare Pontaj">
 
                 </TabItem>
                 <TabItem Header="Rapoarte" >
-                    
+
                 </TabItem>
             </TabControl>
         </Grid>
         <Grid Grid.Row="2">
             <ProgressBar Name="prgNameofObject" Minimum="-1" Value="50"/>
         </Grid>
-       
+
     </Grid>
 </Window>
