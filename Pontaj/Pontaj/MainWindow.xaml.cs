@@ -240,5 +240,29 @@ namespace Pontaj
         {
             clockingTextBox.Text = type.Type;
         }
+
+        private void BtnUpdateClockingType_Click(object sender, RoutedEventArgs e)
+        {
+           ClockingType selectedType = lstTypes.SelectedItem as ClockingType;
+            if (selectedType != null)
+            {
+                string type = clockingTextBox.Text;
+
+                ClockingType modifiedType = new ClockingType(type);
+                if (!isEmpty(type))
+                    if (selectedType.Equals(modifiedType))
+                    {
+                        MessageBox.Show("Nu ai facut nicio modificare!");
+                    }
+                    else
+                    {
+                        controller.UpdateTypeInDB(modifiedType, selectedType);
+                        emptyField(clockingTextBox);
+                        setDisabledButton(btnUpdateClockingType);
+                        setDisabledButton(btnDeleteClockingType);
+                        LoadTypes();
+                    }
+            }
+        }
     }
 }

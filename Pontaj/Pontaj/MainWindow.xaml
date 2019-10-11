@@ -125,7 +125,7 @@
                                 </Grid>
                             </Grid>
                             <Button Content="Adauga tip de pontaj nou" Name="btnAddClockingType" Grid.Row="1" Click="BtnAddClockingType_Click"/>
-                            <Button Content="Modifica tipul de pontaj" Name="btnUpdateClockingType" Grid.Row="2" IsEnabled="False" />
+                            <Button Content="Modifica tipul de pontaj" Name="btnUpdateClockingType" Grid.Row="2" IsEnabled="False" Click="BtnUpdateClockingType_Click" />
                             <Button Content="Sterge tipul de pontaj" Name="btnDeleteClockingType" Grid.Row="3" IsEnabled="False" />
                         </Grid>
                     </Grid>
