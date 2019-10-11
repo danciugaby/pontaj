@@ -11,10 +11,12 @@ namespace Pontaj
     class Controller
     {
         public UserList users;
+        public TypeManager types;
 
         public Controller()
         {
             users = new UserList();
+            types = new TypeManager();
         }
 
         public List<User> GetUsersFromDB()
@@ -22,25 +24,40 @@ namespace Pontaj
             users.GetUsersFromDB();
             return users.Users;
         }
-
-        public bool checkNameField()
+        public List<ClockingType> GetTypesFromDB()
         {
-            
-            return false;
+            types.GetTypesFromDB();
+            return types.Types;
         }
-        
+
         public void AddUserInDB(User user)
         {
             users.AddUserInDB(user);
+        }
+
+        public void AddTypeInDB(ClockingType type)
+        {
+            types.AddTypeInDB(type);
         }
 
         public void UpdateUserInDB(User newUser, User oldUser)
         {
             users.UpdateUserInDB(newUser, oldUser);
         }
+
+        public void UpdateTypeInDB(ClockingType newType, ClockingType oldType)
+        {
+            types.UpdateTypeInDB(newType, oldType);
+        }
+
         public void DeleteUserFromDB(User user)
         {
             users.DeleteUserFromDB(user);
+        }
+
+        public void DeleteTypeFromDB(ClockingType type)
+        {
+            types.DeleteTypeFromDB(type);
         }
     }
 }

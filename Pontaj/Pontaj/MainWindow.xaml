@@ -32,12 +32,18 @@
                             <ColumnDefinition Width=".3*"/>
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="74*"/>
+                                <ColumnDefinition Width="16*"/>
+                                <ColumnDefinition Width="13*"/>
+                                <ColumnDefinition Width="447*"/>
+                            </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height=".8*"/>
                                 <RowDefinition Height=".2*"/>
                             </Grid.RowDefinitions>
-                            <ListBox Name ="lstUsers" Grid.Row="0" SelectionChanged="LstUsers_SelectionChanged"/>
-                            <Button Content="Incarca utilizatori" Name="btnLoadUser" Grid.Row="1" Click="BtnLoadUser_Click"/>
+                            <ListBox Name ="lstUsers" Grid.Row="0" SelectionChanged="LstUsers_SelectionChanged" Grid.ColumnSpan="4"/>
+                            <Button Content="Incarca utilizatori" Name="btnLoadUser" Grid.Row="1" Click="BtnLoadUser_Click" Grid.ColumnSpan="4"/>
                         </Grid>
                         <Grid Grid.Column="1">
                             <Grid.RowDefinitions>
@@ -80,7 +86,49 @@
                     </Grid>
                 </TabItem>
                 <TabItem Header="Tipuri Pontaj">
-
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width=".7*"/>
+                            <ColumnDefinition Width=".3*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height=".8*"/>
+                                <RowDefinition Height=".2*"/>
+                            </Grid.RowDefinitions>
+                            <ListBox Name ="lstTypes" Grid.Row="0"/>
+                            <Button Content="Incarca tipuri pontaj" Name="btnLoadClocking" Grid.Row="1" Click="BtnLoadClocking_Click"/>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height=".7*"/>
+                                <RowDefinition Height=".1*"/>
+                                <RowDefinition Height=".1*"/>
+                                <RowDefinition Height=".1*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height=".1*"/>
+                                        <RowDefinition Height=".1*"/>
+                                        <RowDefinition Height=".8*"/>
+                                    </Grid.RowDefinitions>
+                                    <Label Content="Pontaj" Grid.Row="0"></Label>
+                                    <Grid Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width=".2*"/>
+                                            <ColumnDefinition Width=".8*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Tip" Grid.Column="0"/>
+                                        <TextBox Name="clockingTextBox" Grid.Column="1"/>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                            <Button Content="Adauga tip de pontaj nou" Name="btnAddClockingType" Grid.Row="1" Click="BtnAddClockingType_Click"/>
+                            <Button Content="Modifica tipul de pontaj" Name="btnUpdateClockingType" Grid.Row="2" IsEnabled="False" />
+                            <Button Content="Sterge tipul de pontaj" Name="btnDeleteClockingType" Grid.Row="3" IsEnabled="False" />
+                        </Grid>
+                    </Grid>
                 </TabItem>
                 <TabItem Header="Gestionare Pontaj">
 

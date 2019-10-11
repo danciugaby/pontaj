@@ -42,14 +42,14 @@ namespace Pontaj
             {
                 MessageBox.Show("Te rog introdu numele corect!");
                 canInsert = false;
-                emptyNameField();
+                emptyField(userNameTextBoxPersonalTab);
             }
             string rank = userRankTextBoxPersonalTab.Text;
             if (canInsert && isEmpty(rank))
             {
                 MessageBox.Show("Te rog introdu gradul corect!");
                 canInsert = false;
-                emptyRankField();
+                emptyField(userRankTextBoxPersonalTab);
             }
 
             if (canInsert)
@@ -79,18 +79,15 @@ namespace Pontaj
         {
             return str.Trim().Equals("");
         }
-        private void emptyNameField()
+        private void emptyField(TextBox box)
         {
-            userNameTextBoxPersonalTab.Clear();
-        }
-        private void emptyRankField()
-        {
-            userRankTextBoxPersonalTab.Clear();
-        }
+            box.Clear();
+        }  
+
         private void emptyFields()
         {
-            emptyNameField();
-            emptyRankField();
+            emptyField(userNameTextBoxPersonalTab);
+            emptyField(userRankTextBoxPersonalTab);
         }
 
         private void LstUsers_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -185,6 +182,54 @@ namespace Pontaj
             foreach (var user in users)
             {
                 lstUsers.Items.Add(user);
+            }
+        }
+        private void LoadTypes()
+        {
+            lstTypes.Items.Clear();
+            List<ClockingType> types = controller.GetTypesFromDB();
+            foreach (var type in types)
+            {
+                lstTypes.Items.Add(type);
+            }
+        }
+
+        private void BtnLoadClocking_Click(object sender, RoutedEventArgs e)
+        {
+            LoadTypes();
+        }
+
+        private void BtnAddClockingType_Click(object sender, RoutedEventArgs e)
+        {
+            List<ClockingType> types = controller.GetTypesFromDB();
+            string type = clockingTextBox.Text;
+            bool canInsert = true;
+            if (isEmpty(type))
+            {
+                MessageBox.Show("Te rog introdu tipul de pontaj corect!");
+                canInsert = false;
+                
+            }
+            if (canInsert)
+            {
+                ClockingType newType = new ClockingType(type);
+                bool canAdd = true;
+                foreach (var x in types)
+                    if (x.Equals(newType))
+                        canAdd = false;
+                if (canAdd)
+                {
+                    types.Add(newType);
+                    controller.AddTypeInDB(newType);
+                    emptyField(clockingTextBox);
+                    LoadTypes();
+                }
+                else
+                {
+                    MessageBox.Show("Tipul de pontaj exista deja!");
+                }
+
+
             }
         }
     }
