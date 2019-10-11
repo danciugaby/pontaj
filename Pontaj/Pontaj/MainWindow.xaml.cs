@@ -82,7 +82,7 @@ namespace Pontaj
         private void emptyField(TextBox box)
         {
             box.Clear();
-        }  
+        }
 
         private void emptyFields()
         {
@@ -116,7 +116,7 @@ namespace Pontaj
         {
             button.IsEnabled = false;
         }
-       
+
 
         private bool canChangeUserInDB(User user)
         {
@@ -144,11 +144,23 @@ namespace Pontaj
                     }
                     else
                     {
-                        controller.UpdateUserInDB(modifiedUser, selectedUser);
-                        emptyFields();
-                        setDisabledButton(btnUpdateUser);
-                        setDisabledButton(btnDeleteUser);
-                        LoadUsers();
+                        List<User> users = controller.GetUsersFromDB();
+                        bool canUpdate = true;
+                        foreach (var x in users)
+                            if (x.Equals(modifiedUser))
+                            {
+                                MessageBox.Show("Utilizatorul exista deja!");
+                                canUpdate = false;
+                                break;
+                            }
+                        if (canUpdate)
+                        {
+                            controller.UpdateUserInDB(modifiedUser, selectedUser);
+                            emptyFields();
+                            setDisabledButton(btnUpdateUser);
+                            setDisabledButton(btnDeleteUser);
+                            LoadUsers();
+                        }
                     }
             }
         }
@@ -200,7 +212,7 @@ namespace Pontaj
             {
                 MessageBox.Show("Te rog introdu tipul de pontaj corect!");
                 canInsert = false;
-                
+
             }
             if (canInsert)
             {
@@ -243,7 +255,7 @@ namespace Pontaj
 
         private void BtnUpdateClockingType_Click(object sender, RoutedEventArgs e)
         {
-           ClockingType selectedType = lstTypes.SelectedItem as ClockingType;
+            ClockingType selectedType = lstTypes.SelectedItem as ClockingType;
             if (selectedType != null)
             {
                 string type = clockingTextBox.Text;
@@ -256,12 +268,40 @@ namespace Pontaj
                     }
                     else
                     {
-                        controller.UpdateTypeInDB(modifiedType, selectedType);
-                        emptyField(clockingTextBox);
-                        setDisabledButton(btnUpdateClockingType);
-                        setDisabledButton(btnDeleteClockingType);
-                        LoadTypes();
+                        List<ClockingType> types = controller.GetTypesFromDB();
+                        bool canUpdate = true;
+                        foreach (var x in types)
+                            if (x.Equals(modifiedType))
+                            {
+                                MessageBox.Show("Tipul de pontaj exista deja!");
+                                canUpdate = false;
+                                break;
+                            }
+                        if (canUpdate)
+                        {
+                            controller.UpdateTypeInDB(modifiedType, selectedType);
+                            emptyField(clockingTextBox);
+                            setDisabledButton(btnUpdateClockingType);
+                            setDisabledButton(btnDeleteClockingType);
+                            LoadTypes();
+                        }
                     }
+            }
+        }
+
+        private void BtnDeleteClockingType_Click(object sender, RoutedEventArgs e)
+        {
+
+            ClockingType selectedType = lstTypes.SelectedItem as ClockingType;
+            if (selectedType != null)
+            {
+                controller.DeleteTypeFromDB(selectedType);
+
+                setDisabledButton(btnUpdateClockingType);
+                setDisabledButton(btnDeleteClockingType);
+                emptyField(clockingTextBox);
+                LoadTypes();
+
             }
         }
     }
