@@ -96,7 +96,7 @@
                                 <RowDefinition Height=".8*"/>
                                 <RowDefinition Height=".2*"/>
                             </Grid.RowDefinitions>
-                            <ListBox Name ="lstTypes" Grid.Row="0"/>
+                            <ListBox Name ="lstTypes" Grid.Row="0" SelectionChanged="LstTypes_SelectionChanged"/>
                             <Button Content="Incarca tipuri pontaj" Name="btnLoadClocking" Grid.Row="1" Click="BtnLoadClocking_Click"/>
                         </Grid>
                         <Grid Grid.Column="1">

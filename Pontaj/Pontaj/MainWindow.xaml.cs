@@ -96,8 +96,8 @@ namespace Pontaj
             if (selectedUser != null)
             {
                 populateFields(selectedUser);
-                setEnabledUptadeUserButton();
-                setEnabledDeleteUserButton();
+                setEnabledButton(btnUpdateUser);
+                setEnabledButton(btnDeleteUser);
 
             }
 
@@ -108,23 +108,15 @@ namespace Pontaj
             userNameTextBoxPersonalTab.Text = user.Name;
             userRankTextBoxPersonalTab.Text = user.Rank;
         }
-        private void setEnabledUptadeUserButton()
+        private void setEnabledButton(Button button)
         {
-            btnUpdateUser.IsEnabled = true;
+            button.IsEnabled = true;
         }
-        private void setDisabledUptadeUserButton()
+        private void setDisabledButton(Button button)
         {
-            btnUpdateUser.IsEnabled = false;
+            button.IsEnabled = false;
         }
-        private void setEnabledDeleteUserButton()
-        {
-            btnDeleteUser.IsEnabled = true;
-        }
-        private void setDisabledDeleteUserButton()
-        {
-            btnDeleteUser.IsEnabled = false;
-        }
-
+       
 
         private bool canChangeUserInDB(User user)
         {
@@ -154,8 +146,8 @@ namespace Pontaj
                     {
                         controller.UpdateUserInDB(modifiedUser, selectedUser);
                         emptyFields();
-                        setDisabledUptadeUserButton();
-                        setDisabledDeleteUserButton();
+                        setDisabledButton(btnUpdateUser);
+                        setDisabledButton(btnDeleteUser);
                         LoadUsers();
                     }
             }
@@ -168,8 +160,8 @@ namespace Pontaj
             {
                 controller.DeleteUserFromDB(selectedUser);
 
-                setDisabledUptadeUserButton();
-                setDisabledDeleteUserButton();
+                setDisabledButton(btnUpdateUser);
+                setDisabledButton(btnDeleteUser);
                 emptyFields();
                 LoadUsers();
 
@@ -231,6 +223,22 @@ namespace Pontaj
 
 
             }
+        }
+
+        private void LstTypes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ClockingType selectedType = lstTypes.SelectedItem as ClockingType;
+            if (selectedType != null)
+            {
+                populateTypeField(selectedType);
+                setEnabledButton(btnUpdateClockingType);
+                setEnabledButton(btnDeleteClockingType);
+
+            }
+        }
+        private void populateTypeField(ClockingType type)
+        {
+            clockingTextBox.Text = type.Type;
         }
     }
 }
