@@ -200,7 +200,7 @@
                                                 <Calendar Name="startDateCalendar" FirstDayOfWeek="Monday" SelectedDatesChanged="StartDateCalendar_SelectedDatesChanged" SelectionMode="SingleRange"/>
                                             </Grid>
                                             <Grid Grid.Column="1">
-                                                <Calendar Name="endDateCalendar" FirstDayOfWeek="Monday" SelectionMode="SingleRange"/>
+                                                <Calendar Name="endDateCalendar" FirstDayOfWeek="Monday" SelectionMode="SingleRange" SelectedDatesChanged="EndDateCalendar_SelectedDatesChanged"/>
                                             </Grid>
 
                                         </Grid>

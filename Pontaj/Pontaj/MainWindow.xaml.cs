@@ -384,7 +384,8 @@ namespace Pontaj
         {
             endDateCalendar.BlackoutDates.Clear();
             var startDate = (DateTime)startDateCalendar.SelectedDate;
-        
+            
+            endDateCalendar.SelectedDate = startDate;
             DateTime endDate;
             try
             {
@@ -418,25 +419,32 @@ namespace Pontaj
                 }
                 catch (ArgumentOutOfRangeException ex2)
                 {
-                    leftDate = new DateTime(startDate.Year -1, 12, GetPreviousMonthLastDay(startDate.Month - 1));
+                    leftDate = new DateTime(startDate.Year - 1, 12, GetPreviousMonthLastDay(startDate.Month - 1));
                 }
             }
             DateTime blackoutToTheLeft = new DateTime(leftDate.Year - 1);
             endDateCalendar.BlackoutDates.Add(new CalendarDateRange(blackoutToTheLeft, leftDate));
             endDateCalendar.BlackoutDates.Add(new CalendarDateRange(endDate, endDate.AddYears(1)));
+            hourOfStartDateTextBox.Text = "08:00";
+            hourOfEndDateTextBox.Text = "16:00";
+
 
         }
         private int GetPreviousMonthLastDay(int month)
         {
             if (month == 2)
                 return 28;
-            else if (month == 1 || month == 3 || month == 5 ||month == 7 || month == 8 || month == 10 || month == 12)
-                    return 31;
-                    else
-                        return 30;
+            else if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
+                return 31;
+            else
+                return 30;
 
         }
 
-
+        private void EndDateCalendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
+        {
+            emptyField(hourOfStartDateTextBox);
+            emptyField(hourOfEndDateTextBox);
+        }
     }
 }
