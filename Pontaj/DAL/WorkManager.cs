@@ -21,7 +21,7 @@ namespace DAL
             Works = new List<Work>();
         }
 
-       
+        public void GetWorksFromDB() { }
         //insert
         public void AddWorkInDB(Work work)
         {

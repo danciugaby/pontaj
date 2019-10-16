@@ -173,7 +173,7 @@
                                             <ColumnDefinition Width=".7*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Persoana" Grid.Column="0"/>
-                                        <ComboBox Name="userComboBox" Grid.Column="1"/>
+                                        <ComboBox Name="userComboBox" Grid.Column="1" SelectionChanged="UserComboBox_SelectionChanged"/>
                                     </Grid>
                                     <Grid Grid.Row="2">
                                         <Grid.ColumnDefinitions>
@@ -221,7 +221,7 @@
 
                                 </Grid>
                             </Grid>
-                            <Button Content="Adauga pontaj nou" Name="btnAddClockingOnManagement" Grid.Row="1" />
+                            <Button Content="Adauga pontaj nou" Name="btnAddClockingOnManagement" Grid.Row="1" Click="BtnAddClockingOnManagement_Click" />
                             <Button Content="Modifica pontajul" Name="btnUpdateClockingOnManagement" Grid.Row="2" IsEnabled="False" />
                             <Button Content="Sterge pontajul" Name="btnDeleteClockingOnManagement" Grid.Row="3" IsEnabled="False" />
                         </Grid>

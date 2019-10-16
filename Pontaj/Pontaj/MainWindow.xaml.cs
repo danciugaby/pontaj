@@ -315,11 +315,14 @@ namespace Pontaj
                 if (controller.users.Users.Count() == 0)
                     userComboBox.Items.Add("Nu s-a gasit nicio persoana");
                 else
+                {
+
+                    userComboBox.Items.Clear();
                     foreach (var user in controller.users.Users)
                     {
                         userComboBox.Items.Add(user);
                     }
-
+                }
             }
             else
             {
@@ -339,16 +342,19 @@ namespace Pontaj
 
         private void LoadTypesIntoComboBox()
         {
-            if (controller.types.Types == null || controller.types.Types.Count() == 0)
+            if (controller.types.Types.Count()==0)
             {
                 LoadTypes();
                 if (controller.types.Types.Count() == 0)
                     clockingTypeComboBox.Items.Add("Nu s-a gasit niciun tip de pontaj");
                 else
+                {
+                    clockingTypeComboBox.Items.Clear();
                     foreach (var type in controller.types.Types)
                     {
                         clockingTypeComboBox.Items.Add(type);
                     }
+                }
 
             }
             else
@@ -384,7 +390,7 @@ namespace Pontaj
         {
             endDateCalendar.BlackoutDates.Clear();
             var startDate = (DateTime)startDateCalendar.SelectedDate;
-            
+
             endDateCalendar.SelectedDate = startDate;
             DateTime endDate;
             try
@@ -445,6 +451,18 @@ namespace Pontaj
         {
             emptyField(hourOfStartDateTextBox);
             emptyField(hourOfEndDateTextBox);
+        }
+
+        private void BtnAddClockingOnManagement_Click(object sender, RoutedEventArgs e)
+        {
+
+
+
+        }
+
+        private void UserComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

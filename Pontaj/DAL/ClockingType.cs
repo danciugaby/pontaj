@@ -34,7 +34,7 @@ namespace DAL
 
         public override string ToString()
         {
-            return "Tip: " + Type;
+            return Type;
         }
 
     }

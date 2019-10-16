@@ -31,7 +31,10 @@ namespace Pontaj
             types.GetTypesFromDB();
             return types.Types;
         }
-
+        public List<Work> GetWorksFromDB()
+        {
+            return null;
+        }
         public void AddUserInDB(User user)
         {
             users.AddUserInDB(user);
