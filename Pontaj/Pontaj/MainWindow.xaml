@@ -197,10 +197,10 @@
                                                 <ColumnDefinition Width=".5*"/>
                                             </Grid.ColumnDefinitions>
                                             <Grid Grid.Column="0">
-                                                <Calendar Name="startDateCalendar"/>
+                                                <Calendar Name="startDateCalendar" FirstDayOfWeek="Monday" SelectedDatesChanged="StartDateCalendar_SelectedDatesChanged" SelectionMode="SingleRange"/>
                                             </Grid>
                                             <Grid Grid.Column="1">
-                                                <Calendar Name="endDateCalendar"/>
+                                                <Calendar Name="endDateCalendar" FirstDayOfWeek="Monday" SelectionMode="SingleRange"/>
                                             </Grid>
 
                                         </Grid>

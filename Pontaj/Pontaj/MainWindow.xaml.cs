@@ -365,11 +365,11 @@ namespace Pontaj
         {
             if (tabControl.SelectedItem.Equals(usersTabItem))
             {
-                
+
             }
             else if (tabControl.SelectedItem.Equals(typesTabItem))
             {
-                
+
             }
             else if (tabControl.SelectedItem.Equals(worksTabItem))
             {
@@ -377,5 +377,66 @@ namespace Pontaj
                 LoadUsersIntoComboBox();
             }
         }
+
+
+
+        private void StartDateCalendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
+        {
+            endDateCalendar.BlackoutDates.Clear();
+            var startDate = (DateTime)startDateCalendar.SelectedDate;
+        
+            DateTime endDate;
+            try
+            {
+                endDate = new DateTime(startDate.Year, startDate.Month, startDate.Day + 2);
+
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                try
+                {
+                    endDate = new DateTime(startDate.Year, startDate.Month + 1, 1);
+
+                }
+                catch (ArgumentOutOfRangeException ex2)
+                {
+                    endDate = new DateTime(startDate.Year + 1, 1, 1);
+                }
+            }
+            DateTime leftDate;
+            try
+            {
+                leftDate = new DateTime(startDate.Year, startDate.Month, startDate.Day - 1);
+
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                try
+                {
+                    leftDate = new DateTime(startDate.Year, startDate.Month - 1, GetPreviousMonthLastDay(startDate.Month - 1));
+
+                }
+                catch (ArgumentOutOfRangeException ex2)
+                {
+                    leftDate = new DateTime(startDate.Year -1, 12, GetPreviousMonthLastDay(startDate.Month - 1));
+                }
+            }
+            DateTime blackoutToTheLeft = new DateTime(leftDate.Year - 1);
+            endDateCalendar.BlackoutDates.Add(new CalendarDateRange(blackoutToTheLeft, leftDate));
+            endDateCalendar.BlackoutDates.Add(new CalendarDateRange(endDate, endDate.AddYears(1)));
+
+        }
+        private int GetPreviousMonthLastDay(int month)
+        {
+            if (month == 2)
+                return 28;
+            else if (month == 1 || month == 3 || month == 5 ||month == 7 || month == 8 || month == 10 || month == 12)
+                    return 31;
+                    else
+                        return 30;
+
+        }
+
+
     }
 }
