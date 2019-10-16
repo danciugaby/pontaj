@@ -32,7 +32,7 @@ namespace DAL
                 Types.Clear();
                 while (reader.Read())
                 {
-                    Types.Add(new ClockingType((string)reader["Type"]));
+                    Types.Add(new ClockingType((Int64)reader["TypeId"],(string)reader["Type"]));
                 }
             }
         }

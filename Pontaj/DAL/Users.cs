@@ -32,7 +32,7 @@ namespace DAL
                 Users.Clear();
                 while (reader.Read())
                 {
-                    Users.Add(new User((string)reader["Name"], (string)reader["Rank"]));
+                    Users.Add(new User((Int64)reader["UserId"],(string)reader["Name"], (string)reader["Rank"]));
                 }
             }
         }

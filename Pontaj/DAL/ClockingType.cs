@@ -9,13 +9,20 @@ namespace DAL
     public class ClockingType
     {
         String type;
+        Int64 typeId;
 
         public ClockingType(string type)
         {
             Type = type;
         }
+        public ClockingType(Int64 id, string type)
+        {
+            Type = type;
+            typeId = id;
+        }
 
         public string Type { get => type; set => type = value; }
+        public Int64 TypeId { get => typeId; }
 
         public override bool Equals(object obj)
         {
