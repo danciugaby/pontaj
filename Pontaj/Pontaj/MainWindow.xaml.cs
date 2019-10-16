@@ -187,7 +187,7 @@ namespace Pontaj
             {
                 lstUsers.Items.Add(user);
             }
-            
+
         }
         private void LoadTypes()
         {
@@ -197,7 +197,7 @@ namespace Pontaj
             {
                 lstTypes.Items.Add(type);
             }
-            
+
         }
 
         private void BtnLoadClocking_Click(object sender, RoutedEventArgs e)
@@ -309,27 +309,51 @@ namespace Pontaj
 
         private void LoadUsersIntoComboBox()
         {
-            if(controller.users.Users==null || controller.users.Users.Count() == 0 )
-                userComboBox.Items.Add("Nu s-a gasit nicio persoana");
-            else
+            if (controller.users.Users == null || controller.users.Users.Count() == 0)
             {
                 LoadUsers();
-                foreach(var user in controller.users.Users)
+                if (controller.users.Users.Count() == 0)
+                    userComboBox.Items.Add("Nu s-a gasit nicio persoana");
+                else
+                    foreach (var user in controller.users.Users)
+                    {
+                        userComboBox.Items.Add(user);
+                    }
+
+            }
+            else
+            {
+                userComboBox.Items.Clear();
+                foreach (var user in controller.users.Users)
                 {
                     userComboBox.Items.Add(user);
                 }
             }
         }
+        private User CastToUser(ComboBoxItem item)
+        {
+            string[] values = item.ToString().Split(',');
+            return new User(values[0], values[1]);
+
+        }
 
         private void LoadTypesIntoComboBox()
         {
-            if(controller.types.Types == null || controller.types.Types.Count()>0)
+            if (controller.types.Types == null || controller.types.Types.Count() == 0)
             {
-                clockingTypeComboBox.Items.Add("Nu s-a gasit niciun tip de pontaj");
+                LoadTypes();
+                if (controller.types.Types.Count() == 0)
+                    clockingTypeComboBox.Items.Add("Nu s-a gasit niciun tip de pontaj");
+                else
+                    foreach (var type in controller.types.Types)
+                    {
+                        clockingTypeComboBox.Items.Add(type);
+                    }
+
             }
             else
             {
-                LoadTypes();
+                clockingTypeComboBox.Items.Clear();
                 foreach (var type in controller.types.Types)
                 {
                     clockingTypeComboBox.Items.Add(type);
@@ -339,15 +363,15 @@ namespace Pontaj
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(tabControl.SelectedItem.Equals(usersTabItem))
+            if (tabControl.SelectedItem.Equals(usersTabItem))
             {
-                LoadUsers();
+                
             }
-            else if(tabControl.SelectedItem.Equals(typesTabItem))
+            else if (tabControl.SelectedItem.Equals(typesTabItem))
             {
-                LoadTypes();
+                
             }
-            else if(tabControl.SelectedItem.Equals(worksTabItem))
+            else if (tabControl.SelectedItem.Equals(worksTabItem))
             {
                 LoadTypesIntoComboBox();
                 LoadUsersIntoComboBox();
