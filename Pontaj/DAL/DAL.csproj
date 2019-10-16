@@ -55,6 +55,7 @@
     <Compile Include="User.cs" />
     <Compile Include="Users.cs" />
     <Compile Include="Work.cs" />
+    <Compile Include="WorkManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

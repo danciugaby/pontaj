@@ -12,11 +12,13 @@ namespace Pontaj
     {
         public UserList users;
         public TypeManager types;
+        public WorkManager works;
 
         public Controller()
         {
             users = new UserList();
             types = new TypeManager();
+            works = new WorkManager();
         }
 
         public List<User> GetUsersFromDB()
@@ -38,6 +40,11 @@ namespace Pontaj
         public void AddTypeInDB(ClockingType type)
         {
             types.AddTypeInDB(type);
+        }
+
+        public void AddWorkInDB(Work work)
+        {
+            works.AddWorkInDB(work);
         }
 
         public void UpdateUserInDB(User newUser, User oldUser)

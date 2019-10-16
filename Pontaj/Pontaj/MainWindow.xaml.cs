@@ -187,6 +187,7 @@ namespace Pontaj
             {
                 lstUsers.Items.Add(user);
             }
+            
         }
         private void LoadTypes()
         {
@@ -196,6 +197,7 @@ namespace Pontaj
             {
                 lstTypes.Items.Add(type);
             }
+            
         }
 
         private void BtnLoadClocking_Click(object sender, RoutedEventArgs e)
@@ -302,6 +304,53 @@ namespace Pontaj
                 emptyField(clockingTextBox);
                 LoadTypes();
 
+            }
+        }
+
+        private void LoadUsersIntoComboBox()
+        {
+            if(controller.users.Users==null || controller.users.Users.Count() == 0 )
+                userComboBox.Items.Add("Nu s-a gasit nicio persoana");
+            else
+            {
+                LoadUsers();
+                foreach(var user in controller.users.Users)
+                {
+                    userComboBox.Items.Add(user);
+                }
+            }
+        }
+
+        private void LoadTypesIntoComboBox()
+        {
+            if(controller.types.Types == null || controller.types.Types.Count()>0)
+            {
+                clockingTypeComboBox.Items.Add("Nu s-a gasit niciun tip de pontaj");
+            }
+            else
+            {
+                LoadTypes();
+                foreach (var type in controller.types.Types)
+                {
+                    clockingTypeComboBox.Items.Add(type);
+                }
+            }
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(tabControl.SelectedItem.Equals(usersTabItem))
+            {
+                LoadUsers();
+            }
+            else if(tabControl.SelectedItem.Equals(typesTabItem))
+            {
+                LoadTypes();
+            }
+            else if(tabControl.SelectedItem.Equals(worksTabItem))
+            {
+                LoadTypesIntoComboBox();
+                LoadUsersIntoComboBox();
             }
         }
     }
