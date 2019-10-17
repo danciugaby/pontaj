@@ -464,5 +464,19 @@ namespace Pontaj
         {
 
         }
+
+        private void BtnLoadManagement_Click(object sender, RoutedEventArgs e)
+        {
+
+           
+            lstManagement.Items.Clear();
+            List<Work> works = controller.GetWorksFromDB();
+            foreach (var work in works)
+            {
+                lstManagement.Items.Add(work);
+            }
+
+      
+        }
     }
 }

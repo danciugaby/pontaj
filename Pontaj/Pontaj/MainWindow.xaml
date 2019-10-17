@@ -148,7 +148,7 @@
                                 <RowDefinition Height=".2*"/>
                             </Grid.RowDefinitions>
                             <ListBox Name ="lstManagement" Grid.Row="0"/>
-                            <Button Content="Incarca personal" Name="btnLoadManagement" Grid.Row="1" />
+                            <Button Content="Incarca personal" Name="btnLoadManagement" Grid.Row="1" Click="BtnLoadManagement_Click" />
                         </Grid>
                         <Grid Grid.Column="1">
                             <Grid.RowDefinitions>

@@ -21,7 +21,24 @@ namespace DAL
             Works = new List<Work>();
         }
 
-        public void GetWorksFromDB() { }
+        public void GetWorksFromDB() {
+            using (SQLConnectionManager manager = new SQLConnectionManager())
+            {
+                manager.Open();
+                string sql = "select user.Name,user.Rank,StartDate,EndDate,type.Type from Work " +
+                              "left join Type type on Work.TypeId = type.TypeId " +
+                               "left join User user on Work.UserId = user.UserId";
+                SQLiteCommand command = new SQLiteCommand(sql, manager.DbConnection);
+                SQLiteDataReader reader = command.ExecuteReader();
+                Works.Clear();
+                while (reader.Read())
+                {
+                    Works.Add(new Work(new User((string)reader["Name"], (string)reader["Rank"]),
+                        new ClockingType((string)reader["Type"]),(DateTime)reader["StartDate"], (DateTime)reader["EndDate"]));
+
+                }
+            }
+        }
         //insert
         public void AddWorkInDB(Work work)
         {

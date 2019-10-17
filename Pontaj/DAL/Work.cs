@@ -34,5 +34,22 @@ namespace DAL
                    EqualityComparer<User>.Default.Equals(User, work.User) &&
                    EqualityComparer<ClockingType>.Default.Equals(Type, work.Type);
         }
+        public override string ToString()
+        {
+            return User.Name + ", " + User.Rank + ", " + Type.Type + ", " + TakeTheSecondsAwayFromDateTime(StartDate) +", "+ TakeTheSecondsAwayFromDateTime(EndDate);
+        }
+
+        private string TakeTheSecondsAwayFromDateTime(DateTime dateTime)
+        {
+            string value = dateTime.ToString();
+            int i = value.Length-1;
+            while(i>=0)
+            {
+                if (value[i] == ':')
+                    break;
+                --i;
+            }
+            return value.Substring(0, i);
+        }
     }    
 }

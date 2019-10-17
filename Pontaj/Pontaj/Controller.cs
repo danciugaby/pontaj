@@ -33,7 +33,8 @@ namespace Pontaj
         }
         public List<Work> GetWorksFromDB()
         {
-            return null;
+            works.GetWorksFromDB();
+            return works.Works;
         }
         public void AddUserInDB(User user)
         {
