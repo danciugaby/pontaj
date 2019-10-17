@@ -173,7 +173,7 @@
                                             <ColumnDefinition Width=".7*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Persoana" Grid.Column="0"/>
-                                        <ComboBox Name="userComboBox" Grid.Column="1" SelectionChanged="UserComboBox_SelectionChanged"/>
+                                        <ComboBox Name="userComboBox" Grid.Column="1" SelectionChanged="UserComboBox_SelectionChanged" IsSynchronizedWithCurrentItem="True"/>
                                     </Grid>
                                     <Grid Grid.Row="2">
                                         <Grid.ColumnDefinitions>

@@ -342,7 +342,7 @@ namespace Pontaj
 
         private void LoadTypesIntoComboBox()
         {
-            if (controller.types.Types.Count()==0)
+            if (controller.types.Types.Count() == 0)
             {
                 LoadTypes();
                 if (controller.types.Types.Count() == 0)
@@ -463,12 +463,13 @@ namespace Pontaj
         private void UserComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+            
         }
 
         private void BtnLoadManagement_Click(object sender, RoutedEventArgs e)
         {
 
-           
+
             lstManagement.Items.Clear();
             List<Work> works = controller.GetWorksFromDB();
             foreach (var work in works)
@@ -476,7 +477,7 @@ namespace Pontaj
                 lstManagement.Items.Add(work);
             }
 
-      
+
         }
     }
 }
