@@ -143,12 +143,18 @@
                             <ColumnDefinition Width=".3*"/>
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="146*"/>
+                                <ColumnDefinition Width="58*"/>
+                                <ColumnDefinition Width="66*"/>
+                                <ColumnDefinition Width="525*"/>
+                            </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height=".8*"/>
                                 <RowDefinition Height=".2*"/>
                             </Grid.RowDefinitions>
-                            <ListBox Name ="lstManagement" Grid.Row="0"/>
-                            <Button Content="Incarca personal" Name="btnLoadManagement" Grid.Row="1" Click="BtnLoadManagement_Click" />
+                            <ListBox Name ="lstManagement" Grid.Row="0" Grid.ColumnSpan="4"/>
+                            <Button Content="Incarca personal" Name="btnLoadManagement" Grid.Row="1" Click="BtnLoadManagement_Click" Grid.ColumnSpan="4" />
                         </Grid>
                         <Grid Grid.Column="1">
                             <Grid.RowDefinitions>
@@ -181,7 +187,7 @@
                                             <ColumnDefinition Width=".7*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Tip pontaj" Grid.Column="0"/>
-                                        <ComboBox Name="clockingTypeComboBox" Grid.Column="1"/>
+                                        <ComboBox Name="clockingTypeComboBox" Grid.Column="1" SelectionChanged="ClockingTypeComboBox_SelectionChanged"/>
                                     </Grid>
                                     <Grid Grid.Row="3">
                                         <Grid.RowDefinitions>

@@ -38,7 +38,7 @@ namespace DAL
 
         public override string ToString()
         {
-            return  Name + ", " + Rank;
+            return  Name + ",\t" + Rank;
         }
 
     }

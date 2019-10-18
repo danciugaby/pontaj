@@ -381,7 +381,9 @@ namespace Pontaj
             {
                 LoadTypesIntoComboBox();
                 LoadUsersIntoComboBox();
+
             }
+            e.Handled = true;
         }
 
 
@@ -392,6 +394,7 @@ namespace Pontaj
             var startDate = (DateTime)startDateCalendar.SelectedDate;
 
             endDateCalendar.SelectedDate = startDate;
+
             DateTime endDate;
             try
             {
@@ -402,12 +405,12 @@ namespace Pontaj
             {
                 try
                 {
-                    endDate = new DateTime(startDate.Year, startDate.Month + 1, 1);
+                    endDate = new DateTime(startDate.Year, startDate.Month + 1, 2);
 
                 }
                 catch (ArgumentOutOfRangeException ex2)
                 {
-                    endDate = new DateTime(startDate.Year + 1, 1, 1);
+                    endDate = new DateTime(startDate.Year + 1, 1, 2);
                 }
             }
             DateTime leftDate;
@@ -434,6 +437,8 @@ namespace Pontaj
             hourOfStartDateTextBox.Text = "08:00";
             hourOfEndDateTextBox.Text = "16:00";
 
+            e.Handled = true;
+
 
         }
         private int GetPreviousMonthLastDay(int month)
@@ -451,6 +456,7 @@ namespace Pontaj
         {
             emptyField(hourOfStartDateTextBox);
             emptyField(hourOfEndDateTextBox);
+            e.Handled = true;
         }
 
         private void BtnAddClockingOnManagement_Click(object sender, RoutedEventArgs e)
@@ -462,22 +468,78 @@ namespace Pontaj
 
         private void UserComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-            
+            if (userComboBox.SelectedValue != null)
+            {
+                User user = GetUserFromString(userComboBox.SelectedValue.ToString());
+                lstManagement.Items.Clear();
+                List<Work> forOnlyOneUser = GetOnlyWorksOfOneUser(user);
+                foreach (var work in forOnlyOneUser)
+                    lstManagement.Items.Add(work);
+            }
+            e.Handled = true;
+        }
+        private List<Work> GetOnlyWorksOfOneUser(User user)
+        {
+            List<Work> works = controller.GetWorksFromDB();
+            List<Work> onlyForOne = new List<Work>();
+            foreach (Work work in works)
+            {
+                if (work.User.Equals(user))
+                    onlyForOne.Add(work);
+            }
+            return onlyForOne;
         }
 
         private void BtnLoadManagement_Click(object sender, RoutedEventArgs e)
         {
-
-
+            LoadWorks();
+        }
+        private void LoadWorks()
+        {
             lstManagement.Items.Clear();
             List<Work> works = controller.GetWorksFromDB();
             foreach (var work in works)
             {
                 lstManagement.Items.Add(work);
             }
+        }
 
-
+        private void ClockingTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (clockingTypeComboBox.SelectedValue != null)
+            {
+                string value = clockingTypeComboBox.SelectedValue.ToString().Trim();
+                ClockingType type = new ClockingType(value);
+                lstManagement.Items.Clear();
+                List<Work> forOnlyOneType;
+                if (userComboBox.SelectedValue != null)
+                {
+                    User user = GetUserFromString(userComboBox.SelectedValue.ToString());
+                    forOnlyOneType = GetOnlyWorksOfOneType(GetOnlyWorksOfOneUser(user), type);
+                }
+                else
+                {
+                    forOnlyOneType = GetOnlyWorksOfOneType(controller.GetWorksFromDB(), type);
+                }
+                foreach (var work in forOnlyOneType)
+                    lstManagement.Items.Add(work);
+            }
+            e.Handled = true;
+        }
+        private List<Work> GetOnlyWorksOfOneType(List<Work> works, ClockingType type)
+        {
+            List<Work> onlyForOne = new List<Work>();
+            foreach (Work work in works)
+            {
+                if (work.Type.Equals(type))
+                    onlyForOne.Add(work);
+            }
+            return onlyForOne;
+        }
+        private User GetUserFromString(string value)
+        {
+            string[] userValues = value.Split(',');
+            return new User(userValues[0].Trim(), userValues[1].Trim());
         }
     }
 }

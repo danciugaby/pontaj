@@ -36,7 +36,7 @@ namespace DAL
         }
         public override string ToString()
         {
-            return User.Name + ", " + User.Rank + ", " + Type.Type + ", " + TakeTheSecondsAwayFromDateTime(StartDate) +", "+ TakeTheSecondsAwayFromDateTime(EndDate);
+            return User.Name + ",\t" + User.Rank + ",\t" + Type.Type + ",\t" + TakeTheSecondsAwayFromDateTime(StartDate) + ",\t" + TakeTheSecondsAwayFromDateTime(EndDate);
         }
 
         private string TakeTheSecondsAwayFromDateTime(DateTime dateTime)
