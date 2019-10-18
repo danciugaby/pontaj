@@ -1,6 +1,7 @@
 ﻿using DAL;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -456,14 +457,163 @@ namespace Pontaj
         {
             emptyField(hourOfStartDateTextBox);
             emptyField(hourOfEndDateTextBox);
+            hourOfStartDateTextBox.Text = "HH:mm";
+            hourOfEndDateTextBox.Text = "HH:mm";
             e.Handled = true;
         }
 
         private void BtnAddClockingOnManagement_Click(object sender, RoutedEventArgs e)
         {
+            List<Work> works = controller.GetWorksFromDB();
+            User user = null;
+            ClockingType type = null;
+            DateTime startDate = DateTime.ParseExact("24/01/2013 00:00:00", "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            DateTime endDate = DateTime.ParseExact("24/01/2013 00:00:00", "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            bool canInsert = true;
+            if (userComboBox.SelectedValue != null && !userComboBox.SelectedValue.ToString().Equals(""))
+            {
+
+                user = GetUserFromString(userComboBox.SelectedValue.ToString());
+            }
+            else
+            {
+                MessageBox.Show("Te rog selecteaza persoana!");
+                canInsert = false;
+            }
+            if(canInsert)
+            {
+                if (clockingTypeComboBox.SelectedValue != null && !clockingTypeComboBox.SelectedValue.ToString().Equals(""))
+                {
+
+                    type = new ClockingType(clockingTypeComboBox.SelectedValue.ToString().Trim());
+                }
+                else
+                {
+                    MessageBox.Show("Te rog selecteaza tipul de pontaj!");
+                    canInsert = false;
+                }
+            }
+            if (canInsert)
+            {
+                if(startDateCalendar.SelectedDate!=null&&endDateCalendar.SelectedDate!=null)
+                {
+                    
+                    startDate = (DateTime)startDateCalendar.SelectedDate;
+                    endDate = (DateTime)endDateCalendar.SelectedDate;
+                }
+                else
+                {
+                    MessageBox.Show("Te rog selecteaza datele calendaristice!");
+                    canInsert = false;
+                }
+            }
+            
+
+            if (canInsert)
+            {
+                if (hourOfStartDateTextBox.Text.ToString().Equals("") || hourOfEndDateTextBox.Text.ToString().Equals(""))
+                    MessageBox.Show("Te rog introdu orele de lucru!");
+                if(WorkingHoursAreFine())
+                {
+                    int hour = getHourFromString(hourOfStartDateTextBox.Text.ToString());
+                    int minutes = getMinutesFromString(hourOfStartDateTextBox.Text.ToString());
+                    TimeSpan ts = new TimeSpan(hour, minutes, 0);
+                    startDate += ts;
+
+                    hour = getHourFromString(hourOfEndDateTextBox.Text.ToString());
+                    minutes =getMinutesFromString(hourOfEndDateTextBox.Text.ToString());
+                    ts = new TimeSpan(hour, minutes, 0);
+                    endDate += ts;
+
+                    List<User> users = controller.GetUsersFromDB();
+                    foreach(User x in users)
+                    {
+                        if (x.Equals(user))
+                        {
+                            user = x;
+                            break;
+                        }
+
+                    }
+                    List<ClockingType> types = controller.GetTypesFromDB();
+                    foreach (ClockingType x in types)
+                    {
+                        if (x.Equals(type))
+                        {
+                            type = x;
+                            break;
+                        }
+
+                    }
+                    Work work = new Work(user, type, startDate, endDate);
+                    controller.AddWorkInDB(work);
+                }
+                else
+                {
+                    MessageBox.Show("Formatul orelor este de 24, HH:mm!");
+                }
+
+            }
 
 
-
+        }
+        private int getHourFromString(string str)
+        {
+            string[] values = str.Split(':');
+            try
+            {
+                return int.Parse(values[0]);
+            }
+            catch (System.FormatException ex)
+            {
+                return 0;
+            }
+        }
+        private int getMinutesFromString(string str)
+        {
+            string[] values = str.Split(':');
+            try
+            {
+                return int.Parse(values[1]);
+            }
+            catch (System.FormatException ex)
+            {
+                return 0;
+            }
+        }
+        private bool WorkingHoursAreFine()
+        {
+            string startHours = hourOfStartDateTextBox.Text.ToString();
+            string endingHours = hourOfEndDateTextBox.Text.ToString();
+            if (CheckIfHourIsCorrect(startHours) && CheckIfHourIsCorrect(endingHours))
+                return true;
+            else
+                return false;
+            
+        }
+        private bool CheckIfHourIsCorrect(string hour)
+        {
+            string[] values = hour.Split(':');
+            int h = 0;
+            int min = 0;
+            try
+            {
+                 h = int.Parse(values[0]);
+                 if(values.Length>1)
+                    min = int.Parse(values[1]);
+                else
+                {
+                    return false;
+                }
+            }catch(System.FormatException ex)
+            {
+                return false;
+            }
+            if (h < 0 || h >= 24)
+                return false;
+            if (min < 0 || min >= 60)
+                return false;
+            return true;
         }
 
         private void UserComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -475,6 +625,7 @@ namespace Pontaj
                 List<Work> forOnlyOneUser = GetOnlyWorksOfOneUser(user);
                 foreach (var work in forOnlyOneUser)
                     lstManagement.Items.Add(work);
+                clockingTypeComboBox.SelectedIndex = -1;
             }
             e.Handled = true;
         }

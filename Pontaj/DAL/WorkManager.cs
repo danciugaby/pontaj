@@ -45,15 +45,16 @@ namespace DAL
             using (SQLConnectionManager manager = new SQLConnectionManager())
             {
                 manager.Open();
-                string sql = "insert into work (UserId,TypeId,StartDate,EndDate) values('" + work.User.UserId + "','" + work.Type.TypeId + "','" + work.StartDate + "','" + work.EndDate + "');";
+                string sql = "insert into work (UserId,TypeId,StartDate,EndDate) values('" + work.User.UserId + "','" + work.Type.TypeId + "','" + work.StartDate.ToString("yyyy-MM-dd HH:mm:ss") + "','" + work.EndDate.ToString("yyyy-MM-dd HH:mm:ss") + "');";
                 SQLiteCommand command = new SQLiteCommand(sql, manager.DbConnection);
                 int rowsAffected = command.ExecuteNonQuery();
                 if (rowsAffected == 0)
                     MessageBox.Show("Nu s-a putut efectua adaugarea!");
                 else
-                    MessageBox.Show("Utilizatorul a fost inserat!");
+                    MessageBox.Show("Pontajul a fost adaugat!");
             }
         }
+     
         //update
         
 

@@ -217,7 +217,7 @@
                                             <ColumnDefinition Width=".5*"></ColumnDefinition>
                                         </Grid.ColumnDefinitions>
                                         <Grid Grid.Column="0">
-                                            <TextBox Name="hourOfStartDateTextBox"></TextBox>
+                                            <TextBox Name="hourOfStartDateTextBox" ></TextBox>
                                         </Grid>
                                         <Grid Grid.Column="1">
                                             <TextBox Name="hourOfEndDateTextBox"></TextBox>
