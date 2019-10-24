@@ -64,7 +64,9 @@
                                         <RowDefinition Height=".1*"/>
                                         <RowDefinition Height=".1*"/>
                                         <RowDefinition Height=".1*"/>
-                                        <RowDefinition Height=".7*"/>
+                                        <RowDefinition Height=".1*"/>
+                                        <RowDefinition Height=".1*"/>
+                                        <RowDefinition Height=".5*"/>
                                     </Grid.RowDefinitions>
                                     <Label Content="Utilizator" Grid.Row="0"></Label>
                                     <Grid Grid.Row="1">
@@ -73,15 +75,31 @@
                                             <ColumnDefinition Width=".8*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Nume" Grid.Column="0"/>
-                                        <TextBox Name="userNameTextBoxPersonalTab" Grid.Column="1"/>
+                                        <TextBox Name="userLastNameTextBoxPersonalTab" Grid.Column="1"/>
                                     </Grid>
                                     <Grid Grid.Row="2">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width=".2*"/>
                                             <ColumnDefinition Width=".8*"/>
                                         </Grid.ColumnDefinitions>
+                                        <Label Content="Prenume" Grid.Column="0"/>
+                                        <TextBox Name="userFirstNameTextBoxPersonalTab" Grid.Column="1"/>
+                                    </Grid>
+                                    <Grid Grid.Row="3">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width=".2*"/>
+                                            <ColumnDefinition Width=".8*"/>
+                                        </Grid.ColumnDefinitions>
                                         <Label Content="Grad" Grid.Column="0"/>
-                                        <TextBox Name="userRankTextBoxPersonalTab" Grid.Column="1"/>
+                                        <ComboBox Name="userRankComboBoxPersonalTab" Grid.Column="1"/>
+                                    </Grid>
+                                    <Grid Grid.Row="4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width=".2*"/>
+                                            <ColumnDefinition Width=".8*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Unitate" Grid.Column="0"/>
+                                        <ComboBox Name="userUnitComboBoxPersonalTab" Grid.Column="1"/>
                                     </Grid>
                                 </Grid>
                             </Grid>

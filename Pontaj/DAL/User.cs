@@ -8,37 +8,54 @@ namespace DAL
 {
     public class User
     {
-        String name;
-        String rank;
+        String lastName;
+        String firstName;
+        Rank rank;
+        Unit unit;
         Int64 userId;
 
-        public User(string name, string rank)
+        public User(string firstName, string lastName)
         {
-            Name = name;
-            Rank = rank;
+            FirstName = firstName;
+            LastName = lastName;
         }
-        public User(Int64 id, string name, string rank)
+        public User(Int64 id, string firstName, string lastName, string rank, string unit)
         {
-            Name = name;
-            Rank = rank;
             userId = id;
+            FirstName = firstName;
+            LastName = lastName;
+            Rank = new Rank(rank);
+            Unit = new Unit(unit);
         }
 
-        public string Name { get => name; set => name = value; }
-        public string Rank { get => rank; set => rank = value; }
+        public User(string firstName, string lastName, Rank rank, Unit unit)
+        {
+  
+            FirstName = firstName;
+            LastName = lastName;
+            Rank = rank;
+            Unit = unit;
+        }
+
+        public string LastName { get => lastName; set => lastName = value; }
+        public string FirstName { get => firstName; set => firstName = value; }
+        public Rank Rank { get => rank; set => rank = value; }
+        public Unit Unit { get => unit; set => unit = value; }
         public Int64 UserId { get => userId; }
+
         public override bool Equals(object obj)
         {
             var user = obj as User;
             return user != null &&
-                   name.Equals(user.name) &&
-                   rank.Equals(user.rank);
-                  
+                   LastName == user.LastName &&
+                   FirstName == user.FirstName &&
+                   EqualityComparer<Rank>.Default.Equals(Rank, user.Rank) &&
+                   EqualityComparer<Unit>.Default.Equals(Unit, user.Unit);
         }
 
         public override string ToString()
         {
-            return  Name + ",\t" + Rank;
+            return  LastName + " " + FirstName + "," + Rank.Name + "," +Unit.Name;
         }
 
     }

@@ -36,14 +36,14 @@ namespace DAL
         }
         public override string ToString()
         {
-            return User.Name + ",\t" + User.Rank + ",\t" + Type.Type + ",\t" + TakeTheSecondsAwayFromDateTime(StartDate) + ",\t" + TakeTheSecondsAwayFromDateTime(EndDate);
+            return User.LastName + " " + User.FirstName + ",\t" + User.Rank + ",\t" + Type.Type + ",\t" + TakeTheSecondsAwayFromDateTime(StartDate) + ",\t" + TakeTheSecondsAwayFromDateTime(EndDate);
         }
 
         private string TakeTheSecondsAwayFromDateTime(DateTime dateTime)
         {
             string value = dateTime.ToString();
-            int i = value.Length-1;
-            while(i>=0)
+            int i = value.Length - 1;
+            while (i >= 0)
             {
                 if (value[i] == ':')
                     break;
@@ -51,5 +51,5 @@ namespace DAL
             }
             return value.Substring(0, i);
         }
-    }    
+    }
 }

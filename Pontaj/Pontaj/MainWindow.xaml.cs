@@ -37,25 +37,32 @@ namespace Pontaj
         private void BtnAddUser_Click(object sender, RoutedEventArgs e)
         {
             List<User> users = controller.GetUsersFromDB();
-            string name = userNameTextBoxPersonalTab.Text;
+            string lastName = userLastNameTextBoxPersonalTab.Text;
+            string firstName = userFirstNameTextBoxPersonalTab.Text;
             bool canInsert = true;
-            if (isEmpty(name))
+            if (isEmpty(lastName))
             {
                 MessageBox.Show("Te rog introdu numele corect!");
                 canInsert = false;
-                emptyField(userNameTextBoxPersonalTab);
+
             }
-            string rank = userRankTextBoxPersonalTab.Text;
-            if (canInsert && isEmpty(rank))
+            if (canInsert && isEmpty(firstName))
             {
-                MessageBox.Show("Te rog introdu gradul corect!");
+                MessageBox.Show("Te rog introdu prenumele corect!");
                 canInsert = false;
-                emptyField(userRankTextBoxPersonalTab);
+
             }
+            //string rank = userRankTextBoxPersonalTab.Text;
+            //if (canInsert && isEmpty(rank))
+            //{
+            //    MessageBox.Show("Te rog introdu gradul corect!");
+            //    canInsert = false;
+            //    emptyField(userRankTextBoxPersonalTab);
+            //}
 
             if (canInsert)
             {
-                User newUser = new User(name, rank);
+                User newUser = new User(lastName, firstName);
                 bool canAdd = true;
                 foreach (var user in users)
                     if (user.Equals(newUser))
@@ -64,7 +71,8 @@ namespace Pontaj
                 {
                     users.Add(newUser);
                     controller.AddUserInDB(newUser);
-                    emptyFields();
+                    clearComboBox(userRankComboBoxPersonalTab);
+                    clearComboBox(userUnitComboBoxPersonalTab);
                     LoadUsers();
                 }
                 else
@@ -85,10 +93,15 @@ namespace Pontaj
             box.Clear();
         }
 
-        private void emptyFields()
+        private void clearComboBox(ComboBox comboBox)
         {
-            emptyField(userNameTextBoxPersonalTab);
-            emptyField(userRankTextBoxPersonalTab);
+            comboBox.SelectedIndex = -1;
+        }
+
+        private void populateFields(User user)
+        {
+            userFirstNameTextBoxPersonalTab.Text = user.FirstName;
+            userLastNameTextBoxPersonalTab.Text = user.LastName;
         }
 
         private void LstUsers_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -104,11 +117,7 @@ namespace Pontaj
 
         }
 
-        private void populateFields(User user)
-        {
-            userNameTextBoxPersonalTab.Text = user.Name;
-            userRankTextBoxPersonalTab.Text = user.Rank;
-        }
+       
         private void setEnabledButton(Button button)
         {
             button.IsEnabled = true;
@@ -122,7 +131,7 @@ namespace Pontaj
         private bool canChangeUserInDB(User user)
         {
             bool canChange = true;
-            if (isEmpty(user.Name) || isEmpty(user.Rank))
+            if (isEmpty(user.FirstName) || isEmpty(user.LastName))
             {
                 MessageBox.Show("Nu se poate face modificarea!");
                 canChange = false;
@@ -135,9 +144,9 @@ namespace Pontaj
             User selectedUser = lstUsers.SelectedItem as User;
             if (selectedUser != null)
             {
-                string name = userNameTextBoxPersonalTab.Text;
-                string rank = userRankTextBoxPersonalTab.Text;
-                User modifiedUser = new User(name, rank);
+                string firstName = userFirstNameTextBoxPersonalTab.Text;
+                string lastName = userLastNameTextBoxPersonalTab.Text;
+                User modifiedUser = new User(firstName, lastName);
                 if (canChangeUserInDB(modifiedUser))
                     if (selectedUser.Equals(modifiedUser))
                     {
@@ -157,7 +166,8 @@ namespace Pontaj
                         if (canUpdate)
                         {
                             controller.UpdateUserInDB(modifiedUser, selectedUser);
-                            emptyFields();
+                            emptyField(userLastNameTextBoxPersonalTab);
+                            emptyField(userFirstNameTextBoxPersonalTab);
                             setDisabledButton(btnUpdateUser);
                             setDisabledButton(btnDeleteUser);
                             LoadUsers();
@@ -165,7 +175,10 @@ namespace Pontaj
                     }
             }
         }
-
+        private void emptyTextBox(TextBox textBox)
+        {
+            textBox.Clear();
+        }
         private void BtnDeleteUser_Click(object sender, RoutedEventArgs e)
         {
             User selectedUser = lstUsers.SelectedItem as User;
@@ -175,7 +188,7 @@ namespace Pontaj
 
                 setDisabledButton(btnUpdateUser);
                 setDisabledButton(btnDeleteUser);
-                emptyFields();
+              
                 LoadUsers();
 
             }
@@ -480,7 +493,7 @@ namespace Pontaj
                 MessageBox.Show("Te rog selecteaza persoana!");
                 canInsert = false;
             }
-            if(canInsert)
+            if (canInsert)
             {
                 if (clockingTypeComboBox.SelectedValue != null && !clockingTypeComboBox.SelectedValue.ToString().Equals(""))
                 {
@@ -495,9 +508,9 @@ namespace Pontaj
             }
             if (canInsert)
             {
-                if(startDateCalendar.SelectedDate!=null&&endDateCalendar.SelectedDate!=null)
+                if (startDateCalendar.SelectedDate != null && endDateCalendar.SelectedDate != null)
                 {
-                    
+
                     startDate = (DateTime)startDateCalendar.SelectedDate;
                     endDate = (DateTime)endDateCalendar.SelectedDate;
                 }
@@ -507,13 +520,13 @@ namespace Pontaj
                     canInsert = false;
                 }
             }
-            
+
 
             if (canInsert)
             {
                 if (hourOfStartDateTextBox.Text.ToString().Equals("") || hourOfEndDateTextBox.Text.ToString().Equals(""))
                     MessageBox.Show("Te rog introdu orele de lucru!");
-                if(WorkingHoursAreFine())
+                if (WorkingHoursAreFine())
                 {
                     int hour = getHourFromString(hourOfStartDateTextBox.Text.ToString());
                     int minutes = getMinutesFromString(hourOfStartDateTextBox.Text.ToString());
@@ -521,12 +534,12 @@ namespace Pontaj
                     startDate += ts;
 
                     hour = getHourFromString(hourOfEndDateTextBox.Text.ToString());
-                    minutes =getMinutesFromString(hourOfEndDateTextBox.Text.ToString());
+                    minutes = getMinutesFromString(hourOfEndDateTextBox.Text.ToString());
                     ts = new TimeSpan(hour, minutes, 0);
                     endDate += ts;
 
                     List<User> users = controller.GetUsersFromDB();
-                    foreach(User x in users)
+                    foreach (User x in users)
                     {
                         if (x.Equals(user))
                         {
@@ -589,7 +602,7 @@ namespace Pontaj
                 return true;
             else
                 return false;
-            
+
         }
         private bool CheckIfHourIsCorrect(string hour)
         {
@@ -598,14 +611,15 @@ namespace Pontaj
             int min = 0;
             try
             {
-                 h = int.Parse(values[0]);
-                 if(values.Length>1)
+                h = int.Parse(values[0]);
+                if (values.Length > 1)
                     min = int.Parse(values[1]);
                 else
                 {
                     return false;
                 }
-            }catch(System.FormatException ex)
+            }
+            catch (System.FormatException ex)
             {
                 return false;
             }
@@ -690,7 +704,8 @@ namespace Pontaj
         private User GetUserFromString(string value)
         {
             string[] userValues = value.Split(',');
-            return new User(userValues[0].Trim(), userValues[1].Trim());
+            string[] splitName = userValues[0].Split(' ');
+            return new User(splitName[1].Trim(), splitName[0].Trim(), new Rank(userValues[1]), new Unit(userValues[2]));
         }
     }
 }

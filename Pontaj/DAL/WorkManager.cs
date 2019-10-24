@@ -21,20 +21,27 @@ namespace DAL
             Works = new List<Work>();
         }
 
-        public void GetWorksFromDB() {
+        public void GetWorksFromDB()
+        {
             using (SQLConnectionManager manager = new SQLConnectionManager())
             {
                 manager.Open();
-                string sql = "select user.Name,user.Rank,StartDate,EndDate,type.Type from Work " +
-                              "left join Type type on Work.TypeId = type.TypeId " +
-                               "left join User user on Work.UserId = user.UserId";
+                string sql = "select User.FirstName,User.LastName, Rank.Name as \"Rank\",Unit.Name as \"Unit\", " +
+                    " Type.Name as \"Name\", TypeDescription.Name as \"Description\"," +
+                    " Holiday.Name as \"Holiday\",StartDate, EndDate " +
+                    "from Work, Type, TypeDescription, Holiday, User, Unit, Rank " +
+                    "where Work.TypeId = Type.Id AND Type.TypeDescriptionId = TypeDescription.Id " +
+                    "AND Type.HolidayId = Holiday.Id AND Work.UserId = User.Id " +
+                    "AND User.RankId = Rank.Id AND User.UnitId = Unit.Id; ";
                 SQLiteCommand command = new SQLiteCommand(sql, manager.DbConnection);
                 SQLiteDataReader reader = command.ExecuteReader();
                 Works.Clear();
                 while (reader.Read())
                 {
-                    Works.Add(new Work(new User((string)reader["Name"], (string)reader["Rank"]),
-                        new ClockingType((string)reader["Type"]),(DateTime)reader["StartDate"], (DateTime)reader["EndDate"]));
+                    Works.Add(new Work(new User((string)reader["FirstName"], (string)reader["LastName"],
+                        new Rank((string)reader["Rank"]), new Unit((string)reader["Unit"])),
+                        new ClockingType((string)reader["Name"],new TypeDescription((string)reader["Description"]),new Holiday((string)reader["Holiday"])),
+                        (DateTime)reader["StartDate"], (DateTime)reader["EndDate"]));
 
                 }
             }
@@ -54,9 +61,9 @@ namespace DAL
                     MessageBox.Show("Pontajul a fost adaugat!");
             }
         }
-     
+
         //update
-        
+
 
     }
 }

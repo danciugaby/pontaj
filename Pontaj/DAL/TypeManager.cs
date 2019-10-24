@@ -26,13 +26,17 @@ namespace DAL
             using (SQLConnectionManager manager = new SQLConnectionManager())
             {
                 manager.Open();
-                string sql = "select * from type";
+                string sql = "select type.Id as \"Id\", type.Name, TypeDescription.Name as \"TypeDescription\", Holiday.Name as \"Holiday\" "+
+                             " from type, TypeDescription, Holiday "+
+                             " where type.TypeDescriptionId = TypeDescription.Id and type.HolidayId = Holiday.Id; ";
                 SQLiteCommand command = new SQLiteCommand(sql, manager.DbConnection);
                 SQLiteDataReader reader = command.ExecuteReader();
                 Types.Clear();
                 while (reader.Read())
                 {
-                    Types.Add(new ClockingType((Int64)reader["TypeId"],(string)reader["Type"]));
+                    Types.Add(new ClockingType((Int64)reader["Id"],(string)reader["Name"],
+                        new TypeDescription((string)reader["TypeDescription"]),
+                        new Holiday((string)reader["Holiday"])));
                 }
             }
         }
