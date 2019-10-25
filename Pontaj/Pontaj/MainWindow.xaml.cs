@@ -113,7 +113,7 @@ namespace Pontaj
 
         }
 
-       
+
         private void setEnabledButton(Button button)
         {
             button.IsEnabled = true;
@@ -184,7 +184,7 @@ namespace Pontaj
 
                 setDisabledButton(btnUpdateUser);
                 setDisabledButton(btnDeleteUser);
-              
+
                 LoadUsers();
 
             }
@@ -212,7 +212,7 @@ namespace Pontaj
         private void LoadUnits()
         {
             lstUnits.Items.Clear();
-            List<Unit> units =controller.GetUnitsFromDB();
+            List<Unit> units = controller.GetUnitsFromDB();
             foreach (var unit in units)
             {
                 lstUnits.Items.Add(unit);
@@ -455,14 +455,14 @@ namespace Pontaj
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-           
+
             if (tabControl.SelectedItem.Equals(usersTabItem))
             {
                 LoadUsers();
                 LoadUnitsIntoComboBox();
                 LoadRanksIntoComboBox();
             }
-            else if(tabControl.SelectedItem.Equals(rankUnitTabItem))
+            else if (tabControl.SelectedItem.Equals(rankUnitTabItem))
             {
                 LoadRanks();
                 LoadUnits();
@@ -736,8 +736,8 @@ namespace Pontaj
             return onlyForOne;
         }
 
-  
-       
+
+
 
         private void ClockingTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -791,7 +791,7 @@ namespace Pontaj
         private void BtnAddRank_Click(object sender, RoutedEventArgs e)
         {
             string rank = rankTextBox.Text;
-            if(isEmpty(rank))
+            if (isEmpty(rank))
             {
                 MessageBox.Show("Te rog introdu gradul!");
 
@@ -815,9 +815,17 @@ namespace Pontaj
             else
             {
                 Rank selectedRank = lstRanks.SelectedItem as Rank;
-                controller.UpdateRankInDB(new Rank(rank), selectedRank);
-                emptyField(rankTextBox);
-                LoadRanks();
+                if (selectedRank != null)
+                {
+                    controller.UpdateRankInDB(new Rank(rank), selectedRank);
+                    emptyField(rankTextBox);
+                    LoadRanks();
+                }
+                else
+                {
+                    MessageBox.Show("Te rog selecteaza gradul!");
+                }
+               
             }
         }
 
@@ -845,10 +853,96 @@ namespace Pontaj
             else
             {
                 Rank selectedRank = lstRanks.SelectedItem as Rank;
-                controller.DeleteRankFromDB(selectedRank);
-                emptyField(rankTextBox);
-                LoadRanks();
+                if (selectedRank != null)
+                {
+                    controller.UpdateRankInDB(new Rank(rank), selectedRank);
+                    emptyField(rankTextBox);
+                    LoadRanks();
+                }
+                else
+                {
+                    MessageBox.Show("Te rog selecteaza gradul!");
+                }
             }
+        }
+
+        private void BtnAddUnit_Click(object sender, RoutedEventArgs e)
+        {
+            string unit = unitTextBox.Text;
+            if (isEmpty(unit))
+            {
+                MessageBox.Show("Te rog introdu unitatea!");
+
+            }
+            else
+            {
+                controller.AddUnitInDB(new Unit(unit));
+                emptyField(unitTextBox);
+                LoadUnits();
+            }
+        }
+
+        private void BtnModifyUnit_Click(object sender, RoutedEventArgs e)
+        {
+            string unit = unitTextBox.Text;
+            if (isEmpty(unit))
+            {
+                MessageBox.Show("Te rog introdu unitatea!");
+
+            }
+            else
+            {
+                Unit selectedUnit = lstUnits.SelectedItem as Unit;
+                if (selectedUnit != null)
+                {
+                    controller.UpdateUnitInDB(new Unit(unit), selectedUnit);
+                    emptyField(unitTextBox);
+                    LoadUnits();
+                }
+                else
+                {
+                    MessageBox.Show("Te rog selecteaza unitatea!");
+                }
+               
+            }
+        }
+
+        private void BtnDeleteUnit_Click(object sender, RoutedEventArgs e)
+        {
+            string unit = unitTextBox.Text;
+            if (isEmpty(unit))
+            {
+                MessageBox.Show("Te rog selecteaza unitatea!");
+
+            }
+            else
+            {
+                Unit selectedUnit = lstUnits.SelectedItem as Unit;
+                if (selectedUnit != null)
+                {
+                    controller.UpdateUnitInDB(new Unit(unit), selectedUnit);
+                    emptyField(unitTextBox);
+                    LoadUnits();
+                }
+                else
+                {
+                    MessageBox.Show("Te rog selecteaza unitatea!");
+                }
+
+            }
+        }
+
+        private void LstUnits_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Unit selectedUnit = lstUnits.SelectedItem as Unit;
+            if (selectedUnit != null)
+            {
+                unitTextBox.Text = selectedUnit.Name;
+                setEnabledButton(btnUpdateUnit);
+                setEnabledButton(btnDeleteUnit);
+
+            }
+            e.Handled = true;
         }
     }
 }

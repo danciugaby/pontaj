@@ -69,6 +69,10 @@ namespace Pontaj
         {
             ranks.AddRankInDB(rank);
         }
+        public void AddUnitInDB(Unit unit)
+        {
+            units.AddUnitInDB(unit);
+        }
         public void UpdateUserInDB(User newUser, User oldUser)
         {
             users.UpdateUserInDB(newUser, oldUser);
@@ -82,7 +86,10 @@ namespace Pontaj
         {
             ranks.UpdateRankInDB(newRank, oldRank);
         }
-
+        public void UpdateUnitInDB(Unit newUnit,Unit oldUnit)
+        {
+            units.UpdateUnitInDB(newUnit, oldUnit);
+        }
         public void DeleteUserFromDB(User user)
         {
             users.DeleteUserFromDB(user);
@@ -95,6 +102,10 @@ namespace Pontaj
         public void DeleteRankFromDB(Rank rank)
         {
             ranks.DeleteRankFromDB(rank);
+        }
+        public void DeleteUnitFromDB(Unit unit)
+        {
+            units.DeleteUnitFromDB(unit);
         }
     }
 }

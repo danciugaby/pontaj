@@ -161,7 +161,7 @@
                                 <ColumnDefinition Width="0.3*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Grid Grid.Column="0">
-                                <ListBox Name ="lstUnits" Grid.ColumnSpan="4"/>
+                                <ListBox Name ="lstUnits" Grid.ColumnSpan="4" SelectionChanged="LstUnits_SelectionChanged"/>
                             </Grid>
                             <Grid Grid.Column="1">
                                 <Grid.RowDefinitions>
@@ -193,13 +193,13 @@
                                     </Grid>
                                 </Grid>
                                 <Grid Grid.Row="1">
-                                    <Button Name="btnAddUnit" Content="Adauga unitate"></Button>
+                                    <Button Name="btnAddUnit" Content="Adauga unitate" Click="BtnAddUnit_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Row="2">
-                                    <Button Name="btnModifyUnit" Content="Modifica unitate"></Button>
+                                    <Button Name="btnUpdateUnit" Content="Modifica unitate" IsEnabled="False" Click="BtnModifyUnit_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Row="3">
-                                    <Button Name="btnDeleteUnit" Content="Sterge unitate"></Button>
+                                    <Button Name="btnDeleteUnit" Content="Sterge unitate" IsEnabled="False" Click="BtnDeleteUnit_Click"></Button>
                                 </Grid>
                             </Grid>
 
