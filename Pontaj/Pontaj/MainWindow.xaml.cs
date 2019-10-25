@@ -236,6 +236,26 @@ namespace Pontaj
                 lstManagement.Items.Add(work);
             }
         }
+        private void LoadHolidays()
+        {
+            lstHolidays.Items.Clear();
+            List<Holiday> holidays = controller.GetHolidaysFromDB();
+            foreach (var holiday in holidays)
+            {
+                lstHolidays.Items.Add(holiday);
+            }
+
+        }
+        private void LoadTypeDescriptions()
+        {
+            lstTypeDescription.Items.Clear();
+            List<TypeDescription> typeDescriptions = controller.GetTypeDescriptionsFromDB();
+            foreach (var typeDescription in typeDescriptions)
+            {
+                lstTypeDescription.Items.Add(typeDescription);
+            }
+
+        }
 
         private void BtnAddClockingType_Click(object sender, RoutedEventArgs e)
         {
@@ -470,6 +490,10 @@ namespace Pontaj
             else if (tabControl.SelectedItem.Equals(typesTabItem))
             {
                 LoadTypes();
+            }else if(tabControl.SelectedItem.Equals(descriptionHolidayTabItem))
+            {
+                LoadHolidays();
+                LoadTypeDescriptions();
             }
             else if (tabControl.SelectedItem.Equals(worksTabItem))
             {
@@ -943,6 +967,85 @@ namespace Pontaj
 
             }
             e.Handled = true;
+        }
+
+        private void LstTypeDescription_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            TypeDescription selectedTypeDescription = lstTypeDescription.SelectedItem as TypeDescription;
+            if (selectedTypeDescription != null)
+            {
+                typeDescriptionTextBox.Text = selectedTypeDescription.Name;
+                setEnabledButton(btnUpdateTypeDescription);
+                setEnabledButton(btnDeleteTypeDescription);
+
+            }
+            e.Handled = true;
+        }
+
+        private void BtnAddTypeDescription_Click(object sender, RoutedEventArgs e)
+        {
+            string typeDescription = typeDescriptionTextBox.Text;
+            if (isEmpty(typeDescription))
+            {
+                MessageBox.Show("Te rog introdu tipul!");
+
+            }
+            else
+            {
+                controller.AddTypeDescriptionInDB(new TypeDescription(typeDescription));
+                emptyField(typeDescriptionTextBox);
+                LoadTypeDescriptions();
+            }
+        }
+
+        private void BtnUpdateTypeDescription_Click(object sender, RoutedEventArgs e)
+        {
+            string typeDescription = typeDescriptionTextBox.Text;
+            if (isEmpty(typeDescription))
+            {
+                MessageBox.Show("Te rog introdu tipul!");
+
+            }
+            else
+            {
+                TypeDescription selected = lstTypeDescription.SelectedItem as TypeDescription;
+                if (selected != null)
+                {
+                    controller.UpdateTypeDescriptionInDB(new TypeDescription(typeDescription), selected);
+                    emptyField(typeDescriptionTextBox);
+                    LoadTypeDescriptions();
+                }
+                else
+                {
+                    MessageBox.Show("Te rog selecteaza tipul!");
+                }
+
+            }
+        }
+
+        private void BtnDeleteTypeDescription_Click(object sender, RoutedEventArgs e)
+        {
+            string typeDescription = typeDescriptionTextBox.Text;
+            if (isEmpty(typeDescription))
+            {
+                MessageBox.Show("Te rog selecteaza tipul!");
+
+            }
+            else
+            {
+                TypeDescription selectedTypeDescription = lstTypeDescription.SelectedItem as TypeDescription;
+                if (selectedTypeDescription != null)
+                {
+                    controller.DeleteTypeDescriptionFromBD(selectedTypeDescription);
+                    emptyField(typeDescriptionTextBox);
+                    LoadTypeDescriptions();
+                }
+                else
+                {
+                    MessageBox.Show("Te rog selecteaza tipul!");
+                }
+
+            }
         }
     }
 }

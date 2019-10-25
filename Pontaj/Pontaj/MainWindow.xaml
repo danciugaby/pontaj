@@ -258,7 +258,7 @@
                                 <ColumnDefinition Width="0.3*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Grid Grid.Column="0">
-                                <ListBox Name ="lstTypeDescription"  Grid.ColumnSpan="4"/>
+                                <ListBox Name ="lstTypeDescription"  Grid.ColumnSpan="4" SelectionChanged="LstTypeDescription_SelectionChanged"/>
                             </Grid>
                             <Grid Grid.Column="1">
                                 <Grid.RowDefinitions>
@@ -290,13 +290,13 @@
                                     </Grid>
                                 </Grid>
                                 <Grid Grid.Row="1">
-                                    <Button Name="btnAddTypeDescription" Content="Adauga tip"></Button>
+                                    <Button Name="btnAddTypeDescription" Content="Adauga tip" Click="BtnAddTypeDescription_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Row="2">
-                                    <Button Name="btnUpdateTypeDescription" Content="Modifica tip" IsEnabled="False" ></Button>
+                                    <Button Name="btnUpdateTypeDescription" Content="Modifica tip" IsEnabled="False" Click="BtnUpdateTypeDescription_Click" ></Button>
                                 </Grid>
                                 <Grid Grid.Row="3">
-                                    <Button Name="btnDeleteTypeDescription" Content="Sterge tip" IsEnabled="False"></Button>
+                                    <Button Name="btnDeleteTypeDescription" Content="Sterge tip" IsEnabled="False" Click="BtnDeleteTypeDescription_Click"></Button>
                                 </Grid>
                             </Grid>
 
