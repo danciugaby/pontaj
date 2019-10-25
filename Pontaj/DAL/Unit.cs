@@ -19,7 +19,7 @@ namespace DAL
             Name = name;
         }
 
-        public Unit(string name, Int64 unitId)
+        public Unit(Int64 unitId, string name)
         {
             Name = name;
             id = unitId;

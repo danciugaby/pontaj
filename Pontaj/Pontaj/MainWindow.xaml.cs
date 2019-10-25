@@ -29,11 +29,6 @@ namespace Pontaj
             controller = new Controller();
         }
 
-        private void BtnLoadUser_Click(object sender, RoutedEventArgs e)
-        {
-            LoadUsers();
-        }
-
         private void BtnAddUser_Click(object sender, RoutedEventArgs e)
         {
             List<User> users = controller.GetUsersFromDB();
@@ -114,6 +109,7 @@ namespace Pontaj
                 setEnabledButton(btnDeleteUser);
 
             }
+            e.Handled = true;
 
         }
 
@@ -213,10 +209,32 @@ namespace Pontaj
             }
 
         }
-
-        private void BtnLoadClocking_Click(object sender, RoutedEventArgs e)
+        private void LoadUnits()
         {
-            LoadTypes();
+            lstUnits.Items.Clear();
+            List<Unit> units =controller.GetUnitsFromDB();
+            foreach (var unit in units)
+            {
+                lstUnits.Items.Add(unit);
+            }
+        }
+        private void LoadRanks()
+        {
+            lstRanks.Items.Clear();
+            List<Rank> ranks = controller.GetRanksFromDB();
+            foreach (var rank in ranks)
+            {
+                lstRanks.Items.Add(rank);
+            }
+        }
+        private void LoadWorks()
+        {
+            lstManagement.Items.Clear();
+            List<Work> works = controller.GetWorksFromDB();
+            foreach (var work in works)
+            {
+                lstManagement.Items.Add(work);
+            }
         }
 
         private void BtnAddClockingType_Click(object sender, RoutedEventArgs e)
@@ -263,6 +281,7 @@ namespace Pontaj
                 setEnabledButton(btnDeleteClockingType);
 
             }
+            e.Handled = true;
         }
         private void populateTypeField(ClockingType type)
         {
@@ -380,19 +399,81 @@ namespace Pontaj
                 }
             }
         }
+        private void LoadUnitsIntoComboBox()
+        {
+            if (controller.units.Units.Count() == 0)
+            {
+                LoadUnits();
+                if (controller.units.Units.Count() == 0)
+                    userUnitComboBoxPersonalTab.Items.Add("Nu s-a gasit nicio unitate");
+                else
+                {
+                    userUnitComboBoxPersonalTab.Items.Clear();
+                    foreach (var unit in controller.units.Units)
+                    {
+                        userUnitComboBoxPersonalTab.Items.Add(unit);
+                    }
+                }
+
+            }
+            else
+            {
+                userUnitComboBoxPersonalTab.Items.Clear();
+                foreach (var unit in controller.units.Units)
+                {
+                    userUnitComboBoxPersonalTab.Items.Add(unit);
+                }
+            }
+        }
+        private void LoadRanksIntoComboBox()
+        {
+            if (controller.ranks.Ranks.Count() == 0)
+            {
+                LoadRanks();
+                if (controller.ranks.Ranks.Count() == 0)
+                    userRankComboBoxPersonalTab.Items.Add("Nu s-a gasit nicio unitate");
+                else
+                {
+                    userRankComboBoxPersonalTab.Items.Clear();
+                    foreach (var rank in controller.ranks.Ranks)
+                    {
+                        userRankComboBoxPersonalTab.Items.Add(rank);
+                    }
+                }
+
+            }
+            else
+            {
+                userRankComboBoxPersonalTab.Items.Clear();
+                foreach (var rank in controller.ranks.Ranks)
+                {
+                    userRankComboBoxPersonalTab.Items.Add(rank);
+                }
+            }
+        }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
+           
             if (tabControl.SelectedItem.Equals(usersTabItem))
             {
-
+                LoadUsers();
+                LoadUnitsIntoComboBox();
+                LoadRanksIntoComboBox();
+            }
+            else if(tabControl.SelectedItem.Equals(rankUnitTabItem))
+            {
+                LoadRanks();
+                LoadUnits();
             }
             else if (tabControl.SelectedItem.Equals(typesTabItem))
             {
-
+                LoadTypes();
             }
             else if (tabControl.SelectedItem.Equals(worksTabItem))
             {
+                LoadWorks();
                 LoadTypesIntoComboBox();
                 LoadUsersIntoComboBox();
 
@@ -655,19 +736,8 @@ namespace Pontaj
             return onlyForOne;
         }
 
-        private void BtnLoadManagement_Click(object sender, RoutedEventArgs e)
-        {
-            LoadWorks();
-        }
-        private void LoadWorks()
-        {
-            lstManagement.Items.Clear();
-            List<Work> works = controller.GetWorksFromDB();
-            foreach (var work in works)
-            {
-                lstManagement.Items.Add(work);
-            }
-        }
+  
+       
 
         private void ClockingTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -707,5 +777,17 @@ namespace Pontaj
             string[] splitName = userValues[0].Split(' ');
             return new User(splitName[1].Trim(), splitName[0].Trim(), new Rank(userValues[1]), new Unit(userValues[2]));
         }
+
+        private void UserUnitComboBoxPersonalTab_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void UserRankComboBoxPersonalTab_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+      
     }
 }

@@ -19,7 +19,7 @@ namespace DAL
             Name = name;
         }
 
-        public Rank(string name, Int64 rankId)
+        public Rank(Int64 rankId, string name)
         {
             Name = name;
             id = rankId;

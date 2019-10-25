@@ -38,18 +38,7 @@
                             <ColumnDefinition Width=".3*"/>
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="74*"/>
-                                <ColumnDefinition Width="16*"/>
-                                <ColumnDefinition Width="13*"/>
-                                <ColumnDefinition Width="447*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height=".8*"/>
-                                <RowDefinition Height=".2*"/>
-                            </Grid.RowDefinitions>
-                            <ListBox Name ="lstUsers" Grid.Row="0" SelectionChanged="LstUsers_SelectionChanged" Grid.ColumnSpan="4"/>
-                            <Button Content="Incarca utilizatori" Name="btnLoadUser" Grid.Row="1" Click="BtnLoadUser_Click" Grid.ColumnSpan="4"/>
+                            <ListBox Name ="lstUsers"  SelectionChanged="LstUsers_SelectionChanged" Grid.ColumnSpan="4"/>
                         </Grid>
                         <Grid Grid.Column="1">
                             <Grid.RowDefinitions>
@@ -91,7 +80,7 @@
                                             <ColumnDefinition Width=".8*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Grad" Grid.Column="0"/>
-                                        <ComboBox Name="userRankComboBoxPersonalTab" Grid.Column="1"/>
+                                        <ComboBox Name="userRankComboBoxPersonalTab" Grid.Column="1" SelectionChanged="UserRankComboBoxPersonalTab_SelectionChanged"/>
                                     </Grid>
                                     <Grid Grid.Row="4">
                                         <Grid.ColumnDefinitions>
@@ -99,13 +88,120 @@
                                             <ColumnDefinition Width=".8*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Unitate" Grid.Column="0"/>
-                                        <ComboBox Name="userUnitComboBoxPersonalTab" Grid.Column="1"/>
+                                        <ComboBox Name="userUnitComboBoxPersonalTab" Grid.Column="1" SelectionChanged="UserUnitComboBoxPersonalTab_SelectionChanged"/>
                                     </Grid>
                                 </Grid>
                             </Grid>
                             <Button Content="Adauga utilizator nou" Name="btnAddUser" Grid.Row="1" Click="BtnAddUser_Click"/>
                             <Button Content="Modifica utilizator" Name="btnUpdateUser" Grid.Row="2" IsEnabled="False" Click="BtnUpdateUser_Click"/>
                             <Button Content="Sterge utilizator" Name="btnDeleteUser" Grid.Row="3" IsEnabled="False" Click="BtnDeleteUser_Click"/>
+                        </Grid>
+
+                    </Grid>
+                </TabItem>
+                <TabItem Name ="rankUnitTabItem" Header="Grad/Unitate">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column = "0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.7*"></ColumnDefinition>
+                                <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <ListBox Name ="lstRanks"  Grid.ColumnSpan="4"/>
+                            </Grid>
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height=".7*"/>
+                                    <RowDefinition Height=".1*"/>
+                                    <RowDefinition Height=".1*"/>
+                                    <RowDefinition Height=".1*"/>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height=".1*"/>
+                                        <RowDefinition Height=".1*"/>
+                                        <RowDefinition Height=".8*"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0">
+                                        <TextBlock Name="rankTextBlock" Text=" Grade"></TextBlock>
+                                    </Grid>
+                                    <Grid Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                                            <ColumnDefinition Width="0.7*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0">
+                                            <TextBlock Name ="rankTextBlockDlock2" Text=" Grad"></TextBlock>
+                                        </Grid>
+                                        <Grid Grid.Column="1">
+                                            <TextBox Name="rankTextBox"></TextBox>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                                <Grid Grid.Row="1">
+                                    <Button Name="btnAddRank" Content="Adauga grad"></Button>
+                                </Grid>
+                                <Grid Grid.Row="2">
+                                    <Button Name="btnModifyRank" Content="Modifica grad"></Button>
+                                </Grid>
+                                <Grid Grid.Row="3">
+                                    <Button Name="btnDeleteRank" Content="Sterge grad"></Button>
+                                </Grid>
+                            </Grid>
+
+                        </Grid>
+                        <Grid Grid.Column = "1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.7*"></ColumnDefinition>
+                                <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <ListBox Name ="lstUnits" Grid.ColumnSpan="4"/>
+                            </Grid>
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height=".7*"/>
+                                    <RowDefinition Height=".1*"/>
+                                    <RowDefinition Height=".1*"/>
+                                    <RowDefinition Height=".1*"/>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height=".1*"/>
+                                        <RowDefinition Height=".1*"/>
+                                        <RowDefinition Height=".8*"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0">
+                                        <TextBlock Name="unitTextBlock" Text=" Unitati"></TextBlock>
+                                    </Grid>
+                                    <Grid Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                                            <ColumnDefinition Width="0.7*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0">
+                                            <TextBlock Name ="unitTextBlock2" Text=" Unitate"></TextBlock>
+                                        </Grid>
+                                        <Grid Grid.Column="1">
+                                            <TextBox Name="unitTextBox"></TextBox>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                                <Grid Grid.Row="1">
+                                    <Button Name="btnAddUnit" Content="Adauga unitate"></Button>
+                                </Grid>
+                                <Grid Grid.Row="2">
+                                    <Button Name="btnModifyUnit" Content="Modifica unitate"></Button>
+                                </Grid>
+                                <Grid Grid.Row="3">
+                                    <Button Name="btnDeleteUnit" Content="Sterge unitate"></Button>
+                                </Grid>
+                            </Grid>
+
                         </Grid>
                     </Grid>
                 </TabItem>
@@ -116,13 +212,8 @@
                             <ColumnDefinition Width=".3*"/>
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height=".8*"/>
-                                <RowDefinition Height=".2*"/>
-                            </Grid.RowDefinitions>
-                            <ListBox Name ="lstTypes" Grid.Row="0" SelectionChanged="LstTypes_SelectionChanged"/>
-                            <Button Content="Incarca tipuri pontaj" Name="btnLoadClocking" Grid.Row="1" Click="BtnLoadClocking_Click"/>
-                        </Grid>
+                             <ListBox Name ="lstTypes" SelectionChanged="LstTypes_SelectionChanged"/>
+                         </Grid>
                         <Grid Grid.Column="1">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height=".7*"/>
@@ -161,18 +252,7 @@
                             <ColumnDefinition Width=".3*"/>
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="146*"/>
-                                <ColumnDefinition Width="58*"/>
-                                <ColumnDefinition Width="66*"/>
-                                <ColumnDefinition Width="525*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height=".8*"/>
-                                <RowDefinition Height=".2*"/>
-                            </Grid.RowDefinitions>
-                            <ListBox Name ="lstManagement" Grid.Row="0" Grid.ColumnSpan="4"/>
-                            <Button Content="Incarca personal" Name="btnLoadManagement" Grid.Row="1" Click="BtnLoadManagement_Click" Grid.ColumnSpan="4" />
+                            <ListBox Name ="lstManagement"  Grid.ColumnSpan="4"/>
                         </Grid>
                         <Grid Grid.Column="1">
                             <Grid.RowDefinitions>

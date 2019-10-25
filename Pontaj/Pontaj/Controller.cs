@@ -13,12 +13,16 @@ namespace Pontaj
         public UserList users;
         public TypeManager types;
         public WorkManager works;
+        public UnitManager units;
+        public RankManager ranks;
 
         public Controller()
         {
             users = new UserList();
             types = new TypeManager();
             works = new WorkManager();
+            units = new UnitManager();
+            ranks = new RankManager();
         }
 
         public List<User> GetUsersFromDB()
@@ -36,6 +40,17 @@ namespace Pontaj
             works.GetWorksFromDB();
             return works.Works;
         }
+        public List<Unit> GetUnitsFromDB()
+        {
+            units.GetUnitsFromDB();
+            return units.Units;
+        }
+        public List<Rank> GetRanksFromDB()
+        {
+            ranks.GetRanksFromDB();
+            return ranks.Ranks;
+        }
+
         public void AddUserInDB(User user)
         {
             users.AddUserInDB(user);
