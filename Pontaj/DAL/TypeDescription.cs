@@ -19,7 +19,7 @@ namespace DAL
             Name = name;
         }
 
-        public TypeDescription(string name, Int64 typeDescriptionId)
+        public TypeDescription(Int64 typeDescriptionId, string name)
         {
             Name = name;
             id = typeDescriptionId;

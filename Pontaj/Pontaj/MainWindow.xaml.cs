@@ -855,7 +855,7 @@ namespace Pontaj
                 Rank selectedRank = lstRanks.SelectedItem as Rank;
                 if (selectedRank != null)
                 {
-                    controller.UpdateRankInDB(new Rank(rank), selectedRank);
+                    controller.DeleteRankFromDB(selectedRank);
                     emptyField(rankTextBox);
                     LoadRanks();
                 }
@@ -920,7 +920,7 @@ namespace Pontaj
                 Unit selectedUnit = lstUnits.SelectedItem as Unit;
                 if (selectedUnit != null)
                 {
-                    controller.UpdateUnitInDB(new Unit(unit), selectedUnit);
+                    controller.DeleteUnitFromDB(selectedUnit);
                     emptyField(unitTextBox);
                     LoadUnits();
                 }

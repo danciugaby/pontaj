@@ -19,7 +19,7 @@ namespace DAL
             Name = name;
         }
 
-        public Holiday(string name, Int64 holidayId)
+        public Holiday(Int64 holidayId,string name)
         {
             Name = name;
             id = holidayId;

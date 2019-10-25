@@ -15,6 +15,8 @@ namespace Pontaj
         public WorkManager works;
         public UnitManager units;
         public RankManager ranks;
+        public HolidayManager holidays;
+        public TypeDescriptionManager typeDescriptions;
 
         public Controller()
         {
@@ -23,6 +25,8 @@ namespace Pontaj
             works = new WorkManager();
             units = new UnitManager();
             ranks = new RankManager();
+            holidays = new HolidayManager();
+            typeDescriptions = new TypeDescriptionManager();
         }
 
         public List<User> GetUsersFromDB()
@@ -50,6 +54,16 @@ namespace Pontaj
             ranks.GetRanksFromDB();
             return ranks.Ranks;
         }
+        public List<Holiday> GetHolidaysFromDB()
+        {
+            holidays.GetHolidaysFromDB();
+            return holidays.Holidays;
+        }
+        public List<TypeDescription> GetTypeDescriptionsFromDB()
+        {
+            typeDescriptions.GetTypeDescriptionsFromDB();
+            return typeDescriptions.TypeDescriptions;
+        }
 
         public void AddUserInDB(User user)
         {
@@ -73,6 +87,15 @@ namespace Pontaj
         {
             units.AddUnitInDB(unit);
         }
+        public void AddHolidayInDB(Holiday holiday)
+        {
+            holidays.AddHolidayInDB(holiday);
+        }
+        public void AddTypeDescriptionInDB(TypeDescription typeDescription)
+        {
+            typeDescriptions.AddTypeDescriptionInDB(typeDescription);
+        }
+
         public void UpdateUserInDB(User newUser, User oldUser)
         {
             users.UpdateUserInDB(newUser, oldUser);
@@ -90,6 +113,15 @@ namespace Pontaj
         {
             units.UpdateUnitInDB(newUnit, oldUnit);
         }
+        public void UpdateHolidayInDB(Holiday newHoliday,Holiday oldHoliday)
+        {
+            holidays.UpdateHolidayInDB(newHoliday, oldHoliday);
+        }
+        public void UpdateTypeDescriptionInDB(TypeDescription newTypeDescription,TypeDescription oldTypeDescription)
+        {
+            typeDescriptions.UpdateTypeDescriptionInDB(newTypeDescription, oldTypeDescription);
+        }
+
         public void DeleteUserFromDB(User user)
         {
             users.DeleteUserFromDB(user);
@@ -106,6 +138,14 @@ namespace Pontaj
         public void DeleteUnitFromDB(Unit unit)
         {
             units.DeleteUnitFromDB(unit);
+        }
+        public void DeleteHolidayFromDB(Holiday holiday)
+        {
+            holidays.DeleteHolidayFromDB(holiday);
+        }
+        public void DeleteTypeDescriptionFromBD(TypeDescription typeDescription)
+        {
+            typeDescriptions.DeleteTypeDescriptionFromDB(typeDescription);
         }
     }
 }

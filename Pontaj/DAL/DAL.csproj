@@ -49,12 +49,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Holiday.cs" />
+    <Compile Include="HolidayManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rank.cs" />
     <Compile Include="RankManager.cs" />
     <Compile Include="SQLConnectionManager.cs" />
     <Compile Include="ClockingType.cs" />
     <Compile Include="TypeDescription.cs" />
+    <Compile Include="TypeDescriptionManager.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="TypeManager.cs" />
     <Compile Include="UnitManager.cs" />
