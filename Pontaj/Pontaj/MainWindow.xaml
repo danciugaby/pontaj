@@ -307,7 +307,7 @@
                                 <ColumnDefinition Width="0.3*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Grid Grid.Column="0">
-                                <ListBox Name ="lstHolidays" Grid.ColumnSpan="4"/>
+                                <ListBox Name ="lstHolidays" Grid.ColumnSpan="4" SelectionChanged="LstHolidays_SelectionChanged"/>
                             </Grid>
                             <Grid Grid.Column="1">
                                 <Grid.RowDefinitions>
@@ -339,13 +339,13 @@
                                     </Grid>
                                 </Grid>
                                 <Grid Grid.Row="1">
-                                    <Button Name="btnAddHoliday" Content="Adauga concediu"></Button>
+                                    <Button Name="btnAddHoliday" Content="Adauga concediu" Click="BtnAddHoliday_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Row="2">
-                                    <Button Name="btnUpdateHoliday" Content="Modifica concediu" IsEnabled="False"></Button>
+                                    <Button Name="btnUpdateHoliday" Content="Modifica concediu" IsEnabled="False" Click="BtnUpdateHoliday_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Row="3">
-                                    <Button Name="btnDeleteHoliday" Content="Sterge concediu" IsEnabled="False"></Button>
+                                    <Button Name="btnDeleteHoliday" Content="Sterge concediu" IsEnabled="False" Click="BtnDeleteHoliday_Click"></Button>
                                 </Grid>
                             </Grid>
 
@@ -438,11 +438,11 @@
                         </Grid>
                     </Grid>
                 </TabItem>
-                <TabItem Header="Rapoarte" Margin="-1.6,0,-2.4,0" />
+                <TabItem Name="reportTabItem" Header="Rapoarte" Margin="-1.6,0,-2.4,0" />
             </TabControl>
         </Grid>
         <Grid Grid.Row="2" Grid.ColumnSpan="4">
-            <ProgressBar Name="prgNameofObject" Minimum="-1" Value="50"/>
+            <ProgressBar Name="progressBar" Minimum="-1" Value="0"/>
         </Grid>
 
     </Grid>

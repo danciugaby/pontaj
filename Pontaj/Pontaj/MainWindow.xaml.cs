@@ -475,32 +475,41 @@ namespace Pontaj
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-
+            
             if (tabControl.SelectedItem.Equals(usersTabItem))
             {
                 LoadUsers();
                 LoadUnitsIntoComboBox();
                 LoadRanksIntoComboBox();
+                progressBar.Value = 16.66;
             }
             else if (tabControl.SelectedItem.Equals(rankUnitTabItem))
             {
                 LoadRanks();
                 LoadUnits();
+                progressBar.Value = 33.33;
             }
             else if (tabControl.SelectedItem.Equals(typesTabItem))
             {
                 LoadTypes();
-            }else if(tabControl.SelectedItem.Equals(descriptionHolidayTabItem))
+                progressBar.Value = 49.99;
+            }
+            else if(tabControl.SelectedItem.Equals(descriptionHolidayTabItem))
             {
                 LoadHolidays();
                 LoadTypeDescriptions();
+                progressBar.Value = 66.65;
             }
             else if (tabControl.SelectedItem.Equals(worksTabItem))
             {
                 LoadWorks();
                 LoadTypesIntoComboBox();
                 LoadUsersIntoComboBox();
-
+                progressBar.Value = 83.31;
+            }
+            else if (tabControl.SelectedItem.Equals(reportTabItem))
+            {
+                progressBar.Value = 99.97;
             }
             e.Handled = true;
         }
@@ -1043,6 +1052,85 @@ namespace Pontaj
                 else
                 {
                     MessageBox.Show("Te rog selecteaza tipul!");
+                }
+
+            }
+        }
+
+        private void LstHolidays_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Holiday selected = lstHolidays.SelectedItem as Holiday;
+            if (selected != null)
+            {
+                holidayTextBox.Text = selected.Name;
+                setEnabledButton(btnUpdateHoliday);
+                setEnabledButton(btnDeleteHoliday);
+
+            }
+            e.Handled = true;
+        }
+
+        private void BtnAddHoliday_Click(object sender, RoutedEventArgs e)
+        {
+            string holiday = holidayTextBox.Text;
+            if (isEmpty(holiday))
+            {
+                MessageBox.Show("Te rog introdu concediul!");
+
+            }
+            else
+            {
+                controller.AddHolidayInDB(new Holiday(holiday));
+                emptyField(holidayTextBox);
+                LoadHolidays();
+            }
+        }
+
+        private void BtnUpdateHoliday_Click(object sender, RoutedEventArgs e)
+        {
+            string holiday = holidayTextBox.Text;
+            if (isEmpty(holiday))
+            {
+                MessageBox.Show("Te rog introdu concediul!");
+
+            }
+            else
+            {
+                Holiday selected = lstHolidays.SelectedItem as Holiday;
+                if (selected != null)
+                {
+                    controller.UpdateHolidayInDB(new Holiday(holiday), selected);
+                    emptyField(holidayTextBox);
+                    LoadHolidays();
+                }
+                else
+                {
+                    MessageBox.Show("Te rog selecteaza concediul!");
+                }
+
+            }
+        }
+
+        private void BtnDeleteHoliday_Click(object sender, RoutedEventArgs e)
+        {
+            string holiday = holidayTextBox.Text;
+            if (isEmpty(holiday))
+            {
+                MessageBox.Show("Te rog selecteaza concediul!");
+
+            }
+            else
+            {
+                Holiday selected = lstHolidays.SelectedItem as Holiday;
+                if (selected != null)
+                {
+                    controller.DeleteHolidayFromDB(selected);
+                    emptyField(holidayTextBox);
+                    LoadHolidays();
+                }
+                else
+                {
+                    MessageBox.Show("Te rog selecteaza concediul!");
                 }
 
             }
