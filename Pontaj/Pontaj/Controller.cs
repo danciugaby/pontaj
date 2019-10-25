@@ -65,7 +65,10 @@ namespace Pontaj
         {
             works.AddWorkInDB(work);
         }
-
+        public void AddRankInDB(Rank rank)
+        {
+            ranks.AddRankInDB(rank);
+        }
         public void UpdateUserInDB(User newUser, User oldUser)
         {
             users.UpdateUserInDB(newUser, oldUser);
@@ -74,6 +77,10 @@ namespace Pontaj
         public void UpdateTypeInDB(ClockingType newType, ClockingType oldType)
         {
             types.UpdateTypeInDB(newType, oldType);
+        }
+        public void UpdateRankInDB(Rank newRank, Rank oldRank)
+        {
+            ranks.UpdateRankInDB(newRank, oldRank);
         }
 
         public void DeleteUserFromDB(User user)
@@ -84,6 +91,10 @@ namespace Pontaj
         public void DeleteTypeFromDB(ClockingType type)
         {
             types.DeleteTypeFromDB(type);
+        }
+        public void DeleteRankFromDB(Rank rank)
+        {
+            ranks.DeleteRankFromDB(rank);
         }
     }
 }

@@ -788,6 +788,67 @@ namespace Pontaj
             e.Handled = true;
         }
 
-      
+        private void BtnAddRank_Click(object sender, RoutedEventArgs e)
+        {
+            string rank = rankTextBox.Text;
+            if(isEmpty(rank))
+            {
+                MessageBox.Show("Te rog introdu gradul!");
+
+            }
+            else
+            {
+                controller.AddRankInDB(new Rank(rank));
+                emptyField(rankTextBox);
+                LoadRanks();
+            }
+        }
+
+        private void BtnModifyRank_Click(object sender, RoutedEventArgs e)
+        {
+            string rank = rankTextBox.Text;
+            if (isEmpty(rank))
+            {
+                MessageBox.Show("Te rog modifica gradul!");
+
+            }
+            else
+            {
+                Rank selectedRank = lstRanks.SelectedItem as Rank;
+                controller.UpdateRankInDB(new Rank(rank), selectedRank);
+                emptyField(rankTextBox);
+                LoadRanks();
+            }
+        }
+
+        private void LstRanks_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Rank selectedRank = lstRanks.SelectedItem as Rank;
+            if (selectedRank != null)
+            {
+                rankTextBox.Text = selectedRank.Name;
+                setEnabledButton(btnUpdateRank);
+                setEnabledButton(btnDeleteRank);
+
+            }
+            e.Handled = true;
+        }
+
+        private void BtnDeleteRank_Click(object sender, RoutedEventArgs e)
+        {
+            string rank = rankTextBox.Text;
+            if (isEmpty(rank))
+            {
+                MessageBox.Show("Te rog selecteaza gradul!");
+
+            }
+            else
+            {
+                Rank selectedRank = lstRanks.SelectedItem as Rank;
+                controller.DeleteRankFromDB(selectedRank);
+                emptyField(rankTextBox);
+                LoadRanks();
+            }
+        }
     }
 }

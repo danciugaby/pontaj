@@ -34,13 +34,14 @@
                 <TabItem Name="usersTabItem" Header="Personal">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width=".7*"/>
-                            <ColumnDefinition Width=".3*"/>
+                            <ColumnDefinition Width="101*"/>
+                            <ColumnDefinition Width="694*"/>
+                            <ColumnDefinition Width="341*"/>
                         </Grid.ColumnDefinitions>
-                        <Grid Grid.Column="0">
+                        <Grid Grid.Column="0" Grid.ColumnSpan="2">
                             <ListBox Name ="lstUsers"  SelectionChanged="LstUsers_SelectionChanged" Grid.ColumnSpan="4"/>
                         </Grid>
-                        <Grid Grid.Column="1">
+                        <Grid Grid.Column="2">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height=".7*"/>
                                 <RowDefinition Height=".1*"/>
@@ -111,7 +112,7 @@
                                 <ColumnDefinition Width="0.3*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Grid Grid.Column="0">
-                                <ListBox Name ="lstRanks"  Grid.ColumnSpan="4"/>
+                                <ListBox Name ="lstRanks"  Grid.ColumnSpan="4" SelectionChanged="LstRanks_SelectionChanged"/>
                             </Grid>
                             <Grid Grid.Column="1">
                                 <Grid.RowDefinitions>
@@ -143,13 +144,13 @@
                                     </Grid>
                                 </Grid>
                                 <Grid Grid.Row="1">
-                                    <Button Name="btnAddRank" Content="Adauga grad"></Button>
+                                    <Button Name="btnAddRank" Content="Adauga grad" Click="BtnAddRank_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Row="2">
-                                    <Button Name="btnModifyRank" Content="Modifica grad"></Button>
+                                    <Button Name="btnUpdateRank" Content="Modifica grad" IsEnabled="False"  Click="BtnModifyRank_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Row="3">
-                                    <Button Name="btnDeleteRank" Content="Sterge grad"></Button>
+                                    <Button Name="btnDeleteRank" Content="Sterge grad" IsEnabled="False" Click="BtnDeleteRank_Click" ></Button>
                                 </Grid>
                             </Grid>
 
@@ -212,8 +213,8 @@
                             <ColumnDefinition Width=".3*"/>
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0">
-                             <ListBox Name ="lstTypes" SelectionChanged="LstTypes_SelectionChanged"/>
-                         </Grid>
+                            <ListBox Name ="lstTypes" SelectionChanged="LstTypes_SelectionChanged"/>
+                        </Grid>
                         <Grid Grid.Column="1">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height=".7*"/>
