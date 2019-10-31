@@ -26,17 +26,17 @@ namespace DAL
             using (SQLConnectionManager manager = new SQLConnectionManager())
             {
                 manager.Open();
-                string sql = "select type.Id as \"Id\", type.Name, TypeDescription.Name as \"TypeDescription\", Holiday.Name as \"Holiday\" "+
-                             " from type, TypeDescription, Holiday "+
+                string sql = "select type.Id as \"Id\", type.Name, TypeDescription.Id as \"TypeDescriptionId\", TypeDescription.Name as \"TypeDescription\",Holiday.Id  as \"HolidayId\", Holiday.Name as \"Holiday\" " +
+                             " from type, TypeDescription, Holiday " +
                              " where type.TypeDescriptionId = TypeDescription.Id and type.HolidayId = Holiday.Id; ";
                 SQLiteCommand command = new SQLiteCommand(sql, manager.DbConnection);
                 SQLiteDataReader reader = command.ExecuteReader();
                 Types.Clear();
                 while (reader.Read())
                 {
-                    Types.Add(new ClockingType((Int64)reader["Id"],(string)reader["Name"],
-                        new TypeDescription((string)reader["TypeDescription"]),
-                        new Holiday((string)reader["Holiday"])));
+                    Types.Add(new ClockingType((Int64)reader["Id"], (string)reader["Name"],
+                        new TypeDescription((Int64)reader["TypeDescriptionId"],(string)reader["TypeDescription"]),
+                        new Holiday((Int64)reader["HolidayId"],(string)reader["Holiday"])));
                 }
             }
         }
@@ -46,13 +46,19 @@ namespace DAL
             using (SQLConnectionManager manager = new SQLConnectionManager())
             {
                 manager.Open();
-                string sql = "insert into type(type) values('" + type.Type + "');";
+                string sql = "insert into type(Name,TypeDescriptionId,HolidayId) values('" + type.Type + "','" + type.TypeDescription.Id + "','" + type.Holiday.Id + "');";
                 SQLiteCommand command = new SQLiteCommand(sql, manager.DbConnection);
-                int rowsAffected = command.ExecuteNonQuery();
-                if (rowsAffected == 0)
+               
+                try
+                {
+                    int rowsAffected = command.ExecuteNonQuery();
+                    if (rowsAffected != 0)
+                        MessageBox.Show("Pontajul a fost adaugat!");
+                }
+                catch (SQLiteException ex)
+                {
                     MessageBox.Show("Nu s-a putut efectua adaugarea!");
-                else
-                    MessageBox.Show("Tipul de pontaj a fost inserat!");
+                }
             }
         }
         public void UpdateTypeInDB(ClockingType newType, ClockingType oldType)
@@ -60,14 +66,19 @@ namespace DAL
             using (SQLConnectionManager manager = new SQLConnectionManager())
             {
                 manager.Open();
-                string sql = "update type set Type = '" + newType.Type + "'" +
-                    " where Type='" + oldType.Type +"'";
+                string sql = "update type set Name = '" + newType.Type + "', TypeDescriptionId= '" + newType.TypeDescription.Id+ "', HolidayId= '"+ newType.Holiday.Id +"' "+
+                    " where Name='" + oldType.Type + "' AND TypeDescriptionId= '" + oldType.TypeDescription.Id + "' AND HolidayId= '" + oldType.Holiday.Id + "'";
                 SQLiteCommand command = new SQLiteCommand(sql, manager.DbConnection);
-                int rowsAffected = command.ExecuteNonQuery();
-                if (rowsAffected == 0)
+                try
+                {
+                    int rowsAffected = command.ExecuteNonQuery();
+                    if (rowsAffected != 0)
+                        MessageBox.Show("Pontajul a fost modificat!");
+                }
+                catch (SQLiteException ex)
+                {
                     MessageBox.Show("Nu s-a putut efectua modificarea!");
-                else
-                    MessageBox.Show("Tipul de pontaj a fost modificat!");
+                }
             }
         }
         public void DeleteTypeFromDB(ClockingType type)
@@ -75,13 +86,18 @@ namespace DAL
             using (SQLConnectionManager manager = new SQLConnectionManager())
             {
                 manager.Open();
-                string sql = "delete from type where Type='" + type.Type + "'";
+                string sql = "delete from type where Id='" + type.TypeId + "';";
                 SQLiteCommand command = new SQLiteCommand(sql, manager.DbConnection);
-                int rowsAffected = command.ExecuteNonQuery();
-                if (rowsAffected == 0)
+                try
+                {
+                    int rowsAffected = command.ExecuteNonQuery();
+                    if (rowsAffected != 0)
+                        MessageBox.Show("Pontajul a fost sters!");
+                }
+                catch (SQLiteException ex)
+                {
                     MessageBox.Show("Nu s-a putut efectua stergerea!");
-                else
-                    MessageBox.Show("Tipul de pontaj a fost sters!");
+                }
             }
         }
     }

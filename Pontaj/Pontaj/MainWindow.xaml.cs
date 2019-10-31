@@ -260,17 +260,27 @@ namespace Pontaj
         private void BtnAddClockingType_Click(object sender, RoutedEventArgs e)
         {
             List<ClockingType> types = controller.GetTypesFromDB();
-            string type = clockingTextBox.Text;
+            string description = clockingDescriptionTextBox.Text;
             bool canInsert = true;
-            if (isEmpty(type))
+            if (isEmpty(description))
             {
-                MessageBox.Show("Te rog introdu tipul de pontaj corect!");
+                MessageBox.Show("Te rog introdu descrierea tipului de pontaj!");
                 canInsert = false;
 
             }
+            if (holidayClockingComboBox.SelectedItem == null)
+            {
+                MessageBox.Show("Te rog alege tipul de concediu!");
+                canInsert = false;
+            }
+            if (clockingDescriptionTypeComboBox.SelectedItem == null)
+            {
+                MessageBox.Show("Te rog alege tipul de pontaj!");
+                canInsert = false;
+            }
             if (canInsert)
             {
-                ClockingType newType = new ClockingType(type);
+                ClockingType newType = new ClockingType(description, clockingDescriptionTypeComboBox.SelectedItem as TypeDescription, holidayClockingComboBox.SelectedItem as Holiday);
                 bool canAdd = true;
                 foreach (var x in types)
                     if (x.Equals(newType))
@@ -279,7 +289,9 @@ namespace Pontaj
                 {
                     types.Add(newType);
                     controller.AddTypeInDB(newType);
-                    emptyField(clockingTextBox);
+                    emptyField(clockingDescriptionTextBox);
+                    clockingDescriptionTypeComboBox.SelectedIndex = -1;
+                    holidayClockingComboBox.SelectedIndex = -1;
                     LoadTypes();
                 }
                 else
@@ -293,56 +305,95 @@ namespace Pontaj
 
         private void LstTypes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
             ClockingType selectedType = lstTypes.SelectedItem as ClockingType;
             if (selectedType != null)
             {
                 populateTypeField(selectedType);
+                populateHolidayComboBox(selectedType);
+                populateTypeDescriptionComboBox(selectedType);
                 setEnabledButton(btnUpdateClockingType);
                 setEnabledButton(btnDeleteClockingType);
 
             }
             e.Handled = true;
+
+        }
+
+
+        private void populateHolidayComboBox(ClockingType type)
+        {
+            if (lstHolidays.Items.Count != 0)
+            {
+                foreach (var holiday in lstHolidays.Items)
+                    if (holiday.Equals(type.Holiday))
+                    {
+                        holidayClockingComboBox.SelectedValue = holiday;
+                        break;
+                    }
+            }
+        }
+        private void populateTypeDescriptionComboBox(ClockingType type)
+        {
+            if (lstTypeDescription.Items.Count != 0)
+            {
+                foreach (var typeDescription in lstTypeDescription.Items)
+                    if (typeDescription.Equals(type.TypeDescription))
+                    {
+
+                        clockingDescriptionTypeComboBox.SelectedValue = typeDescription;
+                        break;
+                    }
+            }
         }
         private void populateTypeField(ClockingType type)
         {
-            clockingTextBox.Text = type.Type;
+            clockingDescriptionTextBox.Text = type.Type;
         }
 
         private void BtnUpdateClockingType_Click(object sender, RoutedEventArgs e)
         {
             ClockingType selectedType = lstTypes.SelectedItem as ClockingType;
+
             if (selectedType != null)
             {
-                string type = clockingTextBox.Text;
+                string type = clockingDescriptionTextBox.Text;
 
-                ClockingType modifiedType = new ClockingType(type);
-                if (!isEmpty(type))
-                    if (selectedType.Equals(modifiedType))
-                    {
-                        MessageBox.Show("Nu ai facut nicio modificare!");
-                    }
-                    else
-                    {
-                        List<ClockingType> types = controller.GetTypesFromDB();
-                        bool canUpdate = true;
-                        foreach (var x in types)
-                            if (x.Equals(modifiedType))
-                            {
-                                MessageBox.Show("Tipul de pontaj exista deja!");
-                                canUpdate = false;
-                                break;
-                            }
-                        if (canUpdate)
-                        {
-                            controller.UpdateTypeInDB(modifiedType, selectedType);
-                            emptyField(clockingTextBox);
-                            setDisabledButton(btnUpdateClockingType);
-                            setDisabledButton(btnDeleteClockingType);
-                            LoadTypes();
-                        }
-                    }
+
+                bool canUpdate = true;
+                if (isEmpty(type))
+                {
+                    MessageBox.Show("Nu ai introdus nicio descriere!");
+                    canUpdate = false;
+                }
+
+                if (clockingDescriptionTypeComboBox.SelectedItem == null)
+                {
+                    MessageBox.Show("Nu ai introdus tipul de pontaj!");
+                    canUpdate = false;
+                }
+                if (holidayClockingComboBox.SelectedItem == null)
+                {
+                    MessageBox.Show("Nu ai introdus tipul de concediu!");
+                    canUpdate = false;
+                }
+                TypeDescription typeD = clockingDescriptionTypeComboBox.SelectedItem as TypeDescription; //getting Id from DB for TypeDescription;   
+                Holiday holiday = holidayClockingComboBox.SelectedItem as Holiday; //getting Id from DB for Holiday; 
+                ClockingType modifiedType = new ClockingType(type, typeD, holiday);
+
+                if (canUpdate)
+                {
+                    controller.UpdateTypeInDB(modifiedType, selectedType);
+                    emptyField(clockingDescriptionTextBox);
+                    holidayClockingComboBox.SelectedIndex = -1;
+                    clockingDescriptionTypeComboBox.SelectedIndex = -1;
+                    setDisabledButton(btnUpdateClockingType);
+                    setDisabledButton(btnDeleteClockingType);
+                    LoadTypes();
+                }
             }
         }
+
 
         private void BtnDeleteClockingType_Click(object sender, RoutedEventArgs e)
         {
@@ -354,7 +405,9 @@ namespace Pontaj
 
                 setDisabledButton(btnUpdateClockingType);
                 setDisabledButton(btnDeleteClockingType);
-                emptyField(clockingTextBox);
+                emptyField(clockingDescriptionTextBox);
+                holidayClockingComboBox.SelectedIndex = -1;
+                clockingDescriptionTypeComboBox.SelectedIndex = -1;
                 LoadTypes();
 
             }
@@ -472,10 +525,62 @@ namespace Pontaj
             }
         }
 
+        private void LoadHolidaysIntoComboBox()
+        {
+            if (controller.holidays.Holidays == null || controller.holidays.Holidays.Count() == 0)
+            {
+                LoadHolidays();
+                if (controller.holidays.Holidays.Count() == 0)
+                    holidayClockingComboBox.Items.Add("Nu s-a gasit niciun concediu");
+                else
+                {
+
+                    holidayClockingComboBox.Items.Clear();
+                    foreach (var holiday in controller.holidays.Holidays)
+                    {
+                        holidayClockingComboBox.Items.Add(holiday);
+                    }
+                }
+            }
+            else
+            {
+                holidayClockingComboBox.Items.Clear();
+                foreach (var holiday in controller.holidays.Holidays)
+                {
+                    holidayClockingComboBox.Items.Add(holiday);
+                }
+            }
+        }
+        private void LoadDescriptionTypesIntoComboBox()
+        {
+            if (controller.typeDescriptions.TypeDescriptions == null || controller.typeDescriptions.TypeDescriptions.Count() == 0)
+            {
+                LoadTypeDescriptions();
+                if (controller.typeDescriptions.TypeDescriptions.Count() == 0)
+                    clockingDescriptionTypeComboBox.Items.Add("Nu s-a gasit niciun tip");
+                else
+                {
+
+                    clockingDescriptionTypeComboBox.Items.Clear();
+                    foreach (var typeDescription in controller.typeDescriptions.TypeDescriptions)
+                    {
+                        clockingDescriptionTypeComboBox.Items.Add(typeDescription);
+                    }
+                }
+            }
+            else
+            {
+                clockingDescriptionTypeComboBox.Items.Clear();
+                foreach (var typeDescription in controller.typeDescriptions.TypeDescriptions)
+                {
+                    clockingDescriptionTypeComboBox.Items.Add(typeDescription);
+                }
+            }
+        }
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            
+
             if (tabControl.SelectedItem.Equals(usersTabItem))
             {
                 LoadUsers();
@@ -492,9 +597,11 @@ namespace Pontaj
             else if (tabControl.SelectedItem.Equals(typesTabItem))
             {
                 LoadTypes();
+                LoadDescriptionTypesIntoComboBox();
+                LoadHolidaysIntoComboBox();
                 progressBar.Value = 49.99;
             }
-            else if(tabControl.SelectedItem.Equals(descriptionHolidayTabItem))
+            else if (tabControl.SelectedItem.Equals(descriptionHolidayTabItem))
             {
                 LoadHolidays();
                 LoadTypeDescriptions();
@@ -858,7 +965,7 @@ namespace Pontaj
                 {
                     MessageBox.Show("Te rog selecteaza gradul!");
                 }
-               
+
             }
         }
 
@@ -936,7 +1043,7 @@ namespace Pontaj
                 {
                     MessageBox.Show("Te rog selecteaza unitatea!");
                 }
-               
+
             }
         }
 
@@ -1134,6 +1241,76 @@ namespace Pontaj
                 }
 
             }
+        }
+        private List<ClockingType> GetOnlyTypesOfOneTypeDescription(TypeDescription typeDescription)
+        {
+            List<ClockingType> types = controller.GetTypesFromDB();
+            List<ClockingType> onlyForOne = new List<ClockingType>();
+            foreach (ClockingType type in types)
+            {
+                if (type.TypeDescription.Equals(typeDescription))
+                    onlyForOne.Add(type);
+            }
+            return onlyForOne;
+        }
+        private void ClockingDescriptionTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (clockingDescriptionTypeComboBox.SelectedValue != null && lstTypes.SelectedItem == null)
+            {
+                TypeDescription typeDescription = clockingDescriptionTypeComboBox.SelectedItem as TypeDescription;
+                lstTypes.Items.Clear();
+                List<ClockingType> forOnlyOneUser = GetOnlyTypesOfOneTypeDescription(typeDescription);
+                foreach (var type in forOnlyOneUser)
+                    lstTypes.Items.Add(type);
+                holidayClockingComboBox.SelectedIndex = -1;
+            }
+            e.Handled = true;
+        }
+        private List<ClockingType> GetOnlyTypesOfOneHoliday(Holiday holiday)
+        {
+            List<ClockingType> types = controller.GetTypesFromDB();
+            List<ClockingType> onlyForOne = new List<ClockingType>();
+            foreach (ClockingType type in types)
+            {
+                if (type.Holiday.Equals(holiday))
+                    onlyForOne.Add(type);
+            }
+            return onlyForOne;
+        }
+
+        private List<ClockingType> GetOnlyTypesOfOneHoliday(List<ClockingType> types, Holiday holiday)
+        {
+            List<ClockingType> onlyForOne = new List<ClockingType>();
+            foreach (ClockingType type in types)
+            {
+                if (type.Holiday.Equals(holiday))
+                    onlyForOne.Add(type);
+            }
+            return onlyForOne;
+        }
+        private void HolidayClockingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (holidayClockingComboBox.SelectedValue != null && lstTypes.SelectedItem == null)
+            {
+                string value = holidayClockingComboBox.SelectedValue.ToString().Trim();
+                Holiday holiday = new Holiday(value);
+                lstTypes.Items.Clear();
+                List<ClockingType> forOnlyOneType;
+                if (clockingDescriptionTypeComboBox.SelectedValue != null)
+                {
+                    TypeDescription typeDescription = clockingDescriptionTypeComboBox.SelectedItem as TypeDescription;
+                    forOnlyOneType = GetOnlyTypesOfOneHoliday(GetOnlyTypesOfOneTypeDescription(typeDescription), holiday);
+                }
+                else
+                {
+                    forOnlyOneType = GetOnlyTypesOfOneHoliday(controller.GetTypesFromDB(), holiday);
+                }
+                foreach (var type in forOnlyOneType)
+                    lstTypes.Items.Add(type);
+            }
+            e.Handled = true;
+
+
         }
     }
 }

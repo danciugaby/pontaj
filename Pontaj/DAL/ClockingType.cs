@@ -22,7 +22,7 @@ namespace DAL
             Type = type;
             typeId = id;
         }
-        public ClockingType(Int64 id, string type, TypeDescription typeDescription,Holiday holiday)
+        public ClockingType(Int64 id, string type, TypeDescription typeDescription, Holiday holiday)
         {
             Type = type;
             typeId = id;
@@ -50,7 +50,7 @@ namespace DAL
 
         public override string ToString()
         {
-            return Type;
+            return Type + ", " + TypeDescription + ", " + Holiday;
         }
 
     }

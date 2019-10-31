@@ -34,7 +34,7 @@ namespace DAL
 
         public override bool Equals(object obj)
         {
-            var unit = obj as Unit;
+            var unit = obj as TypeDescription;
             return unit != null &&
                    Name == unit.Name;
         }
