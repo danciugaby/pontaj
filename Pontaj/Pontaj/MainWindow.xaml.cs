@@ -47,17 +47,22 @@ namespace Pontaj
                 canInsert = false;
 
             }
-            //string rank = userRankTextBoxPersonalTab.Text;
-            //if (canInsert && isEmpty(rank))
-            //{
-            //    MessageBox.Show("Te rog introdu gradul corect!");
-            //    canInsert = false;
-            //    emptyField(userRankTextBoxPersonalTab);
-            //}
+            if (userRankComboBoxPersonalTab.SelectedItem == null)
+            {
+                MessageBox.Show("Te rog selecteaza gradul!");
+                canInsert = false;
+            }
+            if (userUnitComboBoxPersonalTab.SelectedItem == null)
+            {
+                MessageBox.Show("Te rog selecteaza unitatea!");
+                canInsert = false;
+            }
 
             if (canInsert)
             {
-                User newUser = new User(lastName, firstName);
+                Rank rank = userRankComboBoxPersonalTab.SelectedItem as Rank;
+                Unit unit = userUnitComboBoxPersonalTab.SelectedItem as Unit;
+                User newUser = new User(lastName, firstName, rank, unit);
                 bool canAdd = true;
                 foreach (var user in users)
                     if (user.Equals(newUser))
@@ -140,10 +145,37 @@ namespace Pontaj
             User selectedUser = lstUsers.SelectedItem as User;
             if (selectedUser != null)
             {
-                string firstName = userFirstNameTextBoxPersonalTab.Text;
                 string lastName = userLastNameTextBoxPersonalTab.Text;
-                User modifiedUser = new User(firstName, lastName);
-                if (canChangeUserInDB(modifiedUser))
+                string firstName = userFirstNameTextBoxPersonalTab.Text;
+                bool canUpdate = true;
+                if (isEmpty(lastName))
+                {
+                    MessageBox.Show("Te rog introdu numele corect!");
+                    canUpdate = false;
+
+                }
+                if (canUpdate && isEmpty(firstName))
+                {
+                    MessageBox.Show("Te rog introdu prenumele corect!");
+                    canUpdate = false;
+
+                }
+                if (userRankComboBoxPersonalTab.SelectedItem == null)
+                {
+                    MessageBox.Show("Te rog selecteaza gradul!");
+                    canUpdate = false;
+                }
+                if (userUnitComboBoxPersonalTab.SelectedItem == null)
+                {
+                    MessageBox.Show("Te rog selecteaza unitatea!");
+                    canUpdate = false;
+                }
+                if (canUpdate)
+                {
+                    Rank rank = userRankComboBoxPersonalTab.SelectedItem as Rank;
+                    Unit unit = userUnitComboBoxPersonalTab.SelectedItem as Unit;
+                    User modifiedUser = new User(lastName, firstName, rank, unit);
+
                     if (selectedUser.Equals(modifiedUser))
                     {
                         MessageBox.Show("Nu ai facut nicio modificare!");
@@ -151,7 +183,7 @@ namespace Pontaj
                     else
                     {
                         List<User> users = controller.GetUsersFromDB();
-                        bool canUpdate = true;
+
                         foreach (var x in users)
                             if (x.Equals(modifiedUser))
                             {
@@ -164,11 +196,14 @@ namespace Pontaj
                             controller.UpdateUserInDB(modifiedUser, selectedUser);
                             emptyField(userLastNameTextBoxPersonalTab);
                             emptyField(userFirstNameTextBoxPersonalTab);
+                            userRankComboBoxPersonalTab.SelectedIndex = -1;
+                            userUnitComboBoxPersonalTab.SelectedIndex = -1;
                             setDisabledButton(btnUpdateUser);
                             setDisabledButton(btnDeleteUser);
                             LoadUsers();
                         }
                     }
+                }
             }
         }
         private void emptyTextBox(TextBox textBox)

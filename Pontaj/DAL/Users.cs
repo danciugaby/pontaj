@@ -46,11 +46,16 @@ namespace DAL
                 manager.Open();
                 string sql = "insert into user (FirstName,LastName,RankId,UnitId) values('" + user.FirstName + "','" + user.LastName + "','" + user.Rank.Id + "','" + user.Unit.Id + "');";
                 SQLiteCommand command = new SQLiteCommand(sql, manager.DbConnection);
-                int rowsAffected = command.ExecuteNonQuery();
-                if (rowsAffected == 0)
-                    MessageBox.Show("Nu s-a putut efectua adaugarea!");
-                else
-                    MessageBox.Show("Utilizatorul a fost inserat!");
+                try
+                {
+                    int rowsAffected = command.ExecuteNonQuery();
+                    if (rowsAffected != 0)
+                        MessageBox.Show("Utilizatorul a fost introdus!");
+                }
+                catch (SQLiteException ex)
+                {
+                    MessageBox.Show("Nu s-a putut efectua inserarea!");
+                }
             }
         }
         //update
@@ -65,11 +70,16 @@ namespace DAL
                     + oldUser.LastName + "' and RankId = '" + oldUser.Rank.Id +
                     "' and UnitId = '" + oldUser.Unit.Id + "'";
                 SQLiteCommand command = new SQLiteCommand(sql, manager.DbConnection);
-                int rowsAffected = command.ExecuteNonQuery();
-                if (rowsAffected == 0)
+                try
+                {
+                    int rowsAffected = command.ExecuteNonQuery();
+                    if (rowsAffected != 0)
+                        MessageBox.Show("Utilizatorul a fost modificat!");
+                }
+                catch (SQLiteException ex)
+                {
                     MessageBox.Show("Nu s-a putut efectua modificarea!");
-                else
-                    MessageBox.Show("Utilizatorul a fost modificat!");
+                }
             }
         }
         //delete
@@ -80,11 +90,16 @@ namespace DAL
                 manager.Open();
                 string sql = "delete from user where FirstName='" + user.FirstName + "' and LastName = '" + user.LastName + "' and RankId = '" + user.Rank.Id + "' and UnitId = '" + user.Unit.Id + "'";
                 SQLiteCommand command = new SQLiteCommand(sql, manager.DbConnection);
-                int rowsAffected = command.ExecuteNonQuery();
-                if (rowsAffected == 0)
+                try
+                {
+                    int rowsAffected = command.ExecuteNonQuery();
+                    if (rowsAffected != 0)
+                        MessageBox.Show("Utilizatorul a fost sters!");
+                }
+                catch (SQLiteException ex)
+                {
                     MessageBox.Show("Nu s-a putut efectua stergerea!");
-                else
-                    MessageBox.Show("Utilizatorul a fost sters!");
+                }
             }
         }
 
