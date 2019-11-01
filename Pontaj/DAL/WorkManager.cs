@@ -26,7 +26,7 @@ namespace DAL
             using (SQLConnectionManager manager = new SQLConnectionManager())
             {
                 manager.Open();
-                string sql = "select User.FirstName,User.LastName, Rank.Name as \"Rank\",Unit.Name as \"Unit\", " +
+                string sql = "select User.Id as \"UserId\", User.FirstName,User.LastName, Rank.Id as \"RankId\", Rank.Name as \"Rank\", Unit.Id as \"UnitId\",unit.Name as \"Unit\", "+
                     " Type.Name as \"Name\", TypeDescription.Name as \"Description\"," +
                     " Holiday.Name as \"Holiday\",StartDate, EndDate " +
                     "from Work, Type, TypeDescription, Holiday, User, Unit, Rank " +
@@ -38,8 +38,8 @@ namespace DAL
                 Works.Clear();
                 while (reader.Read())
                 {
-                    Works.Add(new Work(new User((string)reader["FirstName"], (string)reader["LastName"],
-                        new Rank((string)reader["Rank"]), new Unit((string)reader["Unit"])),
+                    Works.Add(new Work(new User((Int64)reader["UserId"],(string)reader["FirstName"], (string)reader["LastName"],
+                        new Rank((Int64)reader["RankId"],(string)reader["Rank"]), new Unit((Int64)reader["UnitId"],(string)reader["Unit"])),
                         new ClockingType((string)reader["Name"],new TypeDescription((string)reader["Description"]),new Holiday((string)reader["Holiday"])),
                         (DateTime)reader["StartDate"], (DateTime)reader["EndDate"]));
 

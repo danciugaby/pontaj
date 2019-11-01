@@ -62,7 +62,7 @@ namespace Pontaj
             {
                 Rank rank = userRankComboBoxPersonalTab.SelectedItem as Rank;
                 Unit unit = userUnitComboBoxPersonalTab.SelectedItem as Unit;
-                User newUser = new User(lastName, firstName, rank, unit);
+                User newUser = new User(firstName, lastName, rank, unit);
                 bool canAdd = true;
                 foreach (var user in users)
                     if (user.Equals(newUser))
@@ -110,12 +110,39 @@ namespace Pontaj
             if (selectedUser != null)
             {
                 populateFields(selectedUser);
+                populateRankComboBox(selectedUser);
+                populateUnitComboBox(selectedUser);
                 setEnabledButton(btnUpdateUser);
                 setEnabledButton(btnDeleteUser);
 
             }
             e.Handled = true;
 
+        }
+        private void populateRankComboBox(User user)
+        {
+            if (lstRanks.Items.Count != 0)
+            {
+                foreach (var rank in lstRanks.Items)
+                    if (rank.Equals(user.Rank))
+                    {
+                        userRankComboBoxPersonalTab.SelectedValue = rank;
+                        break;
+                    }
+            }
+        }
+        private void populateUnitComboBox(User user)
+        {
+            if (lstUnits.Items.Count != 0)
+            {
+                foreach (var unit in lstUnits.Items)
+                    if (unit.Equals(user.Unit))
+                    {
+
+                        userUnitComboBoxPersonalTab.SelectedValue = unit;
+                        break;
+                    }
+            }
         }
 
 
@@ -174,7 +201,7 @@ namespace Pontaj
                 {
                     Rank rank = userRankComboBoxPersonalTab.SelectedItem as Rank;
                     Unit unit = userUnitComboBoxPersonalTab.SelectedItem as Unit;
-                    User modifiedUser = new User(lastName, firstName, rank, unit);
+                    User modifiedUser = new User(firstName, lastName, rank, unit);
 
                     if (selectedUser.Equals(modifiedUser))
                     {
@@ -621,18 +648,23 @@ namespace Pontaj
                 LoadUsers();
                 LoadUnitsIntoComboBox();
                 LoadRanksIntoComboBox();
+                emptyTextBox(userFirstNameTextBoxPersonalTab);
+                emptyTextBox(userLastNameTextBoxPersonalTab);
                 progressBar.Value = 16.66;
             }
             else if (tabControl.SelectedItem.Equals(rankUnitTabItem))
             {
                 LoadRanks();
                 LoadUnits();
+                emptyTextBox(rankTextBox);
+                emptyTextBox(unitTextBox);
                 progressBar.Value = 33.33;
             }
             else if (tabControl.SelectedItem.Equals(typesTabItem))
             {
                 LoadTypes();
                 LoadDescriptionTypesIntoComboBox();
+                emptyTextBox(typeDescriptionTextBox);
                 LoadHolidaysIntoComboBox();
                 progressBar.Value = 49.99;
             }
@@ -640,6 +672,7 @@ namespace Pontaj
             {
                 LoadHolidays();
                 LoadTypeDescriptions();
+                emptyTextBox(holidayTextBox);
                 progressBar.Value = 66.65;
             }
             else if (tabControl.SelectedItem.Equals(worksTabItem))
@@ -647,6 +680,7 @@ namespace Pontaj
                 LoadWorks();
                 LoadTypesIntoComboBox();
                 LoadUsersIntoComboBox();
+            
                 progressBar.Value = 83.31;
             }
             else if (tabControl.SelectedItem.Equals(reportTabItem))
@@ -955,12 +989,58 @@ namespace Pontaj
 
         private void UserUnitComboBoxPersonalTab_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (userUnitComboBoxPersonalTab.SelectedValue != null && lstUsers.SelectedItem == null)
+            {
+                Unit unit = userUnitComboBoxPersonalTab.SelectedItem as Unit;
+                lstUsers.Items.Clear();
+                List<User> forOnlyOneUnit;
+                if (userRankComboBoxPersonalTab.SelectedValue != null)
+                {
+                    Rank rank = userRankComboBoxPersonalTab.SelectedItem as Rank;
+                    forOnlyOneUnit = GetOnlyUsersOfOneUnit(GetOnlyUsersOfOneRank(controller.GetUsersFromDB(),rank), unit);
+                }
+                else
+                {
+                    forOnlyOneUnit = GetOnlyUsersOfOneUnit(controller.GetUsersFromDB(), unit);
+                }
+                foreach (var user in forOnlyOneUnit)
+                    lstUsers.Items.Add(user);
+            }
             e.Handled = true;
         }
 
         private void UserRankComboBoxPersonalTab_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (userRankComboBoxPersonalTab.SelectedValue != null && lstUsers.SelectedItem == null)
+            {
+                Rank rank = userRankComboBoxPersonalTab.SelectedItem as Rank;
+                lstUsers.Items.Clear();
+                List<User> forOnlyOneRank = GetOnlyUsersOfOneRank(controller.GetUsersFromDB(),rank);
+                foreach (var user in forOnlyOneRank)
+                    lstUsers.Items.Add(user);
+                userUnitComboBoxPersonalTab.SelectedIndex = -1;
+            }
             e.Handled = true;
+        }
+        private List<User> GetOnlyUsersOfOneUnit(List<User> users, Unit unit)
+        {
+            List<User> onlyForOne = new List<User>();
+            foreach (User user in users)
+            {
+                if (user.Unit.Equals(unit))
+                    onlyForOne.Add(user);
+            }
+            return onlyForOne;
+        }
+        private List<User> GetOnlyUsersOfOneRank(List<User> users, Rank rank)
+        {
+            List<User> onlyForOne = new List<User>();
+            foreach (User user in users)
+            {
+                if (user.Rank.Equals(rank))
+                    onlyForOne.Add(user);
+            }
+            return onlyForOne;
         }
 
         private void BtnAddRank_Click(object sender, RoutedEventArgs e)
@@ -1294,8 +1374,8 @@ namespace Pontaj
             {
                 TypeDescription typeDescription = clockingDescriptionTypeComboBox.SelectedItem as TypeDescription;
                 lstTypes.Items.Clear();
-                List<ClockingType> forOnlyOneUser = GetOnlyTypesOfOneTypeDescription(typeDescription);
-                foreach (var type in forOnlyOneUser)
+                List<ClockingType> forOnlyOneType = GetOnlyTypesOfOneTypeDescription(typeDescription);
+                foreach (var type in forOnlyOneType)
                     lstTypes.Items.Add(type);
                 holidayClockingComboBox.SelectedIndex = -1;
             }

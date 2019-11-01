@@ -19,22 +19,23 @@ namespace DAL
             FirstName = firstName;
             LastName = lastName;
         }
-        public User(Int64 id, string firstName, string lastName, string rank, string unit)
+        public User(Int64 id, string firstName, string lastName, Rank rank, Unit unit)
         {
-            userId = id;
-            FirstName = firstName;
-            LastName = lastName;
-            Rank = new Rank(rank);
-            Unit = new Unit(unit);
-        }
 
-        public User(string firstName, string lastName, Rank rank, Unit unit)
-        {
-  
             FirstName = firstName;
             LastName = lastName;
             Rank = rank;
             Unit = unit;
+            userId = id;
+        }
+        public User(string firstName, string lastName, Rank rank, Unit unit)
+        {
+
+            FirstName = firstName;
+            LastName = lastName;
+            Rank = rank;
+            Unit = unit;
+
         }
 
         public string LastName { get => lastName; set => lastName = value; }
@@ -55,7 +56,7 @@ namespace DAL
 
         public override string ToString()
         {
-            return  LastName + " " + FirstName + "," + Rank.Name + "," +Unit.Name;
+            return LastName + " " + FirstName + "," + Rank.Name + "," + Unit.Name;
         }
 
     }

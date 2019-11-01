@@ -26,7 +26,7 @@ namespace DAL
             using (SQLConnectionManager manager = new SQLConnectionManager())
             {
                 manager.Open();
-                string sql = "select user.Id as \"UserId\",user.FirstName,user.LastName,rank.Name as \"Rank\",unit.Name as \"Unit\""
+                string sql = "select user.Id as \"UserId\",user.FirstName,user.LastName,rank.Id as \"RankId\",rank.Name as \"Rank\", unit.Id as \"UnitId\",unit.Name as \"Unit\""
                              + " from user, rank, unit"
                              + " where user.RankId == rank.Id and user.UnitId == unit.Id;";
                 SQLiteCommand command = new SQLiteCommand(sql, manager.DbConnection);
@@ -34,7 +34,10 @@ namespace DAL
                 Users.Clear();
                 while (reader.Read())
                 {
-                    Users.Add(new User((Int64)reader["UserId"], (string)reader["FirstName"], (string)reader["LastName"], (string)reader["Rank"], (string)reader["Unit"]));
+                    Users.Add(new User((Int64)reader["UserId"], (string)reader["FirstName"], (string)reader["LastName"],
+                        new Rank((Int64)reader["RankId"], (string)reader["Rank"]), new Unit((Int64)reader["UnitId"], (string)reader["Unit"])));
+
+
                 }
             }
         }
@@ -65,8 +68,8 @@ namespace DAL
             {
                 manager.Open();
                 string sql = "update User set FirstName = '" + newUser.FirstName + "', LastName = '" +
-                    newUser.LastName + "', RankId = '" + newUser.Rank.Id + "', UnitId = '" + 
-                    newUser.Unit.Id + "' where FirstName='" + oldUser.FirstName + "' and LastName = '" 
+                    newUser.LastName + "', RankId = '" + newUser.Rank.Id + "', UnitId = '" +
+                    newUser.Unit.Id + "' where FirstName='" + oldUser.FirstName + "' and LastName = '"
                     + oldUser.LastName + "' and RankId = '" + oldUser.Rank.Id +
                     "' and UnitId = '" + oldUser.Unit.Id + "'";
                 SQLiteCommand command = new SQLiteCommand(sql, manager.DbConnection);
@@ -88,7 +91,7 @@ namespace DAL
             using (SQLConnectionManager manager = new SQLConnectionManager())
             {
                 manager.Open();
-                string sql = "delete from user where FirstName='" + user.FirstName + "' and LastName = '" + user.LastName + "' and RankId = '" + user.Rank.Id + "' and UnitId = '" + user.Unit.Id + "'";
+                string sql = "delete from user where user.Id='" + user.UserId + "' ;";
                 SQLiteCommand command = new SQLiteCommand(sql, manager.DbConnection);
                 try
                 {
