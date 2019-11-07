@@ -54,11 +54,9 @@
     <Compile Include="Rank.cs" />
     <Compile Include="RankManager.cs" />
     <Compile Include="SQLConnectionManager.cs" />
-    <Compile Include="ClockingType.cs" />
     <Compile Include="TypeDescription.cs" />
     <Compile Include="TypeDescriptionManager.cs" />
     <Compile Include="Unit.cs" />
-    <Compile Include="TypeManager.cs" />
     <Compile Include="UnitManager.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Users.cs" />

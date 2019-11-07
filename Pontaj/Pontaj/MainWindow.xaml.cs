@@ -261,16 +261,7 @@ namespace Pontaj
             }
 
         }
-        private void LoadTypes()
-        {
-            lstTypes.Items.Clear();
-            List<ClockingType> types = controller.GetTypesFromDB();
-            foreach (var type in types)
-            {
-                lstTypes.Items.Add(type);
-            }
-
-        }
+        
         private void LoadUnits()
         {
             lstUnits.Items.Clear();
@@ -319,167 +310,41 @@ namespace Pontaj
 
         }
 
-        private void BtnAddClockingType_Click(object sender, RoutedEventArgs e)
-        {
-            List<ClockingType> types = controller.GetTypesFromDB();
-            string description = clockingDescriptionTextBox.Text;
-            bool canInsert = true;
-            if (isEmpty(description))
-            {
-                MessageBox.Show("Te rog introdu descrierea tipului de pontaj!");
-                canInsert = false;
+        
 
-            }
-            if (holidayClockingComboBox.SelectedItem == null)
-            {
-                MessageBox.Show("Te rog alege tipul de concediu!");
-                canInsert = false;
-            }
-            if (clockingDescriptionTypeComboBox.SelectedItem == null)
-            {
-                MessageBox.Show("Te rog alege tipul de pontaj!");
-                canInsert = false;
-            }
-            if (canInsert)
-            {
-                ClockingType newType = new ClockingType(description, clockingDescriptionTypeComboBox.SelectedItem as TypeDescription, holidayClockingComboBox.SelectedItem as Holiday);
-                bool canAdd = true;
-                foreach (var x in types)
-                    if (x.Equals(newType))
-                        canAdd = false;
-                if (canAdd)
-                {
-                    types.Add(newType);
-                    controller.AddTypeInDB(newType);
-                    emptyField(clockingDescriptionTextBox);
-                    clockingDescriptionTypeComboBox.SelectedIndex = -1;
-                    holidayClockingComboBox.SelectedIndex = -1;
-                    LoadTypes();
-                }
-                else
-                {
-                    MessageBox.Show("Tipul de pontaj exista deja!");
-                }
+        //private void populateHolidayComboBox(ClockingType type)
+        //{
+        //    if (lstHolidays.Items.Count != 0)
+        //    {
+        //        foreach (var holiday in lstHolidays.Items)
+        //            if (holiday.Equals(type.Holiday))
+        //            {
+        //                holidayClockingComboBox.SelectedValue = holiday;
+        //                break;
+        //            }
+        //    }
+        //}
+        //private void populateTypeDescriptionComboBox(ClockingType type)
+        //{
+        //    if (lstTypeDescription.Items.Count != 0)
+        //    {
+        //        foreach (var typeDescription in lstTypeDescription.Items)
+        //            if (typeDescription.Equals(type.TypeDescription))
+        //            {
 
+        //                clockingDescriptionTypeComboBox.SelectedValue = typeDescription;
+        //                break;
+        //            }
+        //    }
+        //}
 
-            }
-        }
-
-        private void LstTypes_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-            ClockingType selectedType = lstTypes.SelectedItem as ClockingType;
-            if (selectedType != null)
-            {
-                populateTypeField(selectedType);
-                populateHolidayComboBox(selectedType);
-                populateTypeDescriptionComboBox(selectedType);
-                setEnabledButton(btnUpdateClockingType);
-                setEnabledButton(btnDeleteClockingType);
-
-            }
-            e.Handled = true;
-
-        }
-
-
-        private void populateHolidayComboBox(ClockingType type)
-        {
-            if (lstHolidays.Items.Count != 0)
-            {
-                foreach (var holiday in lstHolidays.Items)
-                    if (holiday.Equals(type.Holiday))
-                    {
-                        holidayClockingComboBox.SelectedValue = holiday;
-                        break;
-                    }
-            }
-        }
-        private void populateTypeDescriptionComboBox(ClockingType type)
-        {
-            if (lstTypeDescription.Items.Count != 0)
-            {
-                foreach (var typeDescription in lstTypeDescription.Items)
-                    if (typeDescription.Equals(type.TypeDescription))
-                    {
-
-                        clockingDescriptionTypeComboBox.SelectedValue = typeDescription;
-                        break;
-                    }
-            }
-        }
-        private void populateTypeField(ClockingType type)
-        {
-            clockingDescriptionTextBox.Text = type.Type;
-        }
-
-        private void BtnUpdateClockingType_Click(object sender, RoutedEventArgs e)
-        {
-            ClockingType selectedType = lstTypes.SelectedItem as ClockingType;
-
-            if (selectedType != null)
-            {
-                string type = clockingDescriptionTextBox.Text;
-
-
-                bool canUpdate = true;
-                if (isEmpty(type))
-                {
-                    MessageBox.Show("Nu ai introdus nicio descriere!");
-                    canUpdate = false;
-                }
-
-                if (clockingDescriptionTypeComboBox.SelectedItem == null)
-                {
-                    MessageBox.Show("Nu ai introdus tipul de pontaj!");
-                    canUpdate = false;
-                }
-                if (holidayClockingComboBox.SelectedItem == null)
-                {
-                    MessageBox.Show("Nu ai introdus tipul de concediu!");
-                    canUpdate = false;
-                }
-                TypeDescription typeD = clockingDescriptionTypeComboBox.SelectedItem as TypeDescription; //getting Id from DB for TypeDescription;   
-                Holiday holiday = holidayClockingComboBox.SelectedItem as Holiday; //getting Id from DB for Holiday; 
-                ClockingType modifiedType = new ClockingType(type, typeD, holiday);
-
-                if (canUpdate)
-                {
-                    controller.UpdateTypeInDB(modifiedType, selectedType);
-                    emptyField(clockingDescriptionTextBox);
-                    holidayClockingComboBox.SelectedIndex = -1;
-                    clockingDescriptionTypeComboBox.SelectedIndex = -1;
-                    setDisabledButton(btnUpdateClockingType);
-                    setDisabledButton(btnDeleteClockingType);
-                    LoadTypes();
-                }
-            }
-        }
-
-
-        private void BtnDeleteClockingType_Click(object sender, RoutedEventArgs e)
-        {
-
-            ClockingType selectedType = lstTypes.SelectedItem as ClockingType;
-            if (selectedType != null)
-            {
-                controller.DeleteTypeFromDB(selectedType);
-
-                setDisabledButton(btnUpdateClockingType);
-                setDisabledButton(btnDeleteClockingType);
-                emptyField(clockingDescriptionTextBox);
-                holidayClockingComboBox.SelectedIndex = -1;
-                clockingDescriptionTypeComboBox.SelectedIndex = -1;
-                LoadTypes();
-
-            }
-        }
 
         private void LoadUsersIntoComboBox()
         {
             if (controller.users.Users == null || controller.users.Users.Count() == 0)
             {
                 LoadUsers();
+                userComboBox.Items.Clear();
                 if (controller.users.Users.Count() == 0)
                     userComboBox.Items.Add("Nu s-a gasit nicio persoana");
                 else
@@ -508,37 +373,39 @@ namespace Pontaj
 
         }
 
-        private void LoadTypesIntoComboBox()
-        {
-            if (controller.types.Types.Count() == 0)
-            {
-                LoadTypes();
-                if (controller.types.Types.Count() == 0)
-                    clockingTypeComboBox.Items.Add("Nu s-a gasit niciun tip de pontaj");
-                else
-                {
-                    clockingTypeComboBox.Items.Clear();
-                    foreach (var type in controller.types.Types)
-                    {
-                        clockingTypeComboBox.Items.Add(type);
-                    }
-                }
+        //private void LoadTypesIntoComboBox()
+        //{
+        //    if (controller.types.Types.Count() == 0)
+        //    {
+        //        LoadTypes();
+        //        clockingTypeComboBox.Items.Clear();
+        //        if (controller.types.Types.Count() == 0)
+        //            clockingTypeComboBox.Items.Add("Nu s-a gasit niciun tip de pontaj");
+        //        else
+        //        {
+                    
+        //            foreach (var type in controller.types.Types)
+        //            {
+        //                clockingTypeComboBox.Items.Add(type);
+        //            }
+        //        }
 
-            }
-            else
-            {
-                clockingTypeComboBox.Items.Clear();
-                foreach (var type in controller.types.Types)
-                {
-                    clockingTypeComboBox.Items.Add(type);
-                }
-            }
-        }
+        //    }
+        //    else
+        //    {
+        //        clockingTypeComboBox.Items.Clear();
+        //        foreach (var type in controller.types.Types)
+        //        {
+        //            clockingTypeComboBox.Items.Add(type);
+        //        }
+        //    }
+        //}
         private void LoadUnitsIntoComboBox()
         {
             if (controller.units.Units.Count() == 0)
             {
                 LoadUnits();
+                userUnitComboBoxPersonalTab.Items.Clear();
                 if (controller.units.Units.Count() == 0)
                     userUnitComboBoxPersonalTab.Items.Add("Nu s-a gasit nicio unitate");
                 else
@@ -565,6 +432,7 @@ namespace Pontaj
             if (controller.ranks.Ranks.Count() == 0)
             {
                 LoadRanks();
+                userRankComboBoxPersonalTab.Items.Clear();
                 if (controller.ranks.Ranks.Count() == 0)
                     userRankComboBoxPersonalTab.Items.Add("Nu s-a gasit nicio unitate");
                 else
@@ -587,58 +455,34 @@ namespace Pontaj
             }
         }
 
-        private void LoadHolidaysIntoComboBox()
-        {
-            if (controller.holidays.Holidays == null || controller.holidays.Holidays.Count() == 0)
-            {
-                LoadHolidays();
-                if (controller.holidays.Holidays.Count() == 0)
-                    holidayClockingComboBox.Items.Add("Nu s-a gasit niciun concediu");
-                else
-                {
+        //private void LoadHolidaysIntoComboBox()
+        //{
+        //    if (controller.holidays.Holidays == null || controller.holidays.Holidays.Count() == 0)
+        //    {
+        //        LoadHolidays();
+        //        holidayClockingComboBox.Items.Clear();
+        //        if (controller.holidays.Holidays.Count() == 0)
+        //            holidayClockingComboBox.Items.Add("Nu s-a gasit niciun concediu");
+        //        else
+        //        {
 
-                    holidayClockingComboBox.Items.Clear();
-                    foreach (var holiday in controller.holidays.Holidays)
-                    {
-                        holidayClockingComboBox.Items.Add(holiday);
-                    }
-                }
-            }
-            else
-            {
-                holidayClockingComboBox.Items.Clear();
-                foreach (var holiday in controller.holidays.Holidays)
-                {
-                    holidayClockingComboBox.Items.Add(holiday);
-                }
-            }
-        }
-        private void LoadDescriptionTypesIntoComboBox()
-        {
-            if (controller.typeDescriptions.TypeDescriptions == null || controller.typeDescriptions.TypeDescriptions.Count() == 0)
-            {
-                LoadTypeDescriptions();
-                if (controller.typeDescriptions.TypeDescriptions.Count() == 0)
-                    clockingDescriptionTypeComboBox.Items.Add("Nu s-a gasit niciun tip");
-                else
-                {
-
-                    clockingDescriptionTypeComboBox.Items.Clear();
-                    foreach (var typeDescription in controller.typeDescriptions.TypeDescriptions)
-                    {
-                        clockingDescriptionTypeComboBox.Items.Add(typeDescription);
-                    }
-                }
-            }
-            else
-            {
-                clockingDescriptionTypeComboBox.Items.Clear();
-                foreach (var typeDescription in controller.typeDescriptions.TypeDescriptions)
-                {
-                    clockingDescriptionTypeComboBox.Items.Add(typeDescription);
-                }
-            }
-        }
+        //            holidayClockingComboBox.Items.Clear();
+        //            foreach (var holiday in controller.holidays.Holidays)
+        //            {
+        //                holidayClockingComboBox.Items.Add(holiday);
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        holidayClockingComboBox.Items.Clear();
+        //        foreach (var holiday in controller.holidays.Holidays)
+        //        {
+        //            holidayClockingComboBox.Items.Add(holiday);
+        //        }
+        //    }
+        //}
+        
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
@@ -650,7 +494,7 @@ namespace Pontaj
                 LoadRanksIntoComboBox();
                 emptyTextBox(userFirstNameTextBoxPersonalTab);
                 emptyTextBox(userLastNameTextBoxPersonalTab);
-                progressBar.Value = 16.66;
+                progressBar.Value = 20;
             }
             else if (tabControl.SelectedItem.Equals(rankUnitTabItem))
             {
@@ -658,34 +502,26 @@ namespace Pontaj
                 LoadUnits();
                 emptyTextBox(rankTextBox);
                 emptyTextBox(unitTextBox);
-                progressBar.Value = 33.33;
-            }
-            else if (tabControl.SelectedItem.Equals(typesTabItem))
-            {
-                LoadTypes();
-                LoadDescriptionTypesIntoComboBox();
-                emptyTextBox(typeDescriptionTextBox);
-                LoadHolidaysIntoComboBox();
-                progressBar.Value = 49.99;
-            }
+                progressBar.Value = 40;
+            } 
             else if (tabControl.SelectedItem.Equals(descriptionHolidayTabItem))
             {
                 LoadHolidays();
                 LoadTypeDescriptions();
                 emptyTextBox(holidayTextBox);
-                progressBar.Value = 66.65;
+                progressBar.Value = 60;
             }
             else if (tabControl.SelectedItem.Equals(worksTabItem))
             {
                 LoadWorks();
-                LoadTypesIntoComboBox();
+               
                 LoadUsersIntoComboBox();
             
-                progressBar.Value = 83.31;
+                progressBar.Value = 80;
             }
             else if (tabControl.SelectedItem.Equals(reportTabItem))
             {
-                progressBar.Value = 99.97;
+                progressBar.Value = 100;
             }
             e.Handled = true;
         }
@@ -765,101 +601,101 @@ namespace Pontaj
             e.Handled = true;
         }
 
-        private void BtnAddClockingOnManagement_Click(object sender, RoutedEventArgs e)
-        {
-            List<Work> works = controller.GetWorksFromDB();
-            User user = null;
-            ClockingType type = null;
-            DateTime startDate = DateTime.ParseExact("24/01/2013 00:00:00", "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-            DateTime endDate = DateTime.ParseExact("24/01/2013 00:00:00", "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-            bool canInsert = true;
-            if (userComboBox.SelectedValue != null && !userComboBox.SelectedValue.ToString().Equals(""))
-            {
+        //private void BtnAddClockingOnManagement_Click(object sender, RoutedEventArgs e)
+        //{
+        //    List<Work> works = controller.GetWorksFromDB();
+        //    User user = null;
+        //    ClockingType type = null;
+        //    DateTime startDate = DateTime.ParseExact("24/01/2013 00:00:00", "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+        //    DateTime endDate = DateTime.ParseExact("24/01/2013 00:00:00", "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+        //    bool canInsert = true;
+        //    if (userComboBox.SelectedValue != null && !userComboBox.SelectedValue.ToString().Equals(""))
+        //    {
 
-                user = GetUserFromString(userComboBox.SelectedValue.ToString());
-            }
-            else
-            {
-                MessageBox.Show("Te rog selecteaza persoana!");
-                canInsert = false;
-            }
-            if (canInsert)
-            {
-                if (clockingTypeComboBox.SelectedValue != null && !clockingTypeComboBox.SelectedValue.ToString().Equals(""))
-                {
+        //        user = GetUserFromString(userComboBox.SelectedValue.ToString());
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Te rog selecteaza persoana!");
+        //        canInsert = false;
+        //    }
+        //    if (canInsert)
+        //    {
+        //        if (clockingTypeComboBox.SelectedValue != null && !clockingTypeComboBox.SelectedValue.ToString().Equals(""))
+        //        {
 
-                    type = new ClockingType(clockingTypeComboBox.SelectedValue.ToString().Trim());
-                }
-                else
-                {
-                    MessageBox.Show("Te rog selecteaza tipul de pontaj!");
-                    canInsert = false;
-                }
-            }
-            if (canInsert)
-            {
-                if (startDateCalendar.SelectedDate != null && endDateCalendar.SelectedDate != null)
-                {
+        //            type = clockingTypeComboBox.SelectedItem as ClockingType;
+        //        }
+        //        else
+        //        {
+        //            MessageBox.Show("Te rog selecteaza tipul de pontaj!");
+        //            canInsert = false;
+        //        }
+        //    }
+        //    if (canInsert)
+        //    {
+        //        if (startDateCalendar.SelectedDate != null && endDateCalendar.SelectedDate != null)
+        //        {
 
-                    startDate = (DateTime)startDateCalendar.SelectedDate;
-                    endDate = (DateTime)endDateCalendar.SelectedDate;
-                }
-                else
-                {
-                    MessageBox.Show("Te rog selecteaza datele calendaristice!");
-                    canInsert = false;
-                }
-            }
-
-
-            if (canInsert)
-            {
-                if (hourOfStartDateTextBox.Text.ToString().Equals("") || hourOfEndDateTextBox.Text.ToString().Equals(""))
-                    MessageBox.Show("Te rog introdu orele de lucru!");
-                if (WorkingHoursAreFine())
-                {
-                    int hour = getHourFromString(hourOfStartDateTextBox.Text.ToString());
-                    int minutes = getMinutesFromString(hourOfStartDateTextBox.Text.ToString());
-                    TimeSpan ts = new TimeSpan(hour, minutes, 0);
-                    startDate += ts;
-
-                    hour = getHourFromString(hourOfEndDateTextBox.Text.ToString());
-                    minutes = getMinutesFromString(hourOfEndDateTextBox.Text.ToString());
-                    ts = new TimeSpan(hour, minutes, 0);
-                    endDate += ts;
-
-                    List<User> users = controller.GetUsersFromDB();
-                    foreach (User x in users)
-                    {
-                        if (x.Equals(user))
-                        {
-                            user = x;
-                            break;
-                        }
-
-                    }
-                    List<ClockingType> types = controller.GetTypesFromDB();
-                    foreach (ClockingType x in types)
-                    {
-                        if (x.Equals(type))
-                        {
-                            type = x;
-                            break;
-                        }
-
-                    }
-                    Work work = new Work(user, type, startDate, endDate);
-                    controller.AddWorkInDB(work);
-                }
-                else
-                {
-                    MessageBox.Show("Formatul orelor este de 24, HH:mm!");
-                }
-
-            }
+        //            startDate = (DateTime)startDateCalendar.SelectedDate;
+        //            endDate = (DateTime)endDateCalendar.SelectedDate;
+        //        }
+        //        else
+        //        {
+        //            MessageBox.Show("Te rog selecteaza datele calendaristice!");
+        //            canInsert = false;
+        //        }
+        //    }
 
 
-        }
+        //    if (canInsert)
+        //    {
+        //        if (hourOfStartDateTextBox.Text.ToString().Equals("") || hourOfEndDateTextBox.Text.ToString().Equals(""))
+        //            MessageBox.Show("Te rog introdu orele de lucru!");
+        //        if (WorkingHoursAreFine())
+        //        {
+        //            int hour = getHourFromString(hourOfStartDateTextBox.Text.ToString());
+        //            int minutes = getMinutesFromString(hourOfStartDateTextBox.Text.ToString());
+        //            TimeSpan ts = new TimeSpan(hour, minutes, 0);
+        //            startDate += ts;
+
+        //            hour = getHourFromString(hourOfEndDateTextBox.Text.ToString());
+        //            minutes = getMinutesFromString(hourOfEndDateTextBox.Text.ToString());
+        //            ts = new TimeSpan(hour, minutes, 0);
+        //            endDate += ts;
+
+        //            List<User> users = controller.GetUsersFromDB();
+        //            foreach (User x in users)
+        //            {
+        //                if (x.Equals(user))
+        //                {
+        //                    user = x;
+        //                    break;
+        //                }
+
+        //            }
+        //            List<ClockingType> types = controller.GetTypesFromDB();
+        //            foreach (ClockingType x in types)
+        //            {
+        //                if (x.Equals(type))
+        //                {
+        //                    type = x;
+        //                    break;
+        //                }
+
+        //            }
+        //            Work work = new Work(user, type, startDate, endDate);
+        //            controller.AddWorkInDB(work);
+        //        }
+        //        else
+        //        {
+        //            MessageBox.Show("Formatul orelor este de 24, HH:mm!");
+        //        }
+
+        //    }
+
+
+        //}
         private int getHourFromString(string str)
         {
             string[] values = str.Split(':');
@@ -948,38 +784,37 @@ namespace Pontaj
 
 
 
-        private void ClockingTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (clockingTypeComboBox.SelectedValue != null)
-            {
-                string value = clockingTypeComboBox.SelectedValue.ToString().Trim();
-                ClockingType type = new ClockingType(value);
-                lstManagement.Items.Clear();
-                List<Work> forOnlyOneType;
-                if (userComboBox.SelectedValue != null)
-                {
-                    User user = GetUserFromString(userComboBox.SelectedValue.ToString());
-                    forOnlyOneType = GetOnlyWorksOfOneType(GetOnlyWorksOfOneUser(user), type);
-                }
-                else
-                {
-                    forOnlyOneType = GetOnlyWorksOfOneType(controller.GetWorksFromDB(), type);
-                }
-                foreach (var work in forOnlyOneType)
-                    lstManagement.Items.Add(work);
-            }
-            e.Handled = true;
-        }
-        private List<Work> GetOnlyWorksOfOneType(List<Work> works, ClockingType type)
-        {
-            List<Work> onlyForOne = new List<Work>();
-            foreach (Work work in works)
-            {
-                if (work.Type.Equals(type))
-                    onlyForOne.Add(work);
-            }
-            return onlyForOne;
-        }
+        //private void ClockingTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    if (clockingTypeComboBox.SelectedValue != null)
+        //    { 
+        //        ClockingType type = clockingTypeComboBox.SelectedItem as ClockingType;
+        //        lstManagement.Items.Clear();
+        //        List<Work> forOnlyOneType;
+        //        if (userComboBox.SelectedValue != null)
+        //        {
+        //            User user = GetUserFromString(userComboBox.SelectedValue.ToString());
+        //            forOnlyOneType = GetOnlyWorksOfOneType(GetOnlyWorksOfOneUser(user), type);
+        //        }
+        //        else
+        //        {
+        //            forOnlyOneType = GetOnlyWorksOfOneType(controller.GetWorksFromDB(), type);
+        //        }
+        //        foreach (var work in forOnlyOneType)
+        //            lstManagement.Items.Add(work);
+        //    }
+        //    e.Handled = true;
+        //}
+        //private List<Work> GetOnlyWorksOfOneType(List<Work> works, ClockingType type)
+        //{
+        //    List<Work> onlyForOne = new List<Work>();
+        //    foreach (Work work in works)
+        //    {
+        //        if (work.Type.Equals(type))
+        //            onlyForOne.Add(work);
+        //    }
+        //    return onlyForOne;
+        //}
         private User GetUserFromString(string value)
         {
             string[] userValues = value.Split(',');
@@ -1357,75 +1192,11 @@ namespace Pontaj
 
             }
         }
-        private List<ClockingType> GetOnlyTypesOfOneTypeDescription(TypeDescription typeDescription)
-        {
-            List<ClockingType> types = controller.GetTypesFromDB();
-            List<ClockingType> onlyForOne = new List<ClockingType>();
-            foreach (ClockingType type in types)
-            {
-                if (type.TypeDescription.Equals(typeDescription))
-                    onlyForOne.Add(type);
-            }
-            return onlyForOne;
-        }
-        private void ClockingDescriptionTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (clockingDescriptionTypeComboBox.SelectedValue != null && lstTypes.SelectedItem == null)
-            {
-                TypeDescription typeDescription = clockingDescriptionTypeComboBox.SelectedItem as TypeDescription;
-                lstTypes.Items.Clear();
-                List<ClockingType> forOnlyOneType = GetOnlyTypesOfOneTypeDescription(typeDescription);
-                foreach (var type in forOnlyOneType)
-                    lstTypes.Items.Add(type);
-                holidayClockingComboBox.SelectedIndex = -1;
-            }
-            e.Handled = true;
-        }
-        private List<ClockingType> GetOnlyTypesOfOneHoliday(Holiday holiday)
-        {
-            List<ClockingType> types = controller.GetTypesFromDB();
-            List<ClockingType> onlyForOne = new List<ClockingType>();
-            foreach (ClockingType type in types)
-            {
-                if (type.Holiday.Equals(holiday))
-                    onlyForOne.Add(type);
-            }
-            return onlyForOne;
-        }
+       
+        
+       
 
-        private List<ClockingType> GetOnlyTypesOfOneHoliday(List<ClockingType> types, Holiday holiday)
-        {
-            List<ClockingType> onlyForOne = new List<ClockingType>();
-            foreach (ClockingType type in types)
-            {
-                if (type.Holiday.Equals(holiday))
-                    onlyForOne.Add(type);
-            }
-            return onlyForOne;
-        }
-        private void HolidayClockingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (holidayClockingComboBox.SelectedValue != null && lstTypes.SelectedItem == null)
-            {
-                string value = holidayClockingComboBox.SelectedValue.ToString().Trim();
-                Holiday holiday = new Holiday(value);
-                lstTypes.Items.Clear();
-                List<ClockingType> forOnlyOneType;
-                if (clockingDescriptionTypeComboBox.SelectedValue != null)
-                {
-                    TypeDescription typeDescription = clockingDescriptionTypeComboBox.SelectedItem as TypeDescription;
-                    forOnlyOneType = GetOnlyTypesOfOneHoliday(GetOnlyTypesOfOneTypeDescription(typeDescription), holiday);
-                }
-                else
-                {
-                    forOnlyOneType = GetOnlyTypesOfOneHoliday(controller.GetTypesFromDB(), holiday);
-                }
-                foreach (var type in forOnlyOneType)
-                    lstTypes.Items.Add(type);
-            }
-            e.Handled = true;
-
-
-        }
+        
+        
     }
 }

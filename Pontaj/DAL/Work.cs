@@ -9,21 +9,40 @@ namespace DAL
     public class Work
     {
         private User user;
-        private ClockingType type;
+        private TypeDescription type;
+        private Holiday holiday;
         private DateTime startDate;
         private DateTime endDate;
 
-        public Work(User user, ClockingType type, DateTime startDate, DateTime endDate)
+        public Work(User user, TypeDescription type, Holiday holiday, DateTime startDate, DateTime endDate)
         {
             StartDate = startDate;
             EndDate = endDate;
             User = user;
             Type = type;
+            Holiday = holiday;
+        }
+        public Work(User user, TypeDescription type, DateTime startDate, DateTime endDate)
+        {
+            StartDate = startDate;
+            EndDate = endDate;
+            User = user;
+            Type = type;
+            Holiday = holiday;
+        }
+        public Work(User user, Holiday holiday, DateTime startDate, DateTime endDate)
+        {
+            StartDate = startDate;
+            EndDate = endDate;
+            User = user;
+            Type = type;
+            Holiday = holiday;
         }
         public DateTime StartDate { get => startDate; set => startDate = value; }
         public DateTime EndDate { get => endDate; set => endDate = value; }
         public User User { get => user; set => user = value; }
-        public ClockingType Type { get => type; set => type = value; }
+        public TypeDescription Type { get => type; set => type = value; }
+        public Holiday Holiday { get => holiday; set => holiday = value; }
 
         public override bool Equals(object obj)
         {
@@ -32,11 +51,18 @@ namespace DAL
                    StartDate == work.StartDate &&
                    EndDate == work.EndDate &&
                    EqualityComparer<User>.Default.Equals(User, work.User) &&
-                   EqualityComparer<ClockingType>.Default.Equals(Type, work.Type);
+                   EqualityComparer<TypeDescription>.Default.Equals(Type, work.Type) &&
+                   EqualityComparer<Holiday>.Default.Equals(Holiday, work.Holiday);
         }
+
         public override string ToString()
         {
-            return User.LastName + " " + User.FirstName + ",\t" + User.Rank + ",\t" + Type.Type + ",\t" + TakeTheSecondsAwayFromDateTime(StartDate) + ",\t" + TakeTheSecondsAwayFromDateTime(EndDate);
+            string blank = "";
+            if (Type == null)
+                Type = new TypeDescription(blank);
+            if (Holiday == null)
+                Holiday= new Holiday(blank);
+            return User.LastName + " " + User.FirstName + ",\t" + User.Rank + ",\t" + Type + " " +Holiday +",\t" + TakeTheSecondsAwayFromDateTime(StartDate) + ",\t" + TakeTheSecondsAwayFromDateTime(EndDate);
         }
 
         private string TakeTheSecondsAwayFromDateTime(DateTime dateTime)

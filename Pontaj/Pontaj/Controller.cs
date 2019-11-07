@@ -11,7 +11,6 @@ namespace Pontaj
     class Controller
     {
         public UserList users;
-        public TypeManager types;
         public WorkManager works;
         public UnitManager units;
         public RankManager ranks;
@@ -21,7 +20,6 @@ namespace Pontaj
         public Controller()
         {
             users = new UserList();
-            types = new TypeManager();
             works = new WorkManager();
             units = new UnitManager();
             ranks = new RankManager();
@@ -33,11 +31,6 @@ namespace Pontaj
         {
             users.GetUsersFromDB();
             return users.Users;
-        }
-        public List<ClockingType> GetTypesFromDB()
-        {
-            types.GetTypesFromDB();
-            return types.Types;
         }
         public List<Work> GetWorksFromDB()
         {
@@ -70,10 +63,6 @@ namespace Pontaj
             users.AddUserInDB(user);
         }
 
-        public void AddTypeInDB(ClockingType type)
-        {
-            types.AddTypeInDB(type);
-        }
 
         public void AddWorkInDB(Work work)
         {
@@ -101,10 +90,6 @@ namespace Pontaj
             users.UpdateUserInDB(newUser, oldUser);
         }
 
-        public void UpdateTypeInDB(ClockingType newType, ClockingType oldType)
-        {
-            types.UpdateTypeInDB(newType, oldType);
-        }
         public void UpdateRankInDB(Rank newRank, Rank oldRank)
         {
             ranks.UpdateRankInDB(newRank, oldRank);
@@ -127,10 +112,6 @@ namespace Pontaj
             users.DeleteUserFromDB(user);
         }
 
-        public void DeleteTypeFromDB(ClockingType type)
-        {
-            types.DeleteTypeFromDB(type);
-        }
         public void DeleteRankFromDB(Rank rank)
         {
             ranks.DeleteRankFromDB(rank);
