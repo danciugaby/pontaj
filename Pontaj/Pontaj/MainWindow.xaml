@@ -314,87 +314,81 @@
                 </TabItem>
                 <TabItem Name="worksTabItem" Header="Gestionare Pontaj">
                     <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width=".7*"/>
-                            <ColumnDefinition Width=".3*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid Grid.Column="0">
-                            <ListBox Name ="lstManagement"  Grid.ColumnSpan="4"/>
-                        </Grid>
-                        <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.3*"></RowDefinition>
+                            <RowDefinition Height="0.7*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height=".7*"/>
-                                <RowDefinition Height=".1*"/>
-                                <RowDefinition Height=".1*"/>
-                                <RowDefinition Height=".1*"/>
+                                <RowDefinition Height="0.05*"></RowDefinition>
+                                <RowDefinition Height="0.2*"></RowDefinition>
+                                <RowDefinition Height="0.75*"></RowDefinition>
                             </Grid.RowDefinitions>
-                            <Grid Grid.Row="0">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height=".1*"/>
-                                        <RowDefinition Height=".1*"/>
-                                        <RowDefinition Height=".1*"/>
-                                        <RowDefinition Height=".6*"/>
-                                        <RowDefinition Height=".1*"/>
-                                    </Grid.RowDefinitions>
-                                    <Label Content="Pontaj" Grid.Row="0"></Label>
-                                    <Grid Grid.Row="1">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width=".3*"/>
-                                            <ColumnDefinition Width=".7*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Content="Persoana" Grid.Column="0"/>
-                                        <ComboBox Name="userComboBox" Grid.Column="1" SelectionChanged="UserComboBox_SelectionChanged" IsSynchronizedWithCurrentItem="True"/>
-                                    </Grid>
-                                    <Grid Grid.Row="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width=".3*"/>
-                                            <ColumnDefinition Width=".7*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Content="Tip pontaj" Grid.Column="0"/>
-                                        <ComboBox Name="clockingTypeComboBox" Grid.Column="1" />
-                                    </Grid>
-                                    <Grid Grid.Row="3">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height=".2*"/>
-                                            <RowDefinition Height=".8*"/>
-                                        </Grid.RowDefinitions>
-                                        <Grid Grid.Row="0">
-                                            <Label Content="Selecteaza data" Grid.Column="0"/>
-                                        </Grid>
-                                        <Grid Grid.Row="1">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width=".5*"/>
-                                                <ColumnDefinition Width=".5*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid Grid.Column="0">
-                                                <Calendar Name="startDateCalendar" FirstDayOfWeek="Monday" SelectedDatesChanged="StartDateCalendar_SelectedDatesChanged" SelectionMode="SingleRange"/>
-                                            </Grid>
-                                            <Grid Grid.Column="1">
-                                                <Calendar Name="endDateCalendar" FirstDayOfWeek="Monday" SelectionMode="SingleRange" SelectedDatesChanged="EndDateCalendar_SelectedDatesChanged"/>
-                                            </Grid>
-
-                                        </Grid>
-                                    </Grid>
-                                    <Grid Grid.Row="4">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width=".5*"></ColumnDefinition>
-                                            <ColumnDefinition Width=".5*"></ColumnDefinition>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid Grid.Column="0">
-                                            <TextBox Name="hourOfStartDateTextBox" ></TextBox>
-                                        </Grid>
-                                        <Grid Grid.Column="1">
-                                            <TextBox Name="hourOfEndDateTextBox"></TextBox>
-                                        </Grid>
-                                    </Grid>
-
-
+                            
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.1*"></ColumnDefinition>
+                                    <ColumnDefinition Width="0.4*"></ColumnDefinition>
+                                    <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0">
+                                    <TextBlock Text="Persoana:" VerticalAlignment="Center"></TextBlock> 
+                                </Grid>
+                                <Grid Grid.Column="1">
+                                    <ComboBox Name="userComboBoxWork" SelectionChanged="UserComboBoxWork_SelectionChanged" VerticalAlignment="Center"></ComboBox>
                                 </Grid>
                             </Grid>
-                            <Button Content="Adauga pontaj nou" Name="btnAddClockingOnManagement" Grid.Row="1" />
-                            <Button Content="Modifica pontajul" Name="btnUpdateClockingOnManagement" Grid.Row="2" IsEnabled="False" />
-                            <Button Content="Sterge pontajul" Name="btnDeleteClockingOnManagement" Grid.Row="3" IsEnabled="False" />
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.1*"></ColumnDefinition>
+                                    <ColumnDefinition Width="0.9*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="0.5*"></RowDefinition>
+                                        <RowDefinition Height="0.5*"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="0.5*"></RowDefinition>
+                                            <RowDefinition Height="0.5*"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="0.2*"></ColumnDefinition>
+                                                <ColumnDefinition Width="0.8*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid Grid.Column="1">
+                                                <ComboBox Name="monthYearComboBoxWork" SelectionChanged="MonthYearComboBoxWork_SelectionChanged"></ComboBox>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                    <Grid Grid.Row="1">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="0.5*"></RowDefinition>
+                                            <RowDefinition Height="0.5*"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="0.6*"></ColumnDefinition>
+                                                <ColumnDefinition Width="0.4*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid Grid.Column="1">
+                                                <TextBlock Text="Status" VerticalAlignment="Center"></TextBlock>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="0.1*"></RowDefinition>
+                                        <RowDefinition Height="0.9*"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="1">
+                                        <DataGrid Height ="75" Width="1000" HorizontalAlignment="Left" Margin="10,10,0,0" Name="dataGridWork" VerticalAlignment="Top"  />
+                                    </Grid>
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </TabItem>

@@ -73,6 +73,8 @@ namespace Pontaj
                     controller.AddUserInDB(newUser);
                     clearComboBox(userRankComboBoxPersonalTab);
                     clearComboBox(userUnitComboBoxPersonalTab);
+                    emptyTextBox(userFirstNameTextBoxPersonalTab);
+                    emptyTextBox(userLastNameTextBoxPersonalTab);
                     LoadUsers();
                 }
                 else
@@ -145,7 +147,29 @@ namespace Pontaj
             }
         }
 
+        private void populateMonthYearComboBox()
+        {
+            DateTime date = DateTime.Now;
+            string value = date.Month + "." + date.Year;
+            monthYearComboBoxWork.Items.Add(value);
+            monthYearComboBoxWork.SelectedValue = value;
+            int year = date.Year;
+            int month = date.Month;
+            for (int i = 0; i < 12; ++i)
+            {
+                --month;
+                value = month  + "." + year;
+                if(month == 1 )
+                {
+                    --year;
+                    month = 13;
+                }
+                monthYearComboBoxWork.Items.Add(value);
+                
+            }
 
+
+        }
         private void setEnabledButton(Button button)
         {
             button.IsEnabled = true;
@@ -261,7 +285,7 @@ namespace Pontaj
             }
 
         }
-        
+
         private void LoadUnits()
         {
             lstUnits.Items.Clear();
@@ -280,15 +304,15 @@ namespace Pontaj
                 lstRanks.Items.Add(rank);
             }
         }
-        private void LoadWorks()
-        {
-            lstManagement.Items.Clear();
-            List<Work> works = controller.GetWorksFromDB();
-            foreach (var work in works)
-            {
-                lstManagement.Items.Add(work);
-            }
-        }
+        //private void LoadWorks()
+        //{
+        //    lstManagement.Items.Clear();
+        //    List<Work> works = controller.GetWorksFromDB();
+        //    foreach (var work in works)
+        //    {
+        //        lstManagement.Items.Add(work);
+        //    }
+        //}
         private void LoadHolidays()
         {
             lstHolidays.Items.Clear();
@@ -310,7 +334,7 @@ namespace Pontaj
 
         }
 
-        
+
 
         //private void populateHolidayComboBox(ClockingType type)
         //{
@@ -344,25 +368,25 @@ namespace Pontaj
             if (controller.users.Users == null || controller.users.Users.Count() == 0)
             {
                 LoadUsers();
-                userComboBox.Items.Clear();
+                userComboBoxWork.Items.Clear();
                 if (controller.users.Users.Count() == 0)
-                    userComboBox.Items.Add("Nu s-a gasit nicio persoana");
+                    userComboBoxWork.Items.Add("Nu s-a gasit nicio persoana");
                 else
                 {
 
-                    userComboBox.Items.Clear();
+                    userComboBoxWork.Items.Clear();
                     foreach (var user in controller.users.Users)
                     {
-                        userComboBox.Items.Add(user);
+                        userComboBoxWork.Items.Add(user);
                     }
                 }
             }
             else
             {
-                userComboBox.Items.Clear();
+                userComboBoxWork.Items.Clear();
                 foreach (var user in controller.users.Users)
                 {
-                    userComboBox.Items.Add(user);
+                    userComboBoxWork.Items.Add(user);
                 }
             }
         }
@@ -383,7 +407,7 @@ namespace Pontaj
         //            clockingTypeComboBox.Items.Add("Nu s-a gasit niciun tip de pontaj");
         //        else
         //        {
-                    
+
         //            foreach (var type in controller.types.Types)
         //            {
         //                clockingTypeComboBox.Items.Add(type);
@@ -482,7 +506,7 @@ namespace Pontaj
         //        }
         //    }
         //}
-        
+
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
@@ -503,7 +527,7 @@ namespace Pontaj
                 emptyTextBox(rankTextBox);
                 emptyTextBox(unitTextBox);
                 progressBar.Value = 40;
-            } 
+            }
             else if (tabControl.SelectedItem.Equals(descriptionHolidayTabItem))
             {
                 LoadHolidays();
@@ -513,10 +537,10 @@ namespace Pontaj
             }
             else if (tabControl.SelectedItem.Equals(worksTabItem))
             {
-                LoadWorks();
-               
+                //LoadWorks();
+                populateMonthYearComboBox();
                 LoadUsersIntoComboBox();
-            
+
                 progressBar.Value = 80;
             }
             else if (tabControl.SelectedItem.Equals(reportTabItem))
@@ -528,59 +552,59 @@ namespace Pontaj
 
 
 
-        private void StartDateCalendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
-        {
-            endDateCalendar.BlackoutDates.Clear();
-            var startDate = (DateTime)startDateCalendar.SelectedDate;
+        //private void StartDateCalendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    endDateCalendar.BlackoutDates.Clear();
+        //    var startDate = (DateTime)startDateCalendar.SelectedDate;
 
-            endDateCalendar.SelectedDate = startDate;
+        //    endDateCalendar.SelectedDate = startDate;
 
-            DateTime endDate;
-            try
-            {
-                endDate = new DateTime(startDate.Year, startDate.Month, startDate.Day + 2);
+        //    DateTime endDate;
+        //    try
+        //    {
+        //        endDate = new DateTime(startDate.Year, startDate.Month, startDate.Day + 2);
 
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                try
-                {
-                    endDate = new DateTime(startDate.Year, startDate.Month + 1, 2);
+        //    }
+        //    catch (ArgumentOutOfRangeException ex)
+        //    {
+        //        try
+        //        {
+        //            endDate = new DateTime(startDate.Year, startDate.Month + 1, 2);
 
-                }
-                catch (ArgumentOutOfRangeException ex2)
-                {
-                    endDate = new DateTime(startDate.Year + 1, 1, 2);
-                }
-            }
-            DateTime leftDate;
-            try
-            {
-                leftDate = new DateTime(startDate.Year, startDate.Month, startDate.Day - 1);
+        //        }
+        //        catch (ArgumentOutOfRangeException ex2)
+        //        {
+        //            endDate = new DateTime(startDate.Year + 1, 1, 2);
+        //        }
+        //    }
+        //    DateTime leftDate;
+        //    try
+        //    {
+        //        leftDate = new DateTime(startDate.Year, startDate.Month, startDate.Day - 1);
 
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                try
-                {
-                    leftDate = new DateTime(startDate.Year, startDate.Month - 1, GetPreviousMonthLastDay(startDate.Month - 1));
+        //    }
+        //    catch (ArgumentOutOfRangeException ex)
+        //    {
+        //        try
+        //        {
+        //            leftDate = new DateTime(startDate.Year, startDate.Month - 1, GetPreviousMonthLastDay(startDate.Month - 1));
 
-                }
-                catch (ArgumentOutOfRangeException ex2)
-                {
-                    leftDate = new DateTime(startDate.Year - 1, 12, GetPreviousMonthLastDay(startDate.Month - 1));
-                }
-            }
-            DateTime blackoutToTheLeft = new DateTime(leftDate.Year - 1);
-            endDateCalendar.BlackoutDates.Add(new CalendarDateRange(blackoutToTheLeft, leftDate));
-            endDateCalendar.BlackoutDates.Add(new CalendarDateRange(endDate, endDate.AddYears(1)));
-            hourOfStartDateTextBox.Text = "08:00";
-            hourOfEndDateTextBox.Text = "16:00";
+        //        }
+        //        catch (ArgumentOutOfRangeException ex2)
+        //        {
+        //            leftDate = new DateTime(startDate.Year - 1, 12, GetPreviousMonthLastDay(startDate.Month - 1));
+        //        }
+        //    }
+        //    DateTime blackoutToTheLeft = new DateTime(leftDate.Year - 1);
+        //    endDateCalendar.BlackoutDates.Add(new CalendarDateRange(blackoutToTheLeft, leftDate));
+        //    endDateCalendar.BlackoutDates.Add(new CalendarDateRange(endDate, endDate.AddYears(1)));
+        //    hourOfStartDateTextBox.Text = "08:00";
+        //    hourOfEndDateTextBox.Text = "16:00";
 
-            e.Handled = true;
+        //    e.Handled = true;
 
 
-        }
+        //}
         private int GetPreviousMonthLastDay(int month)
         {
             if (month == 2)
@@ -592,14 +616,14 @@ namespace Pontaj
 
         }
 
-        private void EndDateCalendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
-        {
-            emptyField(hourOfStartDateTextBox);
-            emptyField(hourOfEndDateTextBox);
-            hourOfStartDateTextBox.Text = "HH:mm";
-            hourOfEndDateTextBox.Text = "HH:mm";
-            e.Handled = true;
-        }
+        //private void EndDateCalendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    emptyField(hourOfStartDateTextBox);
+        //    emptyField(hourOfEndDateTextBox);
+        //    hourOfStartDateTextBox.Text = "HH:mm";
+        //    hourOfEndDateTextBox.Text = "HH:mm";
+        //    e.Handled = true;
+        //}
 
         //private void BtnAddClockingOnManagement_Click(object sender, RoutedEventArgs e)
         //{
@@ -720,16 +744,16 @@ namespace Pontaj
                 return 0;
             }
         }
-        private bool WorkingHoursAreFine()
-        {
-            string startHours = hourOfStartDateTextBox.Text.ToString();
-            string endingHours = hourOfEndDateTextBox.Text.ToString();
-            if (CheckIfHourIsCorrect(startHours) && CheckIfHourIsCorrect(endingHours))
-                return true;
-            else
-                return false;
+        //private bool WorkingHoursAreFine()
+        //{
+        //    string startHours = hourOfStartDateTextBox.Text.ToString();
+        //    string endingHours = hourOfEndDateTextBox.Text.ToString();
+        //    if (CheckIfHourIsCorrect(startHours) && CheckIfHourIsCorrect(endingHours))
+        //        return true;
+        //    else
+        //        return false;
 
-        }
+        //}
         private bool CheckIfHourIsCorrect(string hour)
         {
             string[] values = hour.Split(':');
@@ -756,19 +780,19 @@ namespace Pontaj
             return true;
         }
 
-        private void UserComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (userComboBox.SelectedValue != null)
-            {
-                User user = GetUserFromString(userComboBox.SelectedValue.ToString());
-                lstManagement.Items.Clear();
-                List<Work> forOnlyOneUser = GetOnlyWorksOfOneUser(user);
-                foreach (var work in forOnlyOneUser)
-                    lstManagement.Items.Add(work);
-                clockingTypeComboBox.SelectedIndex = -1;
-            }
-            e.Handled = true;
-        }
+        //private void UserComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    if (userComboBox.SelectedValue != null)
+        //    {
+        //        User user = GetUserFromString(userComboBox.SelectedValue.ToString());
+        //        lstManagement.Items.Clear();
+        //        List<Work> forOnlyOneUser = GetOnlyWorksOfOneUser(user);
+        //        foreach (var work in forOnlyOneUser)
+        //            lstManagement.Items.Add(work);
+        //        clockingTypeComboBox.SelectedIndex = -1;
+        //    }
+        //    e.Handled = true;
+        //}
         private List<Work> GetOnlyWorksOfOneUser(User user)
         {
             List<Work> works = controller.GetWorksFromDB();
@@ -832,7 +856,7 @@ namespace Pontaj
                 if (userRankComboBoxPersonalTab.SelectedValue != null)
                 {
                     Rank rank = userRankComboBoxPersonalTab.SelectedItem as Rank;
-                    forOnlyOneUnit = GetOnlyUsersOfOneUnit(GetOnlyUsersOfOneRank(controller.GetUsersFromDB(),rank), unit);
+                    forOnlyOneUnit = GetOnlyUsersOfOneUnit(GetOnlyUsersOfOneRank(controller.GetUsersFromDB(), rank), unit);
                 }
                 else
                 {
@@ -850,7 +874,7 @@ namespace Pontaj
             {
                 Rank rank = userRankComboBoxPersonalTab.SelectedItem as Rank;
                 lstUsers.Items.Clear();
-                List<User> forOnlyOneRank = GetOnlyUsersOfOneRank(controller.GetUsersFromDB(),rank);
+                List<User> forOnlyOneRank = GetOnlyUsersOfOneRank(controller.GetUsersFromDB(), rank);
                 foreach (var user in forOnlyOneRank)
                     lstUsers.Items.Add(user);
                 userUnitComboBoxPersonalTab.SelectedIndex = -1;
@@ -1192,11 +1216,15 @@ namespace Pontaj
 
             }
         }
-       
-        
-       
 
-        
-        
+        private void MonthYearComboBoxWork_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void UserComboBoxWork_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }
