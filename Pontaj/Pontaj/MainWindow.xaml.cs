@@ -568,6 +568,7 @@ namespace Pontaj
                 LoadUsersIntoComboBox();
                 LoadHolidaysIntoComboBox();
                 LoadTypesIntoComboBox();
+                populateComingAndLeavingTextBoxes();
                 progressBar.Value = 80;
             }
             else if (tabControl.SelectedItem.Equals(reportTabItem))
@@ -576,7 +577,11 @@ namespace Pontaj
             }
             e.Handled = true;
         }
-
+        private void populateComingAndLeavingTextBoxes()
+        {
+            comingFirstHourOfWork.Text = "07:00";
+            leavingFirstHourOfWork.Text = "15:00";
+        }
 
 
         //private void StartDateCalendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
@@ -1326,6 +1331,199 @@ namespace Pontaj
         private void TypeThirdHoursComboBoxWork_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             e.Handled = true;
+        }
+
+        private void CurrentTimeFirstComing_Click(object sender, RoutedEventArgs e)
+        {
+            GenerateCurrentTimeForTextBox(comingFirstHourOfWork);
+        }
+
+        private void CurrentTimeFirstLeaving_Click(object sender, RoutedEventArgs e)
+        {
+            GenerateCurrentTimeForTextBox(leavingFirstHourOfWork);
+        }
+
+        private void CurrentTimeSecondComing_Click(object sender, RoutedEventArgs e)
+        {
+            GenerateCurrentTimeForTextBox(comingSecondHourOfWork);
+        }
+
+        private void CurrentTimeSecondLeaving_Click(object sender, RoutedEventArgs e)
+        {
+            GenerateCurrentTimeForTextBox(leavingSecondHourOfWork);
+        }
+
+        private void CurrentTimeComingThird_Click(object sender, RoutedEventArgs e)
+        {
+            GenerateCurrentTimeForTextBox(comingThirdHourOfWork);
+        }
+
+        private void CurrentTimeThirdLeaving_Click(object sender, RoutedEventArgs e)
+        {
+            GenerateCurrentTimeForTextBox(leavingThirdHourOfWork);
+        }
+        private void GenerateCurrentTimeForTextBox(TextBox textBox)
+        {
+            textBox.Text = DateTime.Now.ToShortTimeString();
+        }
+        private void DecreaseHoursForTextBox(TextBox textBox)
+        {
+            string[] splitted = textBox.Text.Split(':');
+            int hours = ReturnTheCorrectDecreasedHours(splitted[0]);
+            int minutes = 0;
+            string value = "";
+            if (hours < 10)
+            {
+                value = "0";
+            }
+            try
+            {
+                minutes = int.Parse(splitted[1]);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Minute incorecte!");
+                value = "08:00";
+            }
+            string valuem = "";
+            if (minutes < 10)
+            {
+                valuem = "0" + minutes;
+            }
+            else
+                valuem += minutes;
+
+            if (!value.Equals("08:00"))
+                value += hours.ToString() + ":" + valuem;
+
+            textBox.Text = value;
+        }
+        private void IncreaseHoursForTextBox(TextBox textBox)
+        {
+            string[] splitted = textBox.Text.Split(':');
+            int hours = ReturnTheCorrectIncreasedHours(splitted[0]);
+            int minutes = 0;
+            string value = "";
+            if (hours < 10)
+            {
+                value = "0";
+            }
+            try
+            {
+                minutes = int.Parse(splitted[1]);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Minute incorecte!");
+                value = "08:00";
+            }
+            string valuem = "";
+            if (minutes < 10)
+            {
+                valuem = "0" + minutes;
+            }
+            else
+                valuem += minutes;
+
+            if (!value.Equals("08:00"))
+                value += hours.ToString() + ":" + valuem;
+
+            textBox.Text = value;
+        }
+        private int ReturnTheCorrectDecreasedHours(string value)
+        {
+
+            int hours = 0;
+            try
+            {
+                hours = int.Parse(value);
+            }
+            catch (System.FormatException ex)
+            {
+                MessageBox.Show("Ora incorecta!");
+            }
+            if (hours == 0)
+                hours = 23;
+            else
+                --hours;
+            return hours;
+        }
+        private int ReturnTheCorrectIncreasedHours(string value)
+        {
+            int hours = 0;
+            try
+            {
+                hours = int.Parse(value);
+            }
+            catch (System.FormatException ex)
+            {
+                MessageBox.Show("Ora incorecta!");
+            }
+            if (hours == 23)
+                hours = 0;
+            else
+                ++hours;
+            return hours;
+        }
+
+        private void DecreaseHourComingFirstWork_Click(object sender, RoutedEventArgs e)
+        {
+            DecreaseHoursForTextBox(comingFirstHourOfWork);
+        }
+
+        private void IncreaseHourComingFirstWork_Click(object sender, RoutedEventArgs e)
+        {
+            IncreaseHoursForTextBox(comingFirstHourOfWork);
+        }
+
+        private void DecreaseHourFirstLeavingWork_Click(object sender, RoutedEventArgs e)
+        {
+            DecreaseHoursForTextBox(leavingFirstHourOfWork);
+        }
+
+        private void IncreaseHourFirstLeavingWork_Click(object sender, RoutedEventArgs e)
+        {
+            IncreaseHoursForTextBox(leavingFirstHourOfWork);
+        }
+
+        private void DecreaseHourComingSecondWork_Click(object sender, RoutedEventArgs e)
+        {
+            DecreaseHoursForTextBox(comingSecondHourOfWork);
+        }
+
+        private void IncreaseHourComingSecondWork_Click(object sender, RoutedEventArgs e)
+        {
+            IncreaseHoursForTextBox(comingSecondHourOfWork);
+        }
+
+        private void DecreaseHourSecondLeavingWork_Click(object sender, RoutedEventArgs e)
+        {
+            DecreaseHoursForTextBox(leavingSecondHourOfWork);
+        }
+
+        private void IncreaseHourSecondLeavingWork_Click(object sender, RoutedEventArgs e)
+        {
+            IncreaseHoursForTextBox(leavingSecondHourOfWork);
+        }
+
+        private void DecreaseHourComingThirdWork_Click(object sender, RoutedEventArgs e)
+        {
+            DecreaseHoursForTextBox(comingThirdHourOfWork);
+        }
+
+        private void IncreaseHourComingThirdWork_Click(object sender, RoutedEventArgs e)
+        {
+            IncreaseHoursForTextBox(comingThirdHourOfWork);
+        }
+
+        private void DecreaseHourThirdLeavingWork_Click(object sender, RoutedEventArgs e)
+        {
+            DecreaseHoursForTextBox(leavingThirdHourOfWork);
+        }
+
+        private void IncreaseHourThirdLeavingWork_Click(object sender, RoutedEventArgs e)
+        {
+            IncreaseHoursForTextBox(leavingThirdHourOfWork);
         }
     }
 }

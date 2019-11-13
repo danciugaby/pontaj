@@ -400,7 +400,29 @@
                                 <RowDefinition Height="0.33*"></RowDefinition>
                             </Grid.RowDefinitions>
                             <Grid Grid.Row="0">
-                                
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.05*"></ColumnDefinition>
+                                    <ColumnDefinition Width="0.1*"></ColumnDefinition>
+                                    <ColumnDefinition Width="0.25*"></ColumnDefinition>
+                                    <ColumnDefinition Width="0.175*"></ColumnDefinition>
+                                    <ColumnDefinition Width="0.175*"></ColumnDefinition>
+                                    <ColumnDefinition Width="0.05*"></ColumnDefinition>
+                                    <ColumnDefinition Width="0.05*"></ColumnDefinition>
+                                    <ColumnDefinition Width="0.05*"></ColumnDefinition>
+                                    <ColumnDefinition Width="0.05*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0">
+                                    <TextBlock Text=" Ziua:" FontSize="15" VerticalAlignment="Center"></TextBlock>
+                                </Grid>
+                                <Grid Grid.Column="1">
+                                    <TextBlock Name="displayDateTextBlock" VerticalAlignment="Center"></TextBlock>
+                                </Grid>
+                                <Grid Grid.Column="3">
+                                    <TextBlock Text=" Tip de pontaj" FontSize="15" VerticalAlignment="Center"></TextBlock>
+                                </Grid>
+                                <Grid Grid.Column="4">
+                                    <TextBlock Text="  Concediu" FontSize="15" VerticalAlignment="Center"></TextBlock>
+                                </Grid>
                             </Grid>
                            
                             <Grid Grid.Row="1">
@@ -422,16 +444,16 @@
                                     <TextBlock Text="  Venire" FontSize="15" VerticalAlignment="Center"></TextBlock>
                                 </Grid>
                                 <Grid Grid.Column="1">
-                                    <Button Name="decreaseHourComingFirstWork" Content="&lt;"></Button>
+                                    <Button Name="decreaseHourComingFirstWork" Content="&lt;" Click="DecreaseHourComingFirstWork_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Column="2">
-                                    <TextBox Name="comingFirstHourOfWork"></TextBox>
+                                    <TextBox Name="comingFirstHourOfWork"  FontSize="15"></TextBox>
                                 </Grid>
                                 <Grid Grid.Column="3">
-                                    <Button Name="increaseHourComingFirstWork" Content="&gt;"></Button>
+                                    <Button Name="increaseHourComingFirstWork" Content="&gt;" Click="IncreaseHourComingFirstWork_Click"></Button>
                                 </Grid>
                                  <Grid Grid.Column="4">
-                                    <Button Name="currentTimeFirstComing" Content="Timp actual"></Button>
+                                    <Button Name="currentTimeFirstComing" Content="Timp actual" Click="CurrentTimeFirstComing_Click"></Button>
                                 </Grid>
 
                                 <Grid Grid.Column="6">
@@ -467,16 +489,16 @@
                                     <TextBlock Text=" Plecare" FontSize="15" VerticalAlignment="Center"></TextBlock>
                                 </Grid>
                                 <Grid Grid.Column="1">
-                                    <Button Name="decreaseHourFirstLeavingWork" Content="&lt;"></Button>
+                                    <Button Name="decreaseHourFirstLeavingWork" Content="&lt;" Click="DecreaseHourFirstLeavingWork_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Column="2">
-                                    <TextBox Name="leavingFirstHourOfWork"></TextBox>
+                                    <TextBox Name="leavingFirstHourOfWork"  FontSize="15"></TextBox>
                                 </Grid>
                                 <Grid Grid.Column="3">
-                                    <Button Name="increaseHourFirstLeavingWork" Content="&gt;"></Button>
+                                    <Button Name="increaseHourFirstLeavingWork" Content="&gt;" Click="IncreaseHourFirstLeavingWork_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Column="4">
-                                    <Button Name="currentTimeFirstLeaving" Content="Timp actual"></Button>
+                                    <Button Name="currentTimeFirstLeaving" Content="Timp actual" Click="CurrentTimeFirstLeaving_Click"></Button>
                                 </Grid>
                                 
                                 
@@ -507,16 +529,16 @@
                                     <TextBlock Text="  Venire" FontSize="15" VerticalAlignment="Center"></TextBlock>
                                 </Grid>
                                 <Grid Grid.Column="1">
-                                    <Button Name="decreaseHourComingSecondWork" Content="&lt;"></Button>
+                                    <Button Name="decreaseHourComingSecondWork" Content="&lt;" Click="DecreaseHourComingSecondWork_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Column="2">
-                                    <TextBox Name="comingSecondHourOfWork"></TextBox>
+                                    <TextBox Name="comingSecondHourOfWork"  FontSize="15"></TextBox>
                                 </Grid>
                                 <Grid Grid.Column="3">
-                                    <Button Name="increaseHourComingSecondWork" Content="&gt;"></Button>
+                                    <Button Name="increaseHourComingSecondWork" Content="&gt;" Click="IncreaseHourComingSecondWork_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Column="4">
-                                    <Button Name="currentTimeSecondComing" Content="Timp actual"></Button>
+                                    <Button Name="currentTimeSecondComing" Content="Timp actual" Click="CurrentTimeSecondComing_Click"></Button>
                                 </Grid>
                                 
                                 <Grid Grid.Column="6">
@@ -551,16 +573,16 @@
                                     <TextBlock Text=" Plecare" FontSize="15" VerticalAlignment="Center"></TextBlock>
                                 </Grid>
                                 <Grid Grid.Column="1">
-                                    <Button Name="decreaseHourSecondLeavingWork" Content="&lt;"></Button>
+                                    <Button Name="decreaseHourSecondLeavingWork" Content="&lt;" Click="DecreaseHourSecondLeavingWork_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Column="2">
-                                    <TextBox Name="leavingSecondHourOfWork"></TextBox>
+                                    <TextBox Name="leavingSecondHourOfWork" FontSize="15"></TextBox>
                                 </Grid>
                                 <Grid Grid.Column="3">
-                                    <Button Name="increaseHourSecondLeavingWork" Content="&gt;"></Button>
+                                    <Button Name="increaseHourSecondLeavingWork" Content="&gt;" Click="IncreaseHourSecondLeavingWork_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Column="4">
-                                    <Button Name="currentTimeSecondLeaving" Content="Timp actual"></Button>
+                                    <Button Name="currentTimeSecondLeaving" Content="Timp actual" Click="CurrentTimeSecondLeaving_Click"></Button>
                                 </Grid>
                                 
 
@@ -592,16 +614,16 @@
                                     <TextBlock Text="  Venire" FontSize="15" VerticalAlignment="Center"></TextBlock>
                                 </Grid>
                                 <Grid Grid.Column="1">
-                                    <Button Name="decreaseHourComingThirdWork" Content="&lt;"></Button>
+                                    <Button Name="decreaseHourComingThirdWork" Content="&lt;" Click="DecreaseHourComingThirdWork_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Column="2">
-                                    <TextBox Name="comingThirdHourOfWork"></TextBox>
+                                    <TextBox Name="comingThirdHourOfWork" FontSize="15"></TextBox>
                                 </Grid>
                                 <Grid Grid.Column="3">
-                                    <Button Name="increaseHourComingThirdWork" Content="&gt;"></Button>
+                                    <Button Name="increaseHourComingThirdWork" Content="&gt;" Click="IncreaseHourComingThirdWork_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Column="4">
-                                    <Button Name="currentTimeComingThird" Content="Timp actual"></Button>
+                                    <Button Name="currentTimeComingThird" Content="Timp actual" Click="CurrentTimeComingThird_Click"></Button>
                                 </Grid>
                                 
                                 <Grid Grid.Column="6">
@@ -636,16 +658,16 @@
                                     <TextBlock Text=" Plecare" FontSize="15" VerticalAlignment="Center"></TextBlock>
                                 </Grid>
                                 <Grid Grid.Column="1">
-                                    <Button Name="decreaseHourThirdLeavingWork" Content="&lt;"></Button>
+                                    <Button Name="decreaseHourThirdLeavingWork" Content="&lt;" Click="DecreaseHourThirdLeavingWork_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Column="2">
-                                    <TextBox Name="leavingThirdHourOfWork"></TextBox>
+                                    <TextBox Name="leavingThirdHourOfWork" FontSize="15"></TextBox>
                                 </Grid>
                                 <Grid Grid.Column="3">
-                                    <Button Name="increaseHourThirdLeavingWork" Content="&gt;"></Button>
+                                    <Button Name="increaseHourThirdLeavingWork" Content="&gt;" Click="IncreaseHourThirdLeavingWork_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Column="4">
-                                    <Button Name="currentTimeThirdLeaving" Content="Timp actual"></Button>
+                                    <Button Name="currentTimeThirdLeaving" Content="Timp actual" Click="CurrentTimeThirdLeaving_Click"></Button>
                                 </Grid>
                                 
 
