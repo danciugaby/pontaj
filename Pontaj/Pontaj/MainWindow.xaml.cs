@@ -158,14 +158,14 @@ namespace Pontaj
             for (int i = 0; i < 12; ++i)
             {
                 --month;
-                value = month  + "." + year;
-                if(month == 1 )
+                value = month + "." + year;
+                if (month == 1)
                 {
                     --year;
                     month = 13;
                 }
                 monthYearComboBoxWork.Items.Add(value);
-                
+
             }
 
 
@@ -1220,6 +1220,50 @@ namespace Pontaj
         private void MonthYearComboBoxWork_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             e.Handled = true;
+            string value = DateTime.Now.Month + "." + DateTime.Now.Year;
+            if (monthYearComboBoxWork.SelectedValue != null)
+                value = monthYearComboBoxWork.SelectedValue as string;
+
+            int days = GetMonthsLengthBasedOnYear(value);
+
+            dataGridWork.Columns.Clear();
+            dataGridWork.Items.Add(31);
+            for (int i = 1; i <= days; ++i)
+            {
+                DataGridTextColumn dataColumn = new DataGridTextColumn();
+                dataGridWork.Columns.Add(dataColumn);
+                dataColumn.Header = i;
+            }
+           
+
+
+        }
+        private int GetMonthsLengthBasedOnYear(string value)
+        {
+            int length = 0;
+            string[] splitted = value.Split('.');
+            int month = int.Parse(splitted[0]);
+            int year = int.Parse(splitted[1]);
+
+            bool isLeapYear = false;
+            if (year % 4 == 0 && year % 100 != 0)
+                isLeapYear = true;
+            if (year % 400 == 0)
+                isLeapYear = true;
+
+            return GetMonthDaysBasedOnMonth(month, isLeapYear);
+        }
+        private int GetMonthDaysBasedOnMonth(int month, bool isLeapYear)
+        {
+            int days = 30;
+            if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
+                days = 31;
+            else if (month == 2)
+                if (isLeapYear)
+                    days = 29;
+                else
+                    days = 28;
+            return days;
         }
 
         private void UserComboBoxWork_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -385,7 +385,7 @@
                                         <RowDefinition Height="0.9*"></RowDefinition>
                                     </Grid.RowDefinitions>
                                     <Grid Grid.Row="1">
-                                        <DataGrid Height ="75" Width="1000" HorizontalAlignment="Left" Margin="10,10,0,0" Name="dataGridWork" VerticalAlignment="Top"  />
+                                        <DataGrid Height ="75" Width="1000" HorizontalAlignment="Left" Margin="10,10,0,0" Name="dataGridWork" VerticalAlignment="Top" HeadersVisibility="None" />
                                     </Grid>
                                 </Grid>
                             </Grid>
