@@ -1219,7 +1219,7 @@ namespace Pontaj
 
         private void MonthYearComboBoxWork_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            e.Handled = true;
+            
             string value = DateTime.Now.Month + "." + DateTime.Now.Year;
             if (monthYearComboBoxWork.SelectedValue != null)
                 value = monthYearComboBoxWork.SelectedValue as string;
@@ -1227,20 +1227,20 @@ namespace Pontaj
             int days = GetMonthsLengthBasedOnYear(value);
 
             dataGridWork.Columns.Clear();
-            dataGridWork.Items.Add(31);
+            
             for (int i = 1; i <= days; ++i)
             {
                 DataGridTextColumn dataColumn = new DataGridTextColumn();
                 dataGridWork.Columns.Add(dataColumn);
                 dataColumn.Header = i;
             }
-           
+            e.Handled = true;
 
 
         }
         private int GetMonthsLengthBasedOnYear(string value)
         {
-            int length = 0;
+            
             string[] splitted = value.Split('.');
             int month = int.Parse(splitted[0]);
             int year = int.Parse(splitted[1]);
