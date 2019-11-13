@@ -397,33 +397,45 @@ namespace Pontaj
 
         }
 
-        //private void LoadTypesIntoComboBox()
-        //{
-        //    if (controller.types.Types.Count() == 0)
-        //    {
-        //        LoadTypes();
-        //        clockingTypeComboBox.Items.Clear();
-        //        if (controller.types.Types.Count() == 0)
-        //            clockingTypeComboBox.Items.Add("Nu s-a gasit niciun tip de pontaj");
-        //        else
-        //        {
+        private void LoadTypesIntoComboBox()
+        {
+            if (controller.typeDescriptions.TypeDescriptions.Count() == 0)
+            {
+                LoadTypeDescriptions();
+                typeFirstHoursComboBoxWork.Items.Clear();
+                typeSecondHoursComboBoxWork.Items.Clear();
+                typeThirdHoursComboBoxWork.Items.Clear();
+                if (controller.typeDescriptions.TypeDescriptions.Count() == 0)
+                {
+                    typeFirstHoursComboBoxWork.Items.Add("Nu s-a gasit niciun tip de pontaj");
+                    typeSecondHoursComboBoxWork.Items.Add("Nu s-a gasit niciun tip de pontaj");
+                    typeThirdHoursComboBoxWork.Items.Add("Nu s-a gasit niciun tip de pontaj");
+                }
+                else
+                {
 
-        //            foreach (var type in controller.types.Types)
-        //            {
-        //                clockingTypeComboBox.Items.Add(type);
-        //            }
-        //        }
+                    foreach (var type in controller.typeDescriptions.TypeDescriptions)
+                    {
+                        typeFirstHoursComboBoxWork.Items.Add(type);
+                        typeSecondHoursComboBoxWork.Items.Add(type);
+                        typeThirdHoursComboBoxWork.Items.Add(type);
+                    }
+                }
 
-        //    }
-        //    else
-        //    {
-        //        clockingTypeComboBox.Items.Clear();
-        //        foreach (var type in controller.types.Types)
-        //        {
-        //            clockingTypeComboBox.Items.Add(type);
-        //        }
-        //    }
-        //}
+            }
+            else
+            {
+                typeFirstHoursComboBoxWork.Items.Clear();
+                typeSecondHoursComboBoxWork.Items.Clear();
+                typeThirdHoursComboBoxWork.Items.Clear();
+                foreach (var type in controller.typeDescriptions.TypeDescriptions)
+                {
+                    typeFirstHoursComboBoxWork.Items.Add(type);
+                    typeSecondHoursComboBoxWork.Items.Add(type);
+                    typeThirdHoursComboBoxWork.Items.Add(type);
+                }
+            }
+        }
         private void LoadUnitsIntoComboBox()
         {
             if (controller.units.Units.Count() == 0)
@@ -479,33 +491,47 @@ namespace Pontaj
             }
         }
 
-        //private void LoadHolidaysIntoComboBox()
-        //{
-        //    if (controller.holidays.Holidays == null || controller.holidays.Holidays.Count() == 0)
-        //    {
-        //        LoadHolidays();
-        //        holidayClockingComboBox.Items.Clear();
-        //        if (controller.holidays.Holidays.Count() == 0)
-        //            holidayClockingComboBox.Items.Add("Nu s-a gasit niciun concediu");
-        //        else
-        //        {
+        private void LoadHolidaysIntoComboBox()
+        {
+            if (controller.holidays.Holidays == null || controller.holidays.Holidays.Count() == 0)
+            {
+                LoadHolidays();
+                holidayFirstHoursComboBoxWork.Items.Clear();
+                holidaySecondHoursComboBoxWork.Items.Clear();
+                holidayThirdHoursComboBoxWork.Items.Clear();
+                if (controller.holidays.Holidays.Count() == 0)
+                {
+                    holidayFirstHoursComboBoxWork.Items.Add("Nu s-a gasit niciun concediu");
+                    holidaySecondHoursComboBoxWork.Items.Add("Nu s-a gasit niciun concediu");
+                    holidayThirdHoursComboBoxWork.Items.Add("Nu s-a gasit niciun concediu");
+                }
+                else
+                {
 
-        //            holidayClockingComboBox.Items.Clear();
-        //            foreach (var holiday in controller.holidays.Holidays)
-        //            {
-        //                holidayClockingComboBox.Items.Add(holiday);
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        holidayClockingComboBox.Items.Clear();
-        //        foreach (var holiday in controller.holidays.Holidays)
-        //        {
-        //            holidayClockingComboBox.Items.Add(holiday);
-        //        }
-        //    }
-        //}
+                    holidayFirstHoursComboBoxWork.Items.Clear();
+                    holidaySecondHoursComboBoxWork.Items.Clear();
+                    holidayThirdHoursComboBoxWork.Items.Clear();
+                    foreach (var holiday in controller.holidays.Holidays)
+                    {
+                        holidayFirstHoursComboBoxWork.Items.Add(holiday);
+                        holidaySecondHoursComboBoxWork.Items.Add(holiday);
+                        holidayThirdHoursComboBoxWork.Items.Add(holiday);
+                    }
+                }
+            }
+            else
+            {
+                holidayFirstHoursComboBoxWork.Items.Clear();
+                holidaySecondHoursComboBoxWork.Items.Clear();
+                holidayThirdHoursComboBoxWork.Items.Clear();
+                foreach (var holiday in controller.holidays.Holidays)
+                {
+                    holidayFirstHoursComboBoxWork.Items.Add(holiday);
+                    holidaySecondHoursComboBoxWork.Items.Add(holiday);
+                    holidayThirdHoursComboBoxWork.Items.Add(holiday);
+                }
+            }
+        }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -540,7 +566,8 @@ namespace Pontaj
                 //LoadWorks();
                 populateMonthYearComboBox();
                 LoadUsersIntoComboBox();
-
+                LoadHolidaysIntoComboBox();
+                LoadTypesIntoComboBox();
                 progressBar.Value = 80;
             }
             else if (tabControl.SelectedItem.Equals(reportTabItem))
@@ -1219,7 +1246,7 @@ namespace Pontaj
 
         private void MonthYearComboBoxWork_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+
             string value = DateTime.Now.Month + "." + DateTime.Now.Year;
             if (monthYearComboBoxWork.SelectedValue != null)
                 value = monthYearComboBoxWork.SelectedValue as string;
@@ -1227,7 +1254,7 @@ namespace Pontaj
             int days = GetMonthsLengthBasedOnYear(value);
 
             dataGridWork.Columns.Clear();
-            
+
             for (int i = 1; i <= days; ++i)
             {
                 DataGridTextColumn dataColumn = new DataGridTextColumn();
@@ -1240,7 +1267,7 @@ namespace Pontaj
         }
         private int GetMonthsLengthBasedOnYear(string value)
         {
-            
+
             string[] splitted = value.Split('.');
             int month = int.Parse(splitted[0]);
             int year = int.Parse(splitted[1]);
@@ -1267,6 +1294,36 @@ namespace Pontaj
         }
 
         private void UserComboBoxWork_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void HolidayFirstHoursComboBoxWork_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void HolidaySecondHoursComboBoxWork_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void HolidayThirdHoursComboBoxWork_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void TypeFirstHoursComboBoxWork_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void TypeSecondHoursComboBoxWork_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void TypeThirdHoursComboBoxWork_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             e.Handled = true;
         }
