@@ -1,6 +1,7 @@
 ﻿using DAL;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -23,10 +24,12 @@ namespace Pontaj
     public partial class MainWindow : Window
     {
         Controller controller;
+        private static List<Work> works;
         public MainWindow()
         {
             InitializeComponent();
             controller = new Controller();
+            works = controller.GetWorksFromDB();
         }
 
         private void BtnAddUser_Click(object sender, RoutedEventArgs e)
@@ -304,15 +307,7 @@ namespace Pontaj
                 lstRanks.Items.Add(rank);
             }
         }
-        //private void LoadWorks()
-        //{
-        //    lstManagement.Items.Clear();
-        //    List<Work> works = controller.GetWorksFromDB();
-        //    foreach (var work in works)
-        //    {
-        //        lstManagement.Items.Add(work);
-        //    }
-        //}
+
         private void LoadHolidays()
         {
             lstHolidays.Items.Clear();
@@ -397,14 +392,26 @@ namespace Pontaj
 
         }
 
+        private void ClearTypeComboBoxesFromWork()
+        {
+            typeFirstHoursComboBoxWork.Items.Clear();
+            typeSecondHoursComboBoxWork.Items.Clear();
+            typeThirdHoursComboBoxWork.Items.Clear();
+        }
+        private void AddEmptyFieldOnTypeComboBoxes()
+        {
+            typeFirstHoursComboBoxWork.Items.Add("");
+            typeSecondHoursComboBoxWork.Items.Add("");
+            typeThirdHoursComboBoxWork.Items.Add("");
+        }
+
         private void LoadTypesIntoComboBox()
         {
             if (controller.typeDescriptions.TypeDescriptions.Count() == 0)
             {
                 LoadTypeDescriptions();
-                typeFirstHoursComboBoxWork.Items.Clear();
-                typeSecondHoursComboBoxWork.Items.Clear();
-                typeThirdHoursComboBoxWork.Items.Clear();
+                ClearTypeComboBoxesFromWork();
+                AddEmptyFieldOnTypeComboBoxes();
                 if (controller.typeDescriptions.TypeDescriptions.Count() == 0)
                 {
                     typeFirstHoursComboBoxWork.Items.Add("Nu s-a gasit niciun tip de pontaj");
@@ -413,7 +420,8 @@ namespace Pontaj
                 }
                 else
                 {
-
+                    ClearTypeComboBoxesFromWork();
+                    AddEmptyFieldOnTypeComboBoxes();
                     foreach (var type in controller.typeDescriptions.TypeDescriptions)
                     {
                         typeFirstHoursComboBoxWork.Items.Add(type);
@@ -425,9 +433,8 @@ namespace Pontaj
             }
             else
             {
-                typeFirstHoursComboBoxWork.Items.Clear();
-                typeSecondHoursComboBoxWork.Items.Clear();
-                typeThirdHoursComboBoxWork.Items.Clear();
+                ClearTypeComboBoxesFromWork();
+                AddEmptyFieldOnTypeComboBoxes();
                 foreach (var type in controller.typeDescriptions.TypeDescriptions)
                 {
                     typeFirstHoursComboBoxWork.Items.Add(type);
@@ -490,15 +497,28 @@ namespace Pontaj
                 }
             }
         }
+        private void ClearHolidayComboBoxesItemsFromWork()
+        {
+            holidayFirstHoursComboBoxWork.Items.Clear();
+            holidaySecondHoursComboBoxWork.Items.Clear();
+            holidayThirdHoursComboBoxWork.Items.Clear();
+
+        }
+        private void AddEmptyValueForHolidayComboBoxesWork()
+        {
+            holidayFirstHoursComboBoxWork.Items.Add("");
+            holidaySecondHoursComboBoxWork.Items.Add("");
+            holidayThirdHoursComboBoxWork.Items.Add("");
+        }
 
         private void LoadHolidaysIntoComboBox()
         {
             if (controller.holidays.Holidays == null || controller.holidays.Holidays.Count() == 0)
             {
                 LoadHolidays();
-                holidayFirstHoursComboBoxWork.Items.Clear();
-                holidaySecondHoursComboBoxWork.Items.Clear();
-                holidayThirdHoursComboBoxWork.Items.Clear();
+
+                ClearHolidayComboBoxesItemsFromWork();
+                AddEmptyValueForHolidayComboBoxesWork();
                 if (controller.holidays.Holidays.Count() == 0)
                 {
                     holidayFirstHoursComboBoxWork.Items.Add("Nu s-a gasit niciun concediu");
@@ -508,9 +528,8 @@ namespace Pontaj
                 else
                 {
 
-                    holidayFirstHoursComboBoxWork.Items.Clear();
-                    holidaySecondHoursComboBoxWork.Items.Clear();
-                    holidayThirdHoursComboBoxWork.Items.Clear();
+                    ClearHolidayComboBoxesItemsFromWork();
+                    AddEmptyValueForHolidayComboBoxesWork();
                     foreach (var holiday in controller.holidays.Holidays)
                     {
                         holidayFirstHoursComboBoxWork.Items.Add(holiday);
@@ -521,9 +540,8 @@ namespace Pontaj
             }
             else
             {
-                holidayFirstHoursComboBoxWork.Items.Clear();
-                holidaySecondHoursComboBoxWork.Items.Clear();
-                holidayThirdHoursComboBoxWork.Items.Clear();
+                ClearHolidayComboBoxesItemsFromWork();
+                AddEmptyValueForHolidayComboBoxesWork();
                 foreach (var holiday in controller.holidays.Holidays)
                 {
                     holidayFirstHoursComboBoxWork.Items.Add(holiday);
@@ -563,7 +581,7 @@ namespace Pontaj
             }
             else if (tabControl.SelectedItem.Equals(worksTabItem))
             {
-                //LoadWorks();
+
                 populateMonthYearComboBox();
                 LoadUsersIntoComboBox();
                 LoadHolidaysIntoComboBox();
@@ -827,7 +845,8 @@ namespace Pontaj
         //}
         private List<Work> GetOnlyWorksOfOneUser(User user)
         {
-            List<Work> works = controller.GetWorksFromDB();
+
+
             List<Work> onlyForOne = new List<Work>();
             foreach (Work work in works)
             {
@@ -836,6 +855,7 @@ namespace Pontaj
             }
             return onlyForOne;
         }
+
 
 
 
@@ -1255,20 +1275,39 @@ namespace Pontaj
             string value = DateTime.Now.Month + "." + DateTime.Now.Year;
             if (monthYearComboBoxWork.SelectedValue != null)
                 value = monthYearComboBoxWork.SelectedValue as string;
+            List<Work> worksForOne = GetOnlyWorksOfOneUser(userComboBoxWork.SelectedItem as User);
+            List<Work> workedThisMonth = GetDaysOfMonthWorkedFromList(worksForOne, value);
 
-            int days = GetMonthsLengthBasedOnYear(value);
-
-            dataGridWork.Columns.Clear();
-
-            for (int i = 1; i <= days; ++i)
-            {
-                DataGridTextColumn dataColumn = new DataGridTextColumn();
-                dataGridWork.Columns.Add(dataColumn);
-                dataColumn.Header = i;
-            }
+            InsertDaysOfMonthsOnDataGrid(workedThisMonth, value);
             e.Handled = true;
 
 
+        }
+        private void InsertDaysOfMonthsOnDataGrid(List<Work> workedThisMonth, string value)
+        {
+            int days = GetMonthsLengthBasedOnYear(value);
+
+            dataGridWork.Columns.Clear();
+            DataTable dt = new DataTable();
+            var row = dt.NewRow();
+            string[] splitted = value.Split('.');
+            int[] daysOfWork = GetDaysOfWork(workedThisMonth, int.Parse(splitted[0]));
+            var secondRow = dt.NewRow();
+            dt.Rows.Add(row);
+            dt.Rows.Add(secondRow);
+            for (int i = 1; i <= days; ++i)
+            {
+
+                dt.Columns.Add(i.ToString(), typeof(string));
+                row[i.ToString()] = i;
+                if (daysOfWork[i - 1] != 0)
+                    secondRow[i.ToString()] = "P";
+
+
+            }
+
+
+            dataGridWork.ItemsSource = dt.DefaultView;
         }
         private int GetMonthsLengthBasedOnYear(string value)
         {
@@ -1297,11 +1336,41 @@ namespace Pontaj
                     days = 28;
             return days;
         }
-
+        private int[] GetDaysOfWork(List<Work> works, int month)
+        {
+            int[] days = new int[31];
+            foreach (var work in works)
+            {
+                if (work.StartDate.Month == month)
+                    days[work.StartDate.Day - 1] = 1;
+                if (work.EndDate.Month == month)
+                    days[work.EndDate.Day - 1] = 1;
+            }
+            return days;
+        }
         private void UserComboBoxWork_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            string value = DateTime.Now.Month + "." + DateTime.Now.Year;
+            monthYearComboBoxWork.SelectedIndex = -1;
+            monthYearComboBoxWork.SelectedValue = value;
             e.Handled = true;
         }
+        private List<Work> GetDaysOfMonthWorkedFromList(List<Work> works, string date)
+        {
+
+            List<Work> workedThisMonth = new List<Work>();
+            string[] splitted = date.Split('.');
+            int month = int.Parse(splitted[0]);
+            int year = int.Parse(splitted[1]);
+            foreach (var work in works)
+            {
+                if (work.StartDate.Month == month && work.StartDate.Year == year || work.EndDate.Month == month && work.EndDate.Year == year)
+                    workedThisMonth.Add(work);
+
+            }
+            return workedThisMonth;
+        }
+
 
         private void HolidayFirstHoursComboBoxWork_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -1364,7 +1433,7 @@ namespace Pontaj
         }
         private void GenerateCurrentTimeForTextBox(TextBox textBox)
         {
-            textBox.Text = DateTime.Now.ToShortTimeString();
+            textBox.Text = DateTime.Now.Hour + ":" + DateTime.Now.Minute;
         }
         private void DecreaseHoursForTextBox(TextBox textBox)
         {
@@ -1446,6 +1515,9 @@ namespace Pontaj
                 hours = 23;
             else
                 --hours;
+            if (hours > 23 || hours < 0)
+                hours = 0;
+
             return hours;
         }
         private int ReturnTheCorrectIncreasedHours(string value)
@@ -1463,6 +1535,8 @@ namespace Pontaj
                 hours = 0;
             else
                 ++hours;
+            if (hours > 23 || hours < 0)
+                hours = 0;
             return hours;
         }
 

@@ -327,7 +327,7 @@
                                 <RowDefinition Height="0.2*"></RowDefinition>
                                 <RowDefinition Height="0.75*"></RowDefinition>
                             </Grid.RowDefinitions>
-                            
+
                             <Grid Grid.Row="1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="0.1*"></ColumnDefinition>
@@ -335,7 +335,7 @@
                                     <ColumnDefinition Width="0.5*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <Grid Grid.Column="0">
-                                    <TextBlock Text="Persoana:" VerticalAlignment="Center"></TextBlock> 
+                                    <TextBlock Text="Persoana:" VerticalAlignment="Center"></TextBlock>
                                 </Grid>
                                 <Grid Grid.Column="1">
                                     <ComboBox Name="userComboBoxWork" SelectionChanged="UserComboBoxWork_SelectionChanged" VerticalAlignment="Center"></ComboBox>
@@ -388,7 +388,13 @@
                                         <RowDefinition Height="0.9*"></RowDefinition>
                                     </Grid.RowDefinitions>
                                     <Grid Grid.Row="1">
-                                        <DataGrid Height ="75" Width="1000" HorizontalAlignment="Left" Margin="10,10,0,0" Name="dataGridWork" VerticalAlignment="Top" HeadersVisibility="None" />
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="349*"/>
+                                            <ColumnDefinition Width="673*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <DataGrid Height ="62" Width="1000" HorizontalAlignment="Left" Margin="10,10,0,0" Name="dataGridWork" ItemsSource="{Binding}"
+                                                  VerticalAlignment="Top" HeadersVisibility="None" RowHeight="30" MinColumnWidth="30" IsReadOnly="True" SelectionMode="Single"  SelectionUnit="Cell" Grid.ColumnSpan="2"/>
+
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -424,7 +430,7 @@
                                     <TextBlock Text="  Concediu" FontSize="15" VerticalAlignment="Center"></TextBlock>
                                 </Grid>
                             </Grid>
-                           
+
                             <Grid Grid.Row="1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="0.05*"></ColumnDefinition>
@@ -452,7 +458,7 @@
                                 <Grid Grid.Column="3">
                                     <Button Name="increaseHourComingFirstWork" Content="&gt;" Click="IncreaseHourComingFirstWork_Click"></Button>
                                 </Grid>
-                                 <Grid Grid.Column="4">
+                                <Grid Grid.Column="4">
                                     <Button Name="currentTimeFirstComing" Content="Timp actual" Click="CurrentTimeFirstComing_Click"></Button>
                                 </Grid>
 
@@ -500,8 +506,8 @@
                                 <Grid Grid.Column="4">
                                     <Button Name="currentTimeFirstLeaving" Content="Timp actual" Click="CurrentTimeFirstLeaving_Click"></Button>
                                 </Grid>
-                                
-                                
+
+
                             </Grid>
                         </Grid>
                         <Grid Grid.Row="2">
@@ -540,7 +546,7 @@
                                 <Grid Grid.Column="4">
                                     <Button Name="currentTimeSecondComing" Content="Timp actual" Click="CurrentTimeSecondComing_Click"></Button>
                                 </Grid>
-                                
+
                                 <Grid Grid.Column="6">
                                     <ComboBox Name="typeSecondHoursComboBoxWork" SelectionChanged="TypeSecondHoursComboBoxWork_SelectionChanged"></ComboBox>
                                 </Grid>
@@ -584,7 +590,7 @@
                                 <Grid Grid.Column="4">
                                     <Button Name="currentTimeSecondLeaving" Content="Timp actual" Click="CurrentTimeSecondLeaving_Click"></Button>
                                 </Grid>
-                                
+
 
                             </Grid>
 
@@ -625,7 +631,7 @@
                                 <Grid Grid.Column="4">
                                     <Button Name="currentTimeComingThird" Content="Timp actual" Click="CurrentTimeComingThird_Click"></Button>
                                 </Grid>
-                                
+
                                 <Grid Grid.Column="6">
                                     <ComboBox Name="typeThirdHoursComboBoxWork" SelectionChanged="TypeThirdHoursComboBoxWork_SelectionChanged"></ComboBox>
                                 </Grid>
@@ -669,7 +675,7 @@
                                 <Grid Grid.Column="4">
                                     <Button Name="currentTimeThirdLeaving" Content="Timp actual" Click="CurrentTimeThirdLeaving_Click"></Button>
                                 </Grid>
-                                
+
 
                             </Grid>
                         </Grid>
