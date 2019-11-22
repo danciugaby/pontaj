@@ -393,7 +393,7 @@
                                             <ColumnDefinition Width="673*"/>
                                         </Grid.ColumnDefinitions>
                                         <DataGrid Height ="62" Width="1000" HorizontalAlignment="Left" Margin="10,10,0,0" Name="dataGridWork" ItemsSource="{Binding}"
-                                                  VerticalAlignment="Top" HeadersVisibility="None" RowHeight="30" MinColumnWidth="30" IsReadOnly="True" SelectionMode="Single"  SelectionUnit="Cell" Grid.ColumnSpan="2"/>
+                                                  VerticalAlignment="Top" HeadersVisibility="None" RowHeight="30" MinColumnWidth="30" IsReadOnly="True" SelectionMode="Single"  SelectionUnit="Cell" Grid.ColumnSpan="2" SelectedCellsChanged="DataGridWork_SelectedCellsChanged"/>
 
                                     </Grid>
                                 </Grid>

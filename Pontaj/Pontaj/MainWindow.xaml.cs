@@ -1343,8 +1343,7 @@ namespace Pontaj
             {
                 if (work.StartDate.Month == month)
                     days[work.StartDate.Day - 1] = 1;
-                if (work.EndDate.Month == month)
-                    days[work.EndDate.Day - 1] = 1;
+
             }
             return days;
         }
@@ -1598,6 +1597,110 @@ namespace Pontaj
         private void IncreaseHourThirdLeavingWork_Click(object sender, RoutedEventArgs e)
         {
             IncreaseHoursForTextBox(leavingThirdHourOfWork);
+        }
+
+
+        private void DataGridWork_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        {
+            
+            IList<DataGridCellInfo> cells = dataGridWork.SelectedCells;
+            string selectedDay = cells[0].Column.Header as string;
+            string monthYear = monthYearComboBoxWork.SelectedValue as string;
+            User user = userComboBoxWork.SelectedItem as User;
+            if (user != null)
+                 populateComboBoxesAndTimeOfWorks(user, selectedDay, monthYear);
+
+        }
+
+        private void populateComboBoxesAndTimeOfWorks(User user, string selectedDay, string monthYear)
+        {
+            clearHoursAndMinutesTextBox(comingFirstHourOfWork, comingSecondHourOfWork, comingThirdHourOfWork);
+            clearHoursAndMinutesTextBox(leavingFirstHourOfWork, leavingSecondHourOfWork, leavingThirdHourOfWork);
+            clearTypeDescriptionComboBoxes(typeFirstHoursComboBoxWork, typeSecondHoursComboBoxWork, typeThirdHoursComboBoxWork);
+            clearHolidaysComboBoxes(holidayFirstHoursComboBoxWork,holidaySecondHoursComboBoxWork,holidayThirdHoursComboBoxWork);
+            List<Work> forOnlyOneUser = GetOnlyWorksOfOneUser(user);
+            int day = int.Parse(selectedDay);
+            string[] splitted = monthYear.Split('.');
+            int month = int.Parse(splitted[0]);
+            int year = int.Parse(splitted[1]);
+            TypeDescription type;
+            Holiday holiday;
+            int hoursComing;
+            int minutesComing;
+            int hoursLeaving;
+            int minutesLeaving;
+            int number = 0;
+            foreach (Work work in forOnlyOneUser)
+            {
+                if (work.StartDate.Year == year && work.StartDate.Month == month && work.StartDate.Day == day)
+                {
+                    ++number;
+                    type = work.Type;
+                    holiday = work.Holiday;
+                    hoursComing = work.StartDate.Hour;
+                    minutesComing = work.StartDate.Minute;
+                    hoursLeaving = work.EndDate.Hour;
+                    minutesLeaving = work.EndDate.Minute;
+
+                    if (number == 1)
+                    {
+                        holidayFirstHoursComboBoxWork.SelectedItem = holiday;
+                        typeFirstHoursComboBoxWork.SelectedItem = type;
+                        populateHoursAndMinutesTextBox(comingFirstHourOfWork, hoursComing, minutesComing);
+                        populateHoursAndMinutesTextBox(leavingFirstHourOfWork, hoursLeaving, minutesLeaving);
+                    }
+                    else  if(number == 2)
+                    {
+                        holidaySecondHoursComboBoxWork.SelectedItem = holiday;
+                        typeSecondHoursComboBoxWork.SelectedItem = type;
+                        populateHoursAndMinutesTextBox(comingSecondHourOfWork, hoursComing, minutesComing);
+                        populateHoursAndMinutesTextBox(leavingSecondHourOfWork, hoursLeaving, minutesLeaving);
+                    }
+                    else
+                    {
+                        holidayThirdHoursComboBoxWork.SelectedItem = holiday;
+                        typeThirdHoursComboBoxWork.SelectedItem = type;
+                        populateHoursAndMinutesTextBox(comingThirdHourOfWork, hoursComing, minutesComing);
+                        populateHoursAndMinutesTextBox(leavingThirdHourOfWork, hoursLeaving, minutesLeaving);
+                    }
+                }
+            }
+            if (number == 0)
+            {
+                comingFirstHourOfWork.Text = "07:00";
+                leavingFirstHourOfWork.Text = "15:00";
+            }
+
+        }
+        private void populateHoursAndMinutesTextBox(TextBox textBox,int hours,int minutes)
+        {
+            string value="";
+            if (hours < 10)
+                value += "0";
+            value += hours + ":";
+            if (minutes < 10)
+                value += "0";
+            value += minutes;
+            textBox.Text = value;
+        }
+        private void clearHoursAndMinutesTextBox(TextBox textBox1, TextBox textBox2, TextBox textBox3)
+        {
+            textBox1.Clear();
+            textBox2.Clear();
+            textBox3.Clear();
+
+        }
+        private void clearHolidaysComboBoxes(ComboBox comboBox1, ComboBox comboBox2, ComboBox comboBox3)
+        {
+            comboBox1.SelectedIndex = 0;
+            comboBox2.SelectedIndex = 0;
+            comboBox3.SelectedIndex = 0;
+        }
+        private void clearTypeDescriptionComboBoxes(ComboBox comboBox1, ComboBox comboBox2, ComboBox comboBox3)
+        {
+            comboBox1.SelectedIndex = 0;
+            comboBox2.SelectedIndex = 0;
+            comboBox3.SelectedIndex = 0;
         }
     }
 }

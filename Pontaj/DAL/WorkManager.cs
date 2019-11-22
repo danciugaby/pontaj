@@ -79,6 +79,61 @@ namespace DAL
                 }
             }
         }
+        //public void GetWorksForOneUserOneDateFromDB(User user, string startdate)
+        //{
+        //    using (SQLConnectionManager manager = new SQLConnectionManager())
+        //    {
+        //        manager.Open();
+        //        string sql = "select TD.Id as \"TypeId\", TD.Name as \"Type\",h.Id as \"HolidayId\",h.Name as \"Holiday\", w.StartDate,w.EndDate " + 
+        //                     " from Work w " +
+        //                     " LEFT JOIN Holiday H on w.HolidayId = H.Id " +
+        //                     " LEFT JOIN TypeDescription TD on w.TypeDescriptionId = TD.Id " +
+        //                     " where UserId = "+ user.UserId +" and StartDate like '"+ startdate + "%'; ";
+        //        SQLiteCommand command = new SQLiteCommand(sql, manager.DbConnection);
+        //        SQLiteDataReader reader = command.ExecuteReader();
+        //        Works.Clear();
+        //        while (reader.Read())
+        //        {
+        //            bool insertHoliday = true;
+        //            bool insertType = true;
+        //            try
+        //            {
+        //                if ((string)reader["Holiday"] != null)
+        //                    insertHoliday = true;
+        //            }
+        //            catch (System.InvalidCastException ex)
+        //            {
+        //                insertHoliday = false;
+        //            }
+        //            try
+        //            {
+        //                if ((string)reader["Type"] != null)
+        //                    insertType = true;
+        //            }
+        //            catch (System.InvalidCastException ex)
+        //            {
+        //                insertType = false;
+        //            }
+        //            if (insertType && insertHoliday)
+        //                Works.Add(new Work(new User((Int64)reader["UserId"], (string)reader["FirstName"], (string)reader["LastName"],
+        //                    new Rank((Int64)reader["RankId"], (string)reader["Rank"]), new Unit((Int64)reader["UnitId"], (string)reader["Unit"])),
+        //                    new TypeDescription((Int64)reader["TypeId"], (string)reader["Type"]), new Holiday((Int64)reader["HolidayId"], (string)reader["Holiday"]),
+        //                    (DateTime)reader["StartDate"], (DateTime)reader["EndDate"]));
+        //            else if (insertType)
+        //                Works.Add(new Work(new User((Int64)reader["UserId"], (string)reader["FirstName"], (string)reader["LastName"],
+        //                    new Rank((Int64)reader["RankId"], (string)reader["Rank"]), new Unit((Int64)reader["UnitId"], (string)reader["Unit"])),
+        //                    new TypeDescription((Int64)reader["TypeId"], (string)reader["Type"]),
+        //                    (DateTime)reader["StartDate"], (DateTime)reader["EndDate"]));
+        //            else if (insertHoliday)
+        //                Works.Add(new Work(new User((Int64)reader["UserId"], (string)reader["FirstName"], (string)reader["LastName"],
+        //                    new Rank((Int64)reader["RankId"], (string)reader["Rank"]), new Unit((Int64)reader["UnitId"], (string)reader["Unit"])),
+        //                    new Holiday((Int64)reader["HolidayId"], (string)reader["Holiday"]),
+        //                    (DateTime)reader["StartDate"], (DateTime)reader["EndDate"]));
+
+
+        //        }
+        //    }
+        //}
         //insert
         public void AddWorkInDB(Work work)
         {
