@@ -1608,7 +1608,10 @@ namespace Pontaj
             string monthYear = monthYearComboBoxWork.SelectedValue as string;
             User user = userComboBoxWork.SelectedItem as User;
             if (user != null)
-                 populateComboBoxesAndTimeOfWorks(user, selectedDay, monthYear);
+            {
+                populateComboBoxesAndTimeOfWorks(user, selectedDay, monthYear);
+                displayDateTextBlock.Text = selectedDay + "." + monthYear;
+            }
 
         }
 
@@ -1644,31 +1647,21 @@ namespace Pontaj
 
                     if (number == 1)
                     {
-                        holidayFirstHoursComboBoxWork.SelectedItem = holiday;
-                        typeFirstHoursComboBoxWork.SelectedItem = type;
-                        populateHoursAndMinutesTextBox(comingFirstHourOfWork, hoursComing, minutesComing);
-                        populateHoursAndMinutesTextBox(leavingFirstHourOfWork, hoursLeaving, minutesLeaving);
+                        populateFirstGridOfWork(holiday, type, hoursComing, minutesComing, hoursLeaving, minutesLeaving);
                     }
                     else  if(number == 2)
                     {
-                        holidaySecondHoursComboBoxWork.SelectedItem = holiday;
-                        typeSecondHoursComboBoxWork.SelectedItem = type;
-                        populateHoursAndMinutesTextBox(comingSecondHourOfWork, hoursComing, minutesComing);
-                        populateHoursAndMinutesTextBox(leavingSecondHourOfWork, hoursLeaving, minutesLeaving);
+                        populateSecondGridOfWork(holiday, type, hoursComing, minutesComing, hoursLeaving, minutesLeaving);
                     }
                     else
                     {
-                        holidayThirdHoursComboBoxWork.SelectedItem = holiday;
-                        typeThirdHoursComboBoxWork.SelectedItem = type;
-                        populateHoursAndMinutesTextBox(comingThirdHourOfWork, hoursComing, minutesComing);
-                        populateHoursAndMinutesTextBox(leavingThirdHourOfWork, hoursLeaving, minutesLeaving);
+                        populateThirdGridOfWork(holiday, type, hoursComing, minutesComing, hoursLeaving, minutesLeaving);
                     }
                 }
             }
             if (number == 0)
             {
-                comingFirstHourOfWork.Text = "07:00";
-                leavingFirstHourOfWork.Text = "15:00";
+                noDataInDB();
             }
 
         }
@@ -1702,5 +1695,109 @@ namespace Pontaj
             comboBox2.SelectedIndex = 0;
             comboBox3.SelectedIndex = 0;
         }
+        private void enableSecondGridToInsert()
+        {
+            secondClockingGrid.Visibility = Visibility.Visible;
+            insertStateSecondGridButtons();
+        }
+        private void enableThirdGridToInsert()
+        {
+            thirdClockingGrid.Visibility = Visibility.Visible;
+            insertStateThirdGridButtons();
+        }
+        private void enableSecondGridToUpdateOrDelete()
+        {
+            secondClockingGrid.Visibility = Visibility.Visible;
+            updateOrDeleteStateSecondGridButtons();
+        }
+        private void enableThirdGridToUpdateOrDelete()
+        {
+            thirdClockingGrid.Visibility = Visibility.Visible;
+            updateOrDeleteStateThirdGridButtons();
+        }
+        private void disableSecondGrid()
+        {
+            secondClockingGrid.Visibility = Visibility.Hidden;
+        }
+        private void disableThirdGrid()
+        {
+            thirdClockingGrid.Visibility = Visibility.Hidden;
+        }
+        private void insertStateFirstGridButtons()
+        {
+            addFirstHoursWork.IsEnabled = true;
+            modifyFirstHoursWork.IsEnabled = false;
+            deleteFirstHoursWork.IsEnabled = false;
+        }
+        private void insertStateSecondGridButtons()
+        {
+            addSecondHoursWork.IsEnabled = true;
+            modifySecondHoursWork.IsEnabled = false;
+            deleteSecondHoursWork.IsEnabled = false;
+        }
+        private void insertStateThirdGridButtons()
+        {
+            addThirdHoursWork.IsEnabled = true;
+            modifyThirdHoursWork.IsEnabled = false;
+            deleteThirdHoursWork.IsEnabled = false;
+        }
+        private void updateOrDeleteStateFirstGridButtons()
+        {
+            addFirstHoursWork.IsEnabled = false;
+            modifyFirstHoursWork.IsEnabled = true;
+            deleteFirstHoursWork.IsEnabled = true;
+        }
+        private void updateOrDeleteStateSecondGridButtons()
+        {
+            addSecondHoursWork.IsEnabled = false;
+            modifySecondHoursWork.IsEnabled = true;
+            deleteSecondHoursWork.IsEnabled = true;
+        }
+        private void updateOrDeleteStateThirdGridButtons()
+        {
+            addThirdHoursWork.IsEnabled = false;
+            modifyThirdHoursWork.IsEnabled = true;
+            deleteThirdHoursWork.IsEnabled = true;
+        }
+        private void populateFirstGridOfWork(Holiday holiday, TypeDescription type, int hoursComing, int minutesComing, int hoursLeaving, int minutesLeaving)
+        {
+            updateOrDeleteStateFirstGridButtons();
+            enableSecondGridToInsert();
+            disableThirdGrid();
+            holidayFirstHoursComboBoxWork.SelectedItem = holiday;
+            typeFirstHoursComboBoxWork.SelectedItem = type;
+            populateHoursAndMinutesTextBox(comingFirstHourOfWork, hoursComing, minutesComing);
+            populateHoursAndMinutesTextBox(leavingFirstHourOfWork, hoursLeaving, minutesLeaving);
+        }
+        private void populateSecondGridOfWork(Holiday holiday, TypeDescription type, int hoursComing, int minutesComing, int hoursLeaving, int minutesLeaving)
+        {
+
+            updateOrDeleteStateFirstGridButtons();
+            enableSecondGridToUpdateOrDelete();
+            enableThirdGridToInsert();
+            holidaySecondHoursComboBoxWork.SelectedItem = holiday;
+            typeSecondHoursComboBoxWork.SelectedItem = type;
+            populateHoursAndMinutesTextBox(comingSecondHourOfWork, hoursComing, minutesComing);
+            populateHoursAndMinutesTextBox(leavingSecondHourOfWork, hoursLeaving, minutesLeaving);
+        }
+        private void populateThirdGridOfWork(Holiday holiday, TypeDescription type, int hoursComing, int minutesComing, int hoursLeaving, int minutesLeaving)
+        {
+            updateOrDeleteStateFirstGridButtons();
+            enableSecondGridToUpdateOrDelete();
+            enableThirdGridToUpdateOrDelete();
+            holidayThirdHoursComboBoxWork.SelectedItem = holiday;
+            typeThirdHoursComboBoxWork.SelectedItem = type;
+            populateHoursAndMinutesTextBox(comingThirdHourOfWork, hoursComing, minutesComing);
+            populateHoursAndMinutesTextBox(leavingThirdHourOfWork, hoursLeaving, minutesLeaving);
+        }
+        private void noDataInDB()
+        {
+            insertStateFirstGridButtons();
+            disableSecondGrid();
+            disableThirdGrid();
+            comingFirstHourOfWork.Text = "07:00";
+            leavingFirstHourOfWork.Text = "15:00";
+        }
+
     }
 }
