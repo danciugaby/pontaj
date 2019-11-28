@@ -470,7 +470,7 @@
                                 </Grid>
 
                                 <Grid Grid.Column="9">
-                                    <Button Name="addFirstHoursWork" Content="Adauga"></Button>
+                                    <Button Name="addFirstHoursWork" Content="Adauga" Click="AddFirstHoursWork_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Column="10">
                                     <Button Name="modifyFirstHoursWork" Content="Modifica"></Button>

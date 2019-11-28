@@ -1602,13 +1602,14 @@ namespace Pontaj
 
         private void DataGridWork_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {
-            
-            IList<DataGridCellInfo> cells = dataGridWork.SelectedCells;
-            string selectedDay = cells[0].Column.Header as string;
-            string monthYear = monthYearComboBoxWork.SelectedValue as string;
+
+
             User user = userComboBoxWork.SelectedItem as User;
             if (user != null)
             {
+                IList<DataGridCellInfo> cells = dataGridWork.SelectedCells;
+                string selectedDay = cells[0].Column.Header as string;
+                string monthYear = monthYearComboBoxWork.SelectedValue as string;
                 populateComboBoxesAndTimeOfWorks(user, selectedDay, monthYear);
                 displayDateTextBlock.Text = selectedDay + "." + monthYear;
             }
@@ -1620,7 +1621,7 @@ namespace Pontaj
             clearHoursAndMinutesTextBox(comingFirstHourOfWork, comingSecondHourOfWork, comingThirdHourOfWork);
             clearHoursAndMinutesTextBox(leavingFirstHourOfWork, leavingSecondHourOfWork, leavingThirdHourOfWork);
             clearTypeDescriptionComboBoxes(typeFirstHoursComboBoxWork, typeSecondHoursComboBoxWork, typeThirdHoursComboBoxWork);
-            clearHolidaysComboBoxes(holidayFirstHoursComboBoxWork,holidaySecondHoursComboBoxWork,holidayThirdHoursComboBoxWork);
+            clearHolidaysComboBoxes(holidayFirstHoursComboBoxWork, holidaySecondHoursComboBoxWork, holidayThirdHoursComboBoxWork);
             List<Work> forOnlyOneUser = GetOnlyWorksOfOneUser(user);
             int day = int.Parse(selectedDay);
             string[] splitted = monthYear.Split('.');
@@ -1649,7 +1650,7 @@ namespace Pontaj
                     {
                         populateFirstGridOfWork(holiday, type, hoursComing, minutesComing, hoursLeaving, minutesLeaving);
                     }
-                    else  if(number == 2)
+                    else if (number == 2)
                     {
                         populateSecondGridOfWork(holiday, type, hoursComing, minutesComing, hoursLeaving, minutesLeaving);
                     }
@@ -1661,13 +1662,13 @@ namespace Pontaj
             }
             if (number == 0)
             {
-                noDataInDB();
+                noDataInDBWork();
             }
 
         }
-        private void populateHoursAndMinutesTextBox(TextBox textBox,int hours,int minutes)
+        private void populateHoursAndMinutesTextBox(TextBox textBox, int hours, int minutes)
         {
-            string value="";
+            string value = "";
             if (hours < 10)
                 value += "0";
             value += hours + ":";
@@ -1790,7 +1791,7 @@ namespace Pontaj
             populateHoursAndMinutesTextBox(comingThirdHourOfWork, hoursComing, minutesComing);
             populateHoursAndMinutesTextBox(leavingThirdHourOfWork, hoursLeaving, minutesLeaving);
         }
-        private void noDataInDB()
+        private void noDataInDBWork()
         {
             insertStateFirstGridButtons();
             disableSecondGrid();
@@ -1799,5 +1800,80 @@ namespace Pontaj
             leavingFirstHourOfWork.Text = "15:00";
         }
 
+        private void AddFirstHoursWork_Click(object sender, RoutedEventArgs e)
+        {
+            User user = userComboBoxWork.SelectedItem as User;
+            bool canInsert = true;
+            string message = "";
+            canInsert = canInsertUserInDBWork(user);
+            if (!canInsert)
+                message += "Selecteaza persoana!\n";
+            DateTime startDate = DateTime.Now;
+            try
+            {
+                startDate = getSelectedDateFromDataGrid();
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                canInsert = false;
+                message += "Selecteaza data!\n";
+            }
+            TypeDescription type = typeFirstHoursComboBoxWork.SelectedItem as TypeDescription;
+            Holiday holiday = holidayFirstHoursComboBoxWork.SelectedItem as Holiday;
+            canInsert = canInsertHolidayAndTypeInDBWork(type, holiday);
+            if (!canInsert)
+            {
+                message += "Selecteaza tipul de pontaj sau concediu!\n";
+                MessageBox.Show(message);
+            }
+        }
+
+        private DateTime getSelectedDateFromDataGrid()
+        {
+            IList<DataGridCellInfo> cells = dataGridWork.SelectedCells;
+            string selectedDay = cells[0].Column.Header as string;
+            string monthYear = monthYearComboBoxWork.SelectedValue as string;
+            string[] splitted = monthYear.Split('.');
+            return new DateTime(int.Parse(splitted[1]), int.Parse(splitted[0]), int.Parse(selectedDay));
+
+        }
+        private bool canInsertUserInDBWork(User user)
+        {
+            if (user == null)
+            {
+                return false;
+            }
+            return true;
+        }
+        private bool canInsertHolidayAndTypeInDBWork(TypeDescription type, Holiday holiday)
+        {
+            int no = 0;
+            try
+            {
+                if (type.Name.Equals("") )
+                {
+                    ++no;
+                }
+            }
+            catch (NullReferenceException ex)
+            {
+                ++no;
+            }
+            try
+            {
+                if (holiday.Name.Equals(""))
+                {
+                    ++no;
+                }
+            }
+            catch (NullReferenceException ex)
+            {
+                ++no;
+            }
+            if (no == 2)
+                return false;
+            else
+                return true;
+        }
     }
 }
