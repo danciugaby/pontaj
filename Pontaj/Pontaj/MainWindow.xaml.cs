@@ -1802,39 +1802,16 @@ namespace Pontaj
 
         private void AddFirstHoursWork_Click(object sender, RoutedEventArgs e)
         {
-            User user = userComboBoxWork.SelectedItem as User;
-            bool canInsert = true;
-            string message = "";
-            canInsert = canInsertUserInDBWork(user);
-            if (!canInsert)
-                message += "Selecteaza persoana!\n";
-            DateTime startDate = DateTime.Now;
-            try
-            {
-                startDate = getSelectedDateFromDataGrid();
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                canInsert = false;
-                message += "Selecteaza data!\n";
-            }
-            TypeDescription type = typeFirstHoursComboBoxWork.SelectedItem as TypeDescription;
-            Holiday holiday = holidayFirstHoursComboBoxWork.SelectedItem as Holiday;
-            canInsert = canInsertHolidayAndTypeInDBWork(type, holiday);
-            if (!canInsert)
-            {
-                message += "Selecteaza tipul de pontaj sau concediu!\n";
-                MessageBox.Show(message);
-            }
+            AddWorkInDB(comingFirstHourOfWork, leavingFirstHourOfWork, typeFirstHoursComboBoxWork, holidayFirstHoursComboBoxWork);
         }
 
-        private DateTime getSelectedDateFromDataGrid()
+        private DateTime getSelectedDateFromDataGrid(int hours, int minutes)
         {
             IList<DataGridCellInfo> cells = dataGridWork.SelectedCells;
             string selectedDay = cells[0].Column.Header as string;
             string monthYear = monthYearComboBoxWork.SelectedValue as string;
             string[] splitted = monthYear.Split('.');
-            return new DateTime(int.Parse(splitted[1]), int.Parse(splitted[0]), int.Parse(selectedDay));
+            return new DateTime(int.Parse(splitted[1]), int.Parse(splitted[0]), int.Parse(selectedDay), hours, minutes, 0);
 
         }
         private bool canInsertUserInDBWork(User user)
@@ -1850,7 +1827,7 @@ namespace Pontaj
             int no = 0;
             try
             {
-                if (type.Name.Equals("") )
+                if (type.Name.Equals(""))
                 {
                     ++no;
                 }
@@ -1875,5 +1852,98 @@ namespace Pontaj
             else
                 return true;
         }
+        private void AddWorkInDB(TextBox comingTextBox, TextBox leavingTextBox, ComboBox typeHoursComboBox, ComboBox holidayHoursComboBox)
+        {
+            User user = userComboBoxWork.SelectedItem as User;
+            bool canInsert = true;
+            string message = "";
+            canInsert = canInsertUserInDBWork(user);
+            if (!canInsert)
+                message += "Selecteaza persoana!\n";
+            DateTime startDate = DateTime.Now;
+            DateTime endDate = startDate;
+            int hoursComing = 0;
+            int minutesComing = 0;
+            if (!CheckIfHourIsCorrect(comingTextBox.Text))
+            {
+                canInsert = false;
+                message += "Ora de venire introdusa este incorecta!\n";
+            }
+            else
+            {
+                hoursComing = getHourFromString(comingTextBox.Text);
+                minutesComing = getMinutesFromString(comingTextBox.Text);
+            }
+
+            try
+            {
+                startDate = getSelectedDateFromDataGrid(hoursComing, minutesComing);
+
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                canInsert = false;
+                message += "Selecteaza data!\n";
+            }
+            int hoursLeaving = 0;
+            int minutesLeaving = 0;
+            if (!CheckIfHourIsCorrect(leavingTextBox.Text))
+            {
+                canInsert = false;
+                message += "Ora de plecare introdusa este incorecta!\n";
+            }
+            else
+            {
+                hoursLeaving = getHourFromString(leavingTextBox.Text);
+                minutesLeaving = getMinutesFromString(leavingTextBox.Text);
+            }
+
+            TypeDescription type = typeHoursComboBox.SelectedItem as TypeDescription;
+            Holiday holiday = holidayHoursComboBox.SelectedItem as Holiday;
+            canInsert = canInsertHolidayAndTypeInDBWork(type, holiday);
+            if (!canInsert)
+            {
+                message += "Selecteaza tipul de pontaj sau concediu!\n";
+                MessageBox.Show(message);
+            }
+            int day = startDate.Day;
+            string leavingDate = "";
+            if (hoursLeaving < hoursComing)
+            {
+
+            }
+
+            try
+            {
+                endDate = new DateTime(startDate.Year, startDate.Month, day, hoursLeaving, minutesLeaving, 0);
+
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                canInsert = false;
+            }
+        }
+        private string checkEndOfMonth(int year, int month, int day)
+        {
+            if (month == 2 && day == 28)
+            {
+                day = 1;
+                month += 1;
+            }
+            if(day == 31 &&(month == 1||month ==3 ||month==5||month==7||month==8||month==10))
+            {
+                day = 1;
+                month += 1;
+            }
+            if (day == 30 && (month == 4 || month == 6 || month == 9 || month == 11))
+            {
+                day = 1;
+                month += 1;
+            }
+
+            return "";
+
+        }
+
     }
 }
