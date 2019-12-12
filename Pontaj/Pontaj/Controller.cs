@@ -64,9 +64,9 @@ namespace Pontaj
         }
 
 
-        public void AddWorkInDB(Work work)
+        public void AddWorkInDB(Work work, bool isHoliday, bool isCasual)
         {
-            works.AddWorkInDB(work);
+            works.AddWorkInDB(work,isHoliday,isCasual);
         }
         public void AddRankInDB(Rank rank)
         {

@@ -135,14 +135,29 @@ namespace DAL
         //    }
         //}
         //insert
-        public void AddWorkInDB(Work work)
+        public void AddWorkInDB(Work work, bool isHoliday, bool isCasual)
         {
             using (SQLConnectionManager manager = new SQLConnectionManager())
             {
                 manager.Open();
-                string sql = "insert into work (StartDate, EndDate, UserId, TypeDescriptionId, HolidayId) values('" +
-                    work.StartDate.ToString("yyyy-MM-dd HH:mm:ss") + "','" + work.EndDate.ToString("yyyy-MM-dd HH:mm:ss") + "','" +
-                    work.User.UserId + "','" + work.Type.Id + "','" + work.Holiday.Id + "');";
+                string sql = "";
+                if (isCasual && isHoliday)
+                {
+                    MessageBox.Show("Alege doar Tip Pontaj sau Concediu!");
+                    return;
+                }
+                else if (isCasual)
+                {
+                    sql = "insert into work (StartDate, EndDate, UserId, TypeDescriptionId) values('" +
+                       work.StartDate.ToString("yyyy-MM-dd HH:mm:ss") + "','" + work.EndDate.ToString("yyyy-MM-dd HH:mm:ss") + "','" +
+                       work.User.UserId + "','" + work.Type.Id + "');";
+                }
+                else
+                {
+                    sql = "insert into work (StartDate, EndDate, UserId, HolidayId) values('" +
+                       work.StartDate.ToString("yyyy-MM-dd HH:mm:ss") + "','" + work.EndDate.ToString("yyyy-MM-dd HH:mm:ss") + "','" +
+                       work.User.UserId + "','" +  work.Holiday.Id + "');";
+                }
                 SQLiteCommand command = new SQLiteCommand(sql, manager.DbConnection);
                 int rowsAffected = command.ExecuteNonQuery();
                 if (rowsAffected == 0)

@@ -24,12 +24,11 @@ namespace Pontaj
     public partial class MainWindow : Window
     {
         Controller controller;
-        private static List<Work> works;
         public MainWindow()
         {
             InitializeComponent();
             controller = new Controller();
-            works = controller.GetWorksFromDB();
+            controller.works.Works = controller.GetWorksFromDB();
         }
 
         private void BtnAddUser_Click(object sender, RoutedEventArgs e)
@@ -848,7 +847,7 @@ namespace Pontaj
 
 
             List<Work> onlyForOne = new List<Work>();
-            foreach (Work work in works)
+            foreach (Work work in controller.works.Works)
             {
                 if (work.User.Equals(user))
                     onlyForOne.Add(work);
@@ -1272,6 +1271,13 @@ namespace Pontaj
         private void MonthYearComboBoxWork_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+            InitAndRefreshDataGrid();
+            e.Handled = true;
+
+
+        }
+        private void InitAndRefreshDataGrid()
+        {
             string value = DateTime.Now.Month + "." + DateTime.Now.Year;
             if (monthYearComboBoxWork.SelectedValue != null)
                 value = monthYearComboBoxWork.SelectedValue as string;
@@ -1279,9 +1285,6 @@ namespace Pontaj
             List<Work> workedThisMonth = GetDaysOfMonthWorkedFromList(worksForOne, value);
 
             InsertDaysOfMonthsOnDataGrid(workedThisMonth, value);
-            e.Handled = true;
-
-
         }
         private void InsertDaysOfMonthsOnDataGrid(List<Work> workedThisMonth, string value)
         {
@@ -1432,7 +1435,20 @@ namespace Pontaj
         }
         private void GenerateCurrentTimeForTextBox(TextBox textBox)
         {
-            textBox.Text = DateTime.Now.Hour + ":" + DateTime.Now.Minute;
+            int hours = DateTime.Now.Hour;
+            int minutes = DateTime.Now.Minute;
+            string value = "";
+            if (hours < 10)
+            {
+                value = "0";
+            }
+            value += hours + ":";
+            if (minutes < 10)
+            {
+                value += "0";
+            }
+            value += minutes;
+            textBox.Text = value;
         }
         private void DecreaseHoursForTextBox(TextBox textBox)
         {
@@ -1802,7 +1818,8 @@ namespace Pontaj
 
         private void AddFirstHoursWork_Click(object sender, RoutedEventArgs e)
         {
-            AddWorkInDB(comingFirstHourOfWork, leavingFirstHourOfWork, typeFirstHoursComboBoxWork, holidayFirstHoursComboBoxWork);
+            if (AddWorkInDB(comingFirstHourOfWork, leavingFirstHourOfWork, typeFirstHoursComboBoxWork, holidayFirstHoursComboBoxWork))
+                enableSecondGridToInsert();
         }
 
         private DateTime getSelectedDateFromDataGrid(int hours, int minutes)
@@ -1822,19 +1839,19 @@ namespace Pontaj
             }
             return true;
         }
-        private bool canInsertHolidayAndTypeInDBWork(TypeDescription type, Holiday holiday)
+        private int canInsertHolidayAndTypeInDBWork(TypeDescription type, Holiday holiday)
         {
             int no = 0;
             try
             {
                 if (type.Name.Equals(""))
                 {
-                    ++no;
+                    no = -2;
                 }
             }
             catch (NullReferenceException ex)
             {
-                ++no;
+                no = -2;
             }
             try
             {
@@ -1847,12 +1864,9 @@ namespace Pontaj
             {
                 ++no;
             }
-            if (no == 2)
-                return false;
-            else
-                return true;
+            return no;
         }
-        private void AddWorkInDB(TextBox comingTextBox, TextBox leavingTextBox, ComboBox typeHoursComboBox, ComboBox holidayHoursComboBox)
+        private bool AddWorkInDB(TextBox comingTextBox, TextBox leavingTextBox, ComboBox typeHoursComboBox, ComboBox holidayHoursComboBox)
         {
             User user = userComboBoxWork.SelectedItem as User;
             bool canInsert = true;
@@ -1900,48 +1914,96 @@ namespace Pontaj
 
             TypeDescription type = typeHoursComboBox.SelectedItem as TypeDescription;
             Holiday holiday = holidayHoursComboBox.SelectedItem as Holiday;
-            canInsert = canInsertHolidayAndTypeInDBWork(type, holiday);
+            bool isHoliday = false;
+            bool isCasual = false;
+            int no = canInsertHolidayAndTypeInDBWork(type, holiday);
+            if (no == -1)
+                canInsert = false;
+            else if (no == 1)
+            {
+                isCasual = true;
+
+            }
+            else if (no == -2)
+            {
+                isHoliday = true;
+            }
+            else
+            {
+                isCasual = true;
+                isHoliday = true;
+            }
             if (!canInsert)
             {
                 message += "Selecteaza tipul de pontaj sau concediu!\n";
                 MessageBox.Show(message);
             }
             int day = startDate.Day;
+            int month = startDate.Month;
+            int year = startDate.Year;
             string leavingDate = "";
-            if (hoursLeaving < hoursComing)
+            if (hoursLeaving <= hoursComing)
             {
+                leavingDate = checkEndOfMonth(year, month, day);
+                string[] splitted = leavingDate.Split('.');
+                day = int.Parse(splitted[0]);
+                month = int.Parse(splitted[1]);
+                year = int.Parse(splitted[2]);
 
             }
-
             try
             {
-                endDate = new DateTime(startDate.Year, startDate.Month, day, hoursLeaving, minutesLeaving, 0);
+                endDate = new DateTime(year, month, day, hoursLeaving, minutesLeaving, 0);
 
             }
             catch (ArgumentOutOfRangeException ex)
             {
                 canInsert = false;
             }
+            if (canInsert)
+            {
+                Work work = new Work(user, type, holiday, startDate, endDate);
+                controller.works.Works.Add(work);
+                controller.AddWorkInDB(work, isHoliday, isCasual);
+                InitAndRefreshDataGrid();
+            }
+            return canInsert;
         }
         private string checkEndOfMonth(int year, int month, int day)
         {
+
             if (month == 2 && day == 28)
             {
                 day = 1;
                 month += 1;
+                return day + "." + month + "." + year;
             }
-            if(day == 31 &&(month == 1||month ==3 ||month==5||month==7||month==8||month==10))
+            if (day == 31 && (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10))
             {
                 day = 1;
                 month += 1;
+                return day + "." + month + "." + year;
             }
             if (day == 30 && (month == 4 || month == 6 || month == 9 || month == 11))
             {
                 day = 1;
                 month += 1;
+                return day + "." + month + "." + year;
+            }
+            if (day == 31 && month == 12)
+            {
+                day = 1;
+                month = 1;
+                year += 1;
+            }
+            else
+            {
+                day += 1;
             }
 
-            return "";
+            return day + "." + month + "." + year;
+
+
 
         }
 

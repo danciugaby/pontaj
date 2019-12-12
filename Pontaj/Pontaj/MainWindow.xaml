@@ -421,7 +421,7 @@
                                     <TextBlock Text=" Ziua:" FontSize="15" VerticalAlignment="Center"></TextBlock>
                                 </Grid>
                                 <Grid Grid.Column="1">
-                                    <TextBlock Name="displayDateTextBlock" VerticalAlignment="Center"></TextBlock>
+                                    <TextBlock Name="displayDateTextBlock"  FontSize="15" VerticalAlignment="Center"></TextBlock>
                                 </Grid>
                                 <Grid Grid.Column="3">
                                     <TextBlock Text=" Tip de pontaj" FontSize="15" VerticalAlignment="Center"></TextBlock>
