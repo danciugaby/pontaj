@@ -1715,11 +1715,13 @@ namespace Pontaj
         private void enableSecondGridToInsert()
         {
             secondClockingGrid.Visibility = Visibility.Visible;
+            updateOrDeleteStateFirstGridButtons();
             insertStateSecondGridButtons();
         }
         private void enableThirdGridToInsert()
         {
             thirdClockingGrid.Visibility = Visibility.Visible;
+            updateOrDeleteStateSecondGridButtons();
             insertStateThirdGridButtons();
         }
         private void enableSecondGridToUpdateOrDelete()
@@ -1816,11 +1818,7 @@ namespace Pontaj
             leavingFirstHourOfWork.Text = "15:00";
         }
 
-        private void AddFirstHoursWork_Click(object sender, RoutedEventArgs e)
-        {
-            if (AddWorkInDB(comingFirstHourOfWork, leavingFirstHourOfWork, typeFirstHoursComboBoxWork, holidayFirstHoursComboBoxWork))
-                enableSecondGridToInsert();
-        }
+        
 
         private DateTime getSelectedDateFromDataGrid(int hours, int minutes)
         {
@@ -1965,7 +1963,10 @@ namespace Pontaj
                 Work work = new Work(user, type, holiday, startDate, endDate);
                 controller.works.Works.Add(work);
                 controller.AddWorkInDB(work, isHoliday, isCasual);
+               
                 InitAndRefreshDataGrid();
+                dataGridWork.SelectedIndex = day-1;
+                MessageBox.Show(dataGridWork.SelectedIndex.ToString());
             }
             return canInsert;
         }
@@ -2006,6 +2007,22 @@ namespace Pontaj
 
 
         }
+        private void AddFirstHoursWork_Click(object sender, RoutedEventArgs e)
+        {
+            if (AddWorkInDB(comingFirstHourOfWork, leavingFirstHourOfWork, typeFirstHoursComboBoxWork, holidayFirstHoursComboBoxWork))
+                enableSecondGridToInsert();
+        }
 
+        private void AddSecondHoursWork_Click(object sender, RoutedEventArgs e)
+        {
+            if (AddWorkInDB(comingSecondHourOfWork, leavingSecondHourOfWork, typeSecondHoursComboBoxWork, holidaySecondHoursComboBoxWork))
+                enableThirdGridToInsert();
+        }
+
+        private void AddThirdHoursWork_Click(object sender, RoutedEventArgs e)
+        {
+            if(AddWorkInDB(comingThirdHourOfWork, leavingThirdHourOfWork, typeThirdHoursComboBoxWork, holidayThirdHoursComboBoxWork))
+                updateOrDeleteStateThirdGridButtons(); 
+        }
     }
 }

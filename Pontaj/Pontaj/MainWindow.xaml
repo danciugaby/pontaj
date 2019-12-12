@@ -554,7 +554,7 @@
                                     <ComboBox Name="holidaySecondHoursComboBoxWork" SelectionChanged="HolidaySecondHoursComboBoxWork_SelectionChanged"></ComboBox>
                                 </Grid>
                                 <Grid Grid.Column="9">
-                                    <Button Name="addSecondHoursWork" Content="Adauga"></Button>
+                                    <Button Name="addSecondHoursWork" Content="Adauga" Click="AddSecondHoursWork_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Column="10">
                                     <Button Name="modifySecondHoursWork" Content="Modifica"></Button>
@@ -639,7 +639,7 @@
                                     <ComboBox Name="holidayThirdHoursComboBoxWork" SelectionChanged="HolidayThirdHoursComboBoxWork_SelectionChanged"></ComboBox>
                                 </Grid>
                                 <Grid Grid.Column="9">
-                                    <Button Name="addThirdHoursWork" Content="Adauga"></Button>
+                                    <Button Name="addThirdHoursWork" Content="Adauga" Click="AddThirdHoursWork_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Column="10">
                                     <Button Name="modifyThirdHoursWork" Content="Modifica"></Button>
