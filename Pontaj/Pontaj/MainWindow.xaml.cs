@@ -1818,7 +1818,7 @@ namespace Pontaj
             leavingFirstHourOfWork.Text = "15:00";
         }
 
-        
+
 
         private DateTime getSelectedDateFromDataGrid(int hours, int minutes)
         {
@@ -1963,10 +1963,22 @@ namespace Pontaj
                 Work work = new Work(user, type, holiday, startDate, endDate);
                 controller.works.Works.Add(work);
                 controller.AddWorkInDB(work, isHoliday, isCasual);
-               
+                IList<DataGridCellInfo> cells = dataGridWork.SelectedCells.ToList<DataGridCellInfo>();
+                DataGridCellInfo cell = cells[0];
                 InitAndRefreshDataGrid();
-                dataGridWork.SelectedIndex = day-1;
-                MessageBox.Show(dataGridWork.SelectedIndex.ToString());
+               // not working focusing
+                ////dataGridWork.Focus();
+                ////then create a new cell info, with the item we wish to edit and the column number of the cell we want in edit mode
+                //DataGridCellInfo cellInfo = new DataGridCellInfo(cell, dataGridWork.Columns[6]);
+                ////set the cell to be the active one
+                //dataGridWork.CurrentCell = cellInfo;
+                ////scroll the item into view
+                //dataGridWork.ScrollIntoView(cell);
+                ////begin the edit
+                //dataGridWork.BeginEdit();
+
+
+
             }
             return canInsert;
         }
@@ -2021,8 +2033,124 @@ namespace Pontaj
 
         private void AddThirdHoursWork_Click(object sender, RoutedEventArgs e)
         {
-            if(AddWorkInDB(comingThirdHourOfWork, leavingThirdHourOfWork, typeThirdHoursComboBoxWork, holidayThirdHoursComboBoxWork))
-                updateOrDeleteStateThirdGridButtons(); 
+            if (AddWorkInDB(comingThirdHourOfWork, leavingThirdHourOfWork, typeThirdHoursComboBoxWork, holidayThirdHoursComboBoxWork))
+                updateOrDeleteStateThirdGridButtons();
+        }
+        public DataGridCell GetDataGridCell(DataGridCellInfo cellInfo)
+        {
+            var cellContent = cellInfo.Column.GetCellContent(cellInfo.Item);
+            if (cellContent != null)
+                return (DataGridCell)cellContent.Parent;
+
+            return null;
+        }
+        private bool canDeleteUserFromDB(User user)
+        {
+            if (user == null)
+            {
+                return false;
+            }
+            return true;
+        }
+        public bool DeleteWorkFromDB(TextBox comingTextBox, TextBox leavingTextBox)
+        {
+            User user = userComboBoxWork.SelectedItem as User;
+            bool canDelete = true;
+            canDelete = canDeleteUserFromDB(user);
+            DateTime startDate = DateTime.Now;
+            DateTime endDate = startDate;
+            int hoursComing = 0;
+            int minutesComing = 0;
+            if (!CheckIfHourIsCorrect(comingTextBox.Text))
+            {
+                canDelete = false;
+            }
+            else
+            {
+                hoursComing = getHourFromString(comingTextBox.Text);
+                minutesComing = getMinutesFromString(comingTextBox.Text);
+            }
+
+            try
+            {
+                startDate = getSelectedDateFromDataGrid(hoursComing, minutesComing);
+
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                canDelete = false;
+            }
+            int hoursLeaving = 0;
+            int minutesLeaving = 0;
+            if (!CheckIfHourIsCorrect(leavingTextBox.Text))
+            {
+                canDelete = false;
+            }
+            else
+            {
+                hoursLeaving = getHourFromString(leavingTextBox.Text);
+                minutesLeaving = getMinutesFromString(leavingTextBox.Text);
+            }
+
+            int day = startDate.Day;
+            int month = startDate.Month;
+            int year = startDate.Year;
+            string leavingDate = "";
+            if (hoursLeaving <= hoursComing)
+            {
+                leavingDate = checkEndOfMonth(year, month, day);
+                string[] splitted = leavingDate.Split('.');
+                day = int.Parse(splitted[0]);
+                month = int.Parse(splitted[1]);
+                year = int.Parse(splitted[2]);
+
+            }
+            try
+            {
+                endDate = new DateTime(year, month, day, hoursLeaving, minutesLeaving, 0);
+
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                canDelete = false;
+            }
+            if (canDelete)
+            {
+                Work work = new Work(user, startDate, endDate);
+                controller.works.Works.Remove(work);
+                controller.DeleteWorkFromDB(work);
+                InitAndRefreshDataGrid();
+                // not working focusing
+                ////dataGridWork.Focus();
+                ////then create a new cell info, with the item we wish to edit and the column number of the cell we want in edit mode
+                //DataGridCellInfo cellInfo = new DataGridCellInfo(cell, dataGridWork.Columns[6]);
+                ////set the cell to be the active one
+                //dataGridWork.CurrentCell = cellInfo;
+                ////scroll the item into view
+                //dataGridWork.ScrollIntoView(cell);
+                ////begin the edit
+                //dataGridWork.BeginEdit();
+
+
+
+            }
+            return canDelete;
+        }
+
+        private void DeleteFirstHoursWork_Click(object sender, RoutedEventArgs e)
+        {
+            DeleteWorkFromDB(comingFirstHourOfWork, leavingFirstHourOfWork);
+
+        }
+
+        private void DeleteSecondHoursWork_Click(object sender, RoutedEventArgs e)
+        {
+            DeleteWorkFromDB(comingSecondHourOfWork, leavingSecondHourOfWork);
+        }
+
+        private void DeleteThirdHoursWork_Click(object sender, RoutedEventArgs e)
+        {
+            DeleteWorkFromDB(comingThirdHourOfWork, leavingThirdHourOfWork);
         }
     }
 }

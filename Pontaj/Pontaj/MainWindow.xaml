@@ -476,7 +476,7 @@
                                     <Button Name="modifyFirstHoursWork" Content="Modifica"></Button>
                                 </Grid>
                                 <Grid Grid.Column="11">
-                                    <Button Name="deleteFirstHoursWork" Content="Sterge"></Button>
+                                    <Button Name="deleteFirstHoursWork" Content="Sterge" Click="DeleteFirstHoursWork_Click"></Button>
                                 </Grid>
                             </Grid>
                             <Grid Grid.Row="3">
@@ -560,7 +560,7 @@
                                     <Button Name="modifySecondHoursWork" Content="Modifica"></Button>
                                 </Grid>
                                 <Grid Grid.Column="11">
-                                    <Button Name="deleteSecondHoursWork" Content="Sterge"></Button>
+                                    <Button Name="deleteSecondHoursWork" Content="Sterge" Click="DeleteSecondHoursWork_Click"></Button>
                                 </Grid>
                             </Grid>
                             <Grid Grid.Row="3">
@@ -645,7 +645,7 @@
                                     <Button Name="modifyThirdHoursWork" Content="Modifica"></Button>
                                 </Grid>
                                 <Grid Grid.Column="11">
-                                    <Button Name="deleteThirdHoursWork" Content="Sterge"></Button>
+                                    <Button Name="deleteThirdHoursWork" Content="Sterge" Click="DeleteThirdHoursWork_Click"></Button>
                                 </Grid>
                             </Grid>
                             <Grid Grid.Row="3">

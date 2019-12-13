@@ -128,5 +128,9 @@ namespace Pontaj
         {
             typeDescriptions.DeleteTypeDescriptionFromDB(typeDescription);
         }
+        public void DeleteWorkFromDB(Work work)
+        {
+            works.DeleteWorkFromDB(work);
+        }
     }
 }

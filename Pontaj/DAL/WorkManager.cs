@@ -166,6 +166,21 @@ namespace DAL
                     MessageBox.Show("Pontajul a fost adaugat!");
             }
         }
+        public void DeleteWorkFromDB(Work work)
+        {
+            using (SQLConnectionManager manager = new SQLConnectionManager())
+            {
+                manager.Open();
+                string sql = "delete from work where StartDate= '" + work.StartDate.ToString("yyyy-MM-dd HH:mm:ss") +
+                    "' and EndDate = '" + work.EndDate.ToString("yyyy-MM-dd HH:mm:ss") + "' and UserId = " + work.User.UserId + "; ";
+                SQLiteCommand command = new SQLiteCommand(sql, manager.DbConnection);
+                int rowsAffected = command.ExecuteNonQuery();
+                if (rowsAffected == 0)
+                    MessageBox.Show("Nu s-a putut efectua stergerea!");
+                else
+                    MessageBox.Show("Pontajul a fost sters!");
+            }
+        }
 
         //update
 

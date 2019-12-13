@@ -38,6 +38,12 @@ namespace DAL
             Type = type;
             Holiday = holiday;
         }
+        public Work(User user, DateTime startDate, DateTime endDate)
+        {
+            StartDate = startDate;
+            EndDate = endDate;
+            User = user;
+        }
         public DateTime StartDate { get => startDate; set => startDate = value; }
         public DateTime EndDate { get => endDate; set => endDate = value; }
         public User User { get => user; set => user = value; }
@@ -47,12 +53,26 @@ namespace DAL
         public override bool Equals(object obj)
         {
             var work = obj as Work;
+            try {
+                if (work.Holiday.Id == 0 && work.Type.Id == 0)
+                    return work != null &&
+                       StartDate == work.StartDate &&
+                       EndDate == work.EndDate &&
+                       EqualityComparer<User>.Default.Equals(User, work.User);
+            }
+            catch(NullReferenceException ex)
+            {
+                return work != null &&
+                       StartDate == work.StartDate &&
+                       EndDate == work.EndDate &&
+                       EqualityComparer<User>.Default.Equals(User, work.User);
+            }
             return work != null &&
-                   StartDate == work.StartDate &&
-                   EndDate == work.EndDate &&
-                   EqualityComparer<User>.Default.Equals(User, work.User) &&
-                   EqualityComparer<TypeDescription>.Default.Equals(Type, work.Type) &&
-                   EqualityComparer<Holiday>.Default.Equals(Holiday, work.Holiday);
+                       StartDate == work.StartDate &&
+                       EndDate == work.EndDate &&
+                       EqualityComparer<User>.Default.Equals(User, work.User) &&
+                       EqualityComparer<TypeDescription>.Default.Equals(Type, work.Type) &&
+                       EqualityComparer<Holiday>.Default.Equals(Holiday, work.Holiday);
         }
 
         public override string ToString()
@@ -61,8 +81,8 @@ namespace DAL
             if (Type == null)
                 Type = new TypeDescription(blank);
             if (Holiday == null)
-                Holiday= new Holiday(blank);
-            return User.LastName + " " + User.FirstName + ",\t" + User.Rank + ",\t" + Type + " " +Holiday +",\t" + TakeTheSecondsAwayFromDateTime(StartDate) + ",\t" + TakeTheSecondsAwayFromDateTime(EndDate);
+                Holiday = new Holiday(blank);
+            return User.LastName + " " + User.FirstName + ",\t" + User.Rank + ",\t" + Type + " " + Holiday + ",\t" + TakeTheSecondsAwayFromDateTime(StartDate) + ",\t" + TakeTheSecondsAwayFromDateTime(EndDate);
         }
 
         private string TakeTheSecondsAwayFromDateTime(DateTime dateTime)
