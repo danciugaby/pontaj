@@ -473,7 +473,7 @@
                                     <Button Name="addFirstHoursWork" Content="Adauga" Click="AddFirstHoursWork_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Column="10">
-                                    <Button Name="modifyFirstHoursWork" Content="Modifica"></Button>
+                                    <Button Name="modifyFirstHoursWork" Content="Modifica" Click="ModifyFirstHoursWork_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Column="11">
                                     <Button Name="deleteFirstHoursWork" Content="Sterge" Click="DeleteFirstHoursWork_Click"></Button>
@@ -557,7 +557,7 @@
                                     <Button Name="addSecondHoursWork" Content="Adauga" Click="AddSecondHoursWork_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Column="10">
-                                    <Button Name="modifySecondHoursWork" Content="Modifica"></Button>
+                                    <Button Name="modifySecondHoursWork" Content="Modifica" Click="ModifySecondHoursWork_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Column="11">
                                     <Button Name="deleteSecondHoursWork" Content="Sterge" Click="DeleteSecondHoursWork_Click"></Button>
@@ -642,7 +642,7 @@
                                     <Button Name="addThirdHoursWork" Content="Adauga" Click="AddThirdHoursWork_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Column="10">
-                                    <Button Name="modifyThirdHoursWork" Content="Modifica"></Button>
+                                    <Button Name="modifyThirdHoursWork" Content="Modifica" Click="ModifyThirdHoursWork_Click"></Button>
                                 </Grid>
                                 <Grid Grid.Column="11">
                                     <Button Name="deleteThirdHoursWork" Content="Sterge" Click="DeleteThirdHoursWork_Click"></Button>

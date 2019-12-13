@@ -16,6 +16,7 @@ namespace Pontaj
         public RankManager ranks;
         public HolidayManager holidays;
         public TypeDescriptionManager typeDescriptions;
+        public List<Work> previousWorks;
 
         public Controller()
         {
@@ -105,6 +106,10 @@ namespace Pontaj
         public void UpdateTypeDescriptionInDB(TypeDescription newTypeDescription,TypeDescription oldTypeDescription)
         {
             typeDescriptions.UpdateTypeDescriptionInDB(newTypeDescription, oldTypeDescription);
+        }
+        public void UpdateWorkInDB(Work newWork, Work oldWork, bool isHoliday, bool isCasual)
+        {
+            works.UpdateWorkInDB(newWork, oldWork, isHoliday, isCasual);
         }
 
         public void DeleteUserFromDB(User user)

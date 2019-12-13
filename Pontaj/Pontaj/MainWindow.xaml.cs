@@ -1614,7 +1614,113 @@ namespace Pontaj
         {
             IncreaseHoursForTextBox(leavingThirdHourOfWork);
         }
+        private List<Work> getWorksFromPage()
+        {
+            List<Work> works = new List<Work>();
+            Work work = getWorkFromOneGrid(comingFirstHourOfWork, leavingFirstHourOfWork, typeFirstHoursComboBoxWork, holidayFirstHoursComboBoxWork);
+            if (work != null)
+                works.Add(work);
+            else
+                return works;
+            work = getWorkFromOneGrid(comingSecondHourOfWork, leavingSecondHourOfWork, typeSecondHoursComboBoxWork, holidaySecondHoursComboBoxWork);
+            if (work != null)
+                works.Add(work);
+            else
+                return works;
+            work = getWorkFromOneGrid(comingThirdHourOfWork, leavingThirdHourOfWork, typeThirdHoursComboBoxWork, holidayThirdHoursComboBoxWork);
+            if (work != null)
+                works.Add(work);
+            else
+                return works;
+            return works;
+        }
+        private Work getWorkFromOneGrid(TextBox comingTextBox, TextBox leavingTextBox, ComboBox typeHoursComboBox, ComboBox holidayHoursComboBox)
+        {
+            User user = userComboBoxWork.SelectedItem as User;
+            if (!canInsertUserInDBWork(user))
+                return null;
+            DateTime startDate = DateTime.Now;
+            DateTime endDate = startDate;
+            int hoursComing = 0;
+            int minutesComing = 0;
+            if (!CheckIfHourIsCorrect(comingTextBox.Text))
+            {
+                return null;
+            }
+            else
+            {
+                hoursComing = getHourFromString(comingTextBox.Text);
+                minutesComing = getMinutesFromString(comingTextBox.Text);
+            }
 
+            try
+            {
+                startDate = getSelectedDateFromDataGrid(hoursComing, minutesComing);
+
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                return null;
+            }
+            int hoursLeaving = 0;
+            int minutesLeaving = 0;
+            if (!CheckIfHourIsCorrect(leavingTextBox.Text))
+            {
+                return null;
+            }
+            else
+            {
+                hoursLeaving = getHourFromString(leavingTextBox.Text);
+                minutesLeaving = getMinutesFromString(leavingTextBox.Text);
+            }
+
+            TypeDescription type = typeHoursComboBox.SelectedItem as TypeDescription;
+            Holiday holiday = holidayHoursComboBox.SelectedItem as Holiday;
+            bool isHoliday = false;
+            bool isCasual = false;
+            int no = canInsertHolidayAndTypeInDBWork(type, holiday);
+            if (no == -1)
+                return null;
+            else if (no == 1)
+            {
+                isCasual = true;
+
+            }
+            else if (no == -2)
+            {
+                isHoliday = true;
+            }
+            else
+            {
+                isCasual = true;
+                isHoliday = true;
+            }
+            int day = startDate.Day;
+            int month = startDate.Month;
+            int year = startDate.Year;
+            string leavingDate = "";
+            if (hoursLeaving <= hoursComing)
+            {
+                leavingDate = checkEndOfMonth(year, month, day);
+                string[] splitted = leavingDate.Split('.');
+                day = int.Parse(splitted[0]);
+                month = int.Parse(splitted[1]);
+                year = int.Parse(splitted[2]);
+
+            }
+            try
+            {
+                endDate = new DateTime(year, month, day, hoursLeaving, minutesLeaving, 0);
+
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                return null;
+            }
+
+            return new Work(user, type, holiday, startDate, endDate);
+
+        }
 
         private void DataGridWork_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {
@@ -1628,6 +1734,7 @@ namespace Pontaj
                 string monthYear = monthYearComboBoxWork.SelectedValue as string;
                 populateComboBoxesAndTimeOfWorks(user, selectedDay, monthYear);
                 displayDateTextBlock.Text = selectedDay + "." + monthYear;
+                controller.previousWorks = getWorksFromPage();
             }
 
         }
@@ -1966,7 +2073,7 @@ namespace Pontaj
                 IList<DataGridCellInfo> cells = dataGridWork.SelectedCells.ToList<DataGridCellInfo>();
                 DataGridCellInfo cell = cells[0];
                 InitAndRefreshDataGrid();
-               // not working focusing
+                // not working focusing
                 ////dataGridWork.Focus();
                 ////then create a new cell info, with the item we wish to edit and the column number of the cell we want in edit mode
                 //DataGridCellInfo cellInfo = new DataGridCellInfo(cell, dataGridWork.Columns[6]);
@@ -2136,6 +2243,126 @@ namespace Pontaj
             }
             return canDelete;
         }
+        private bool UpdateWorkInDB(int gridIndex, TextBox comingTextBox, TextBox leavingTextBox, ComboBox typeHoursComboBox, ComboBox holidayHoursComboBox)
+        {
+            User user = userComboBoxWork.SelectedItem as User;
+            bool canUpdate = true;
+            string message = "";
+            canUpdate = canInsertUserInDBWork(user);
+            if (!canUpdate)
+                message += "Selecteaza persoana!\n";
+            DateTime startDate = DateTime.Now;
+            DateTime endDate = startDate;
+            int hoursComing = 0;
+            int minutesComing = 0;
+            if (!CheckIfHourIsCorrect(comingTextBox.Text))
+            {
+                canUpdate = false;
+                message += "Ora de venire introdusa este incorecta!\n";
+            }
+            else
+            {
+                hoursComing = getHourFromString(comingTextBox.Text);
+                minutesComing = getMinutesFromString(comingTextBox.Text);
+            }
+
+            try
+            {
+                startDate = getSelectedDateFromDataGrid(hoursComing, minutesComing);
+
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                canUpdate = false;
+                message += "Selecteaza data!\n";
+            }
+            int hoursLeaving = 0;
+            int minutesLeaving = 0;
+            if (!CheckIfHourIsCorrect(leavingTextBox.Text))
+            {
+                canUpdate = false;
+                message += "Ora de plecare introdusa este incorecta!\n";
+            }
+            else
+            {
+                hoursLeaving = getHourFromString(leavingTextBox.Text);
+                minutesLeaving = getMinutesFromString(leavingTextBox.Text);
+            }
+
+            TypeDescription type = typeHoursComboBox.SelectedItem as TypeDescription;
+            Holiday holiday = holidayHoursComboBox.SelectedItem as Holiday;
+            bool isHoliday = false;
+            bool isCasual = false;
+            int no = canInsertHolidayAndTypeInDBWork(type, holiday);
+            if (no == -1)
+                canUpdate = false;
+            else if (no == 1)
+            {
+                isCasual = true;
+
+            }
+            else if (no == -2)
+            {
+                isHoliday = true;
+            }
+            else
+            {
+                isCasual = true;
+                isHoliday = true;
+            }
+            if (!canUpdate)
+            {
+                message += "Selecteaza tipul de pontaj sau concediu!\n";
+                MessageBox.Show(message);
+            }
+            int day = startDate.Day;
+            int month = startDate.Month;
+            int year = startDate.Year;
+            string leavingDate = "";
+            if (hoursLeaving <= hoursComing)
+            {
+                leavingDate = checkEndOfMonth(year, month, day);
+                string[] splitted = leavingDate.Split('.');
+                day = int.Parse(splitted[0]);
+                month = int.Parse(splitted[1]);
+                year = int.Parse(splitted[2]);
+
+            }
+            try
+            {
+                endDate = new DateTime(year, month, day, hoursLeaving, minutesLeaving, 0);
+
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                canUpdate = false;
+            }
+            if (canUpdate)
+            {
+                Work newWork = new Work(user, type, holiday, startDate, endDate);
+                Work oldWork = controller.previousWorks[gridIndex];
+                if (oldWork != null)
+                {
+                    UpdateWorksCollection(newWork, oldWork);
+                    controller.UpdateWorkInDB(newWork, oldWork, isHoliday, isCasual);
+                    InitAndRefreshDataGrid();
+                }
+                // not working focusing
+                ////dataGridWork.Focus();
+                ////then create a new cell info, with the item we wish to edit and the column number of the cell we want in edit mode
+                //DataGridCellInfo cellInfo = new DataGridCellInfo(cell, dataGridWork.Columns[6]);
+                ////set the cell to be the active one
+                //dataGridWork.CurrentCell = cellInfo;
+                ////scroll the item into view
+                //dataGridWork.ScrollIntoView(cell);
+                ////begin the edit
+                //dataGridWork.BeginEdit();
+
+
+
+            }
+            return canUpdate;
+        }
 
         private void DeleteFirstHoursWork_Click(object sender, RoutedEventArgs e)
         {
@@ -2151,6 +2378,32 @@ namespace Pontaj
         private void DeleteThirdHoursWork_Click(object sender, RoutedEventArgs e)
         {
             DeleteWorkFromDB(comingThirdHourOfWork, leavingThirdHourOfWork);
+        }
+        private void UpdateWorksCollection(Work newWork, Work oldWork)
+        {
+            int size = controller.works.Works.Count;
+            for (int i = 0; i < size; ++i)
+                if (controller.works.Works[i].Equals(oldWork))
+                {
+                    controller.works.Works[i] = newWork;
+                    break;
+                }
+
+        }
+
+        private void ModifyFirstHoursWork_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateWorkInDB(0,comingFirstHourOfWork,leavingFirstHourOfWork,typeFirstHoursComboBoxWork,holidayFirstHoursComboBoxWork);
+        }
+
+        private void ModifySecondHoursWork_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateWorkInDB(1, comingSecondHourOfWork, leavingSecondHourOfWork, typeSecondHoursComboBoxWork, holidaySecondHoursComboBoxWork);
+        }
+
+        private void ModifyThirdHoursWork_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateWorkInDB(2, comingThirdHourOfWork, leavingThirdHourOfWork, typeThirdHoursComboBoxWork, holidayThirdHoursComboBoxWork);
         }
     }
 }

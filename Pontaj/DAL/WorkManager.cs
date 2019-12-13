@@ -183,6 +183,44 @@ namespace DAL
         }
 
         //update
+        public void UpdateWorkInDB(Work newWork, Work oldWork, bool isHoliday, bool isCasual)
+        {
+            using (SQLConnectionManager manager = new SQLConnectionManager())
+            {
+                manager.Open();
+                string sql = "";
+                if (isCasual && isHoliday)
+                {
+                    MessageBox.Show("Alege doar Tip Pontaj sau Concediu!");
+                    return;
+                }
+                else if (isCasual)
+                {
+                    sql = "update Work set StartDate = '" + newWork.StartDate.ToString("yyyy-MM-dd HH:mm:ss") +
+                    "', EndDate = '" + newWork.EndDate.ToString("yyyy-MM-dd HH:mm:ss") + "', TypeDescriptionId = " + newWork.Type.Id +", HolidayId = null "+
+                    " where StartDate='" + oldWork.StartDate.ToString("yyyy-MM-dd HH:mm:ss") + "' and EndDate = '"
+                    + oldWork.EndDate.ToString("yyyy-MM-dd HH:mm:ss") + "' and UserId = " + oldWork.User.UserId + "; ";
+                }
+                else
+                {
+                    sql = "update Work set StartDate = '" + newWork.StartDate.ToString("yyyy-MM-dd HH:mm:ss") +
+                    "', EndDate = '" + newWork.EndDate.ToString("yyyy-MM-dd HH:mm:ss") + "', HolidayId = " + newWork.Holiday.Id + ", TypeDescriptionId = null " +
+                    " where StartDate='" + oldWork.StartDate.ToString("yyyy-MM-dd HH:mm:ss") + "' and EndDate = '"
+                    + oldWork.EndDate.ToString("yyyy-MM-dd HH:mm:ss") + "' and UserId = " + oldWork.User.UserId + "; ";
+                }
+                SQLiteCommand command = new SQLiteCommand(sql, manager.DbConnection);
+                try
+                {
+                    int rowsAffected = command.ExecuteNonQuery();
+                    if (rowsAffected != 0)
+                        MessageBox.Show("Pontajul a fost modificat!");
+                }
+                catch (SQLiteException ex)
+                {
+                    MessageBox.Show("Nu s-a putut efectua modificarea!");
+                }
+            }
+        }
 
 
     }
